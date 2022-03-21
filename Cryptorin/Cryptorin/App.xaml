@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cryptorin.App">
+    <Application.Resources>
+        
+        
+        <Style x:Key="cntPageColor" TargetType="ContentPage">
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorBackgroundMain}"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Entry}">
+            <Setter Property="TextColor" Value="{DynamicResource colorEntryTextColor}"></Setter>
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorEntryBackground}" />
+            <Setter Property="PlaceholderColor" Value="{DynamicResource colorEntryPlaceholder}" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="HeightRequest" Value="60"/>
+            <Setter Property="FontFamily" Value="NotoSans"/>
+        </Style>
+
+
+
+
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorButtonBackground}"/>
+            <Setter Property="FontFamily" Value="NotoSans"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="TextColor" Value="#f9f9f9"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="TextColor" Value="{DynamicResource colorLabel}"/>
+        </Style>
+
+
+        <Color x:Key="colorLabel">Black</Color>
+
+        <Color x:Key="colorButtonBackground">#7c94a6</Color>
+
+
+        <Color x:Key="colorEntryTextColor">Black</Color>
+        <Color x:Key="colorEntryBackground">#ededed</Color>
+        <Color x:Key="colorEntryPlaceholder">#9e8e8e</Color>
+
+
+        <Color x:Key="colorBackgroundMain">#f6f6f6</Color>
+
+    </Application.Resources>
+</Application>

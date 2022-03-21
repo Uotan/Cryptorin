@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cryptorin.Views.viewAuth">
+
+    <StackLayout>
+        <Frame HeightRequest="120" BackgroundColor="#a7c5c7" Padding="5,5,5,30" CornerRadius="0">
+            <Image Source="CryptorinLogo.png"></Image>
+        </Frame>
+        <Label x:Name="testEcho" Text="Start developing now" FontSize="Title" Padding="30,10,30,10"/>
+        <Button Text="button test color" HorizontalOptions="CenterAndExpand" TextColor="White" Clicked="Button_Clicked"></Button>
+    </StackLayout>
+</ContentPage>
