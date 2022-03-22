@@ -25,7 +25,7 @@
         <Style TargetType="{x:Type Button}">
             <Setter Property="BackgroundColor" Value="{DynamicResource colorButtonBackground}"/>
             <Setter Property="FontFamily" Value="NotoSans"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="CornerRadius" Value="5"/>
             <Setter Property="TextColor" Value="#f9f9f9"></Setter>
         </Style>
 
