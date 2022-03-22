@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Views;
+using Cryptorin.Classes;
 
 namespace Cryptorin
 {
@@ -16,7 +17,18 @@ namespace Cryptorin
             //    BarBackgroundColor = Color.FromHex("#a7c5c7"),
             //    BarTextColor = Color.White
             //};
-            MainPage = new AppShell();
+
+            Application.Current.RequestedThemeChanged += (object sender, AppThemeChangedEventArgs e) =>
+            {
+                ThemeManager themeManager = new ThemeManager();
+                if (e.RequestedTheme == OSAppTheme.Dark)
+                    themeManager.SetDark();
+                else
+                    themeManager.SetLight();
+            };
+
+            //MainPage = new AppShell();
+            MainPage = new viewAuth();
 
         }
 

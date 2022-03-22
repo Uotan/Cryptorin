@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<Shell xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Cryptorin.AppShell">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="tlbrtest" Text="проверка push" Clicked="tlbrtest_Clicked"></ToolbarItem>
-    </ContentPage.ToolbarItems>
-</ContentPage>
+             x:Class="Cryptorin.AppShell"
+       xmlns:views="clr-namespace:Cryptorin.Views"
+       BackgroundColor="#a7c5c7">
+    
+    
+    
+    <TabBar>
+        <ShellContent Title="Auth" ContentTemplate="{DataTemplate views:viewAuth}"></ShellContent>
+        <ShellContent Title="Register" ContentTemplate="{DataTemplate views:viewRegister}"></ShellContent>
+    </TabBar>
+</Shell>

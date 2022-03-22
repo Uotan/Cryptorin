@@ -23,14 +23,10 @@ namespace Cryptorin.Views
             }
         }
 
-        private void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
-            Random random = new Random();
-            int ran1 = random.Next(0, 255);
-            int ran2 = random.Next(0, 255);
-            int ran3 = random.Next(0, 255);
-            Color colorLabel = Color.FromRgb(ran1, ran2, ran3);
-            App.Current.Resources["labelColor"] = colorLabel;
+            App.Current.MainPage = new viewRegister();
+            //await Navigation.PushModalAsync(new viewRegister());
         }
     }
 }

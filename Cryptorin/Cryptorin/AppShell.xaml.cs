@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cryptorin.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,17 +11,21 @@ using Xamarin.Forms.Xaml;
 namespace Cryptorin
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AppShell : ContentPage
+    public partial class AppShell : Shell
     {
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(MainPage), typeof(MainPage));
+            Routing.RegisterRoute(nameof(viewAuth), typeof(viewAuth));
+
+            //App.Current.MainPage = this;
+
+            //chane();
+        }
+        async void chane()
+        {
+            await Shell.Current.GoToAsync(nameof(viewAuth));
         }
 
-        private async void tlbrtest_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync(nameof(MainPage));
-        }
     }
 }
