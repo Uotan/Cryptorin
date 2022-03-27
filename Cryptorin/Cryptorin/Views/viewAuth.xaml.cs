@@ -16,17 +16,12 @@ namespace Cryptorin.Views
         public viewAuth()
         {
             InitializeComponent();
-            using (WebClient client = new WebClient())
-            {
-                var response = client.DownloadString("https://cryptorin.ru/index.php");
-                testEcho.Text = response;
-            }
+
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new viewRegister();
-            //await Navigation.PushModalAsync(new viewRegister());
+            await Navigation.PushAsync(new viewRegister());
         }
     }
 }

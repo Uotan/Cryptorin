@@ -19,7 +19,13 @@
             <Setter Property="FontFamily" Value="NotoSans"/>
         </Style>
 
+        <Style TargetType="{x:Type NavigationPage}">
+            <Setter Property="BarBackgroundColor" Value="{DynamicResource colorMainAccent}"/>
+        </Style>
 
+        <Style x:Key="styleFrame" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorMainAccent}"/>
+        </Style>
 
 
         <Style TargetType="{x:Type Button}">
@@ -38,6 +44,7 @@
 
         <Color x:Key="colorButtonBackground">#7c94a6</Color>
 
+        <Color x:Key="colorMainAccent">#a7c5c7</Color>
 
         <Color x:Key="colorEntryTextColor">Black</Color>
         <Color x:Key="colorEntryBackground">#ededed</Color>

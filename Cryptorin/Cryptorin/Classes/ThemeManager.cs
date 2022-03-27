@@ -25,7 +25,11 @@ namespace Cryptorin.Classes
         public Color colorEntryPlaceHolderColorDark = Color.FromArgb(255, 184, 184, 184);
         public Color colorEntryPlaceHolderColorLight = Color.FromArgb(255, 158, 142, 142);
 
+        public Color colorcolorMainAccentDark = Color.FromArgb(255, 88, 102, 122);
+        public Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
 
+
+        
 
         public void SetDark()
         {
@@ -35,6 +39,7 @@ namespace Cryptorin.Classes
             App.Current.Resources["colorEntryBackground"] = colorEntryBackgroundDark;
             App.Current.Resources["colorBackgroundMain"] = colorMainBackgroundDark;
             App.Current.Resources["colorEntryPlaceholder"] = colorEntryPlaceHolderColorDark;
+            App.Current.Resources["colorMainAccent"] = colorcolorMainAccentDark;
         }
         public void SetLight()
         {
@@ -44,6 +49,7 @@ namespace Cryptorin.Classes
             App.Current.Resources["colorEntryBackground"] = colorEntryBackgroundLight;
             App.Current.Resources["colorBackgroundMain"] = colorMainBackgroundLight;
             App.Current.Resources["colorEntryPlaceholder"] = colorEntryPlaceHolderColorLight;
+            App.Current.Resources["colorMainAccent"] = colorcolorMainAccentLight;
         }
     }
 }
