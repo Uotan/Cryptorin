@@ -21,10 +21,10 @@
     <EmbeddedResource Update="AppShell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\viewAuth.xaml">
+    <EmbeddedResource Update="Views\ViewAuth.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\viewRegister.xaml">
+    <EmbeddedResource Update="Views\ViewRegister.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -32,5 +32,14 @@
   <ItemGroup>
     <Folder Include="ViewModel\" />
     <Folder Include="Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\viewAuth.xaml.cs">
+      <DependentUpon>ViewAuth.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\viewRegister.xaml.cs">
+      <DependentUpon>ViewRegister.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

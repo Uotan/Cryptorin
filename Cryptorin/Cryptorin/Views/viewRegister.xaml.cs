@@ -11,16 +11,16 @@ using Xamarin.Essentials;
 namespace Cryptorin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class viewRegister : ContentPage
+    public partial class ViewRegister : ContentPage
     {
-        public viewRegister()
+        public ViewRegister()
         {
             InitializeComponent();
         }
 
         private async void Button_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushModalAsync(new viewAuth());
+            await Navigation.PushModalAsync(new ViewAuth());
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)

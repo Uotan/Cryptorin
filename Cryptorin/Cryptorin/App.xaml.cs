@@ -12,7 +12,7 @@ namespace Cryptorin
         {
             InitializeComponent();
 
-            NavigationPage startLoginPage = new NavigationPage(new viewAuth())
+            NavigationPage startLoginPage = new NavigationPage(new ViewAuth())
             {
                 //BarBackgroundColor = Color.FromHex("#a7c5c7"),
                 //BarTextColor = Color.White

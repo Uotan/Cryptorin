@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.AppShell"
        xmlns:views="clr-namespace:Cryptorin.Views"
-       BackgroundColor="#a7c5c7">
+       BackgroundColor="{DynamicResource colorMainAccent}">
     
     
     
     <TabBar>
-        <ShellContent Title="Auth" ContentTemplate="{DataTemplate views:viewAuth}"></ShellContent>
-        <ShellContent Title="Register" ContentTemplate="{DataTemplate views:viewRegister}"></ShellContent>
+        <ShellContent Title="Auth" ContentTemplate="{DataTemplate views:ViewAuth}"></ShellContent>
+        <ShellContent Title="Register" ContentTemplate="{DataTemplate views:ViewRegister}"></ShellContent>
     </TabBar>
 </Shell>
