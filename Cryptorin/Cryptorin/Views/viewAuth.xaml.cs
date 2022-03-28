@@ -19,7 +19,14 @@ namespace Cryptorin.Views
 
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+
+
+        private void btnSignIn_Clicked(object sender, EventArgs e)
+        {
+            
+        }
+
+        private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new ViewRegister());
         }

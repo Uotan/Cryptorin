@@ -37,8 +37,8 @@ namespace Cryptorin
                 themeManager.SetLight();
             }
 
-            //MainPage = new AppShell();
-            MainPage = startLoginPage;
+            MainPage = new AppShell();
+            //MainPage = startLoginPage;
 
         }
 

@@ -47,8 +47,11 @@
         <Color x:Key="colorMainAccent">#a7c5c7</Color>
 
         <Color x:Key="colorEntryTextColor">Black</Color>
-        <Color x:Key="colorEntryBackground">#ededed</Color>
+        <Color x:Key="colorEntryBackground">#ececec</Color>
         <Color x:Key="colorEntryPlaceholder">#9e8e8e</Color>
+
+        <Color x:Key="colorEntryBackgroundERRORlight">#e89797</Color>
+        <Color x:Key="colorEntryBackgroundERRORdark">#7d2f2f</Color>
 
 
         <Color x:Key="colorBackgroundMain">#f6f6f6</Color>

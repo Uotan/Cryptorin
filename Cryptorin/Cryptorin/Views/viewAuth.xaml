@@ -12,9 +12,9 @@
         <StackLayout Padding="15,70,15,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">
             <Entry x:Name="tbLogin" Margin="0,0,0,20" HorizontalTextAlignment="Center"  Placeholder="Enter login" />
             <Entry x:Name="tbPassword" HorizontalTextAlignment="Center" Placeholder="Enter password" IsPassword="True"/>
-            <Button Margin="0,50,0,0" Text="Sign In"/>
+            <Button x:Name="btnSignIn" Margin="0,50,0,0" Text="Sign In" Clicked="btnSignIn_Clicked"/>
             <Label Text="or" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
-            <Button Text="Sign Up" Clicked="Button_Clicked"/>
+            <Button x:Name="btnSignUp" Text="Sign Up" Clicked="btnSignUp_Clicked"/>
         </StackLayout>
     </StackLayout>
 </ContentPage>

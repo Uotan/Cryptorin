@@ -16,11 +16,7 @@ namespace Cryptorin
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute(nameof(ViewAuth), typeof(ViewAuth));
 
-            //App.Current.MainPage = this;
-
-            //chane();
         }
         async void chane()
         {
