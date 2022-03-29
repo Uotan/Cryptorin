@@ -23,6 +23,7 @@
             <Setter Property="BarBackgroundColor" Value="{DynamicResource colorMainAccent}"/>
         </Style>
 
+
         <Style x:Key="styleFrame" TargetType="Frame">
             <Setter Property="BackgroundColor" Value="{DynamicResource colorMainAccent}"/>
         </Style>

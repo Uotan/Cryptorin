@@ -3,12 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.AppShell"
        xmlns:views="clr-namespace:Cryptorin.Views"
+       FlyoutBackgroundColor="{DynamicResource colorMainAccent}"
        BackgroundColor="{DynamicResource colorMainAccent}">
-    
-    
-    
-    <TabBar>
-        <ShellContent Title="Auth" ContentTemplate="{DataTemplate views:ViewAuth}"></ShellContent>
-        <ShellContent Title="Register" ContentTemplate="{DataTemplate views:ViewRegister}"></ShellContent>
-    </TabBar>
+
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <StackLayout Padding="20" BackgroundColor="Transparent" Orientation="Vertical">
+                
+                <Frame Padding="0"
+                   HeightRequest="150"
+                   WidthRequest="150"
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                   CornerRadius="100"
+                        BackgroundColor="Coral">
+                    <Image Aspect="Fill" Source="https://cryptorin.ru/images/filename.jpg"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                <Label Margin="20" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
+            </StackLayout>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+    <FlyoutItem Title="Messages">
+        <ShellContent Title="Messages" ContentTemplate="{DataTemplate views:ViewUsersList}"></ShellContent>
+    </FlyoutItem>
+    <FlyoutItem Title="Settings">
+        <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:ViesSettings}"></ShellContent>
+    </FlyoutItem>
+    <MenuItem Text="Source"></MenuItem>
+    <MenuItem Text="Quit"></MenuItem>
 </Shell>
