@@ -26,12 +26,12 @@
             </StackLayout>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
-    <FlyoutItem Title="Messages">
+    <FlyoutItem Title="Messages" Icon="iconMail2.png">
         <ShellContent Title="Messages" ContentTemplate="{DataTemplate views:ViewUsersList}"></ShellContent>
     </FlyoutItem>
-    <FlyoutItem Title="Settings">
+    <FlyoutItem Title="Settings" Icon="iconSettings.png">
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:ViesSettings}"></ShellContent>
     </FlyoutItem>
-    <MenuItem Text="Source"></MenuItem>
-    <MenuItem Text="Quit"></MenuItem>
+    <MenuItem IconImageSource="iconGitSource.png" Text="Source"></MenuItem>
+    <MenuItem IconImageSource="iconQuit.png" Text="Quit"></MenuItem>
 </Shell>
