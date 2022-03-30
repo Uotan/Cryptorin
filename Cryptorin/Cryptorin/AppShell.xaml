@@ -4,12 +4,13 @@
              x:Class="Cryptorin.AppShell"
        xmlns:views="clr-namespace:Cryptorin.Views"
        FlyoutBackgroundColor="{DynamicResource colorMainAccent}"
+       ForegroundColor="Transparent"
        BackgroundColor="{DynamicResource colorMainAccent}">
 
 
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
-            <StackLayout Padding="20" BackgroundColor="Transparent" Orientation="Vertical">
+            <StackLayout Padding="20" Margin="0,0,0,80" BackgroundColor="Transparent" Orientation="Vertical">
                 
                 <Frame Padding="0"
                    HeightRequest="150"
@@ -26,8 +27,8 @@
             </StackLayout>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
-    <FlyoutItem Title="Messages" Icon="iconMail2.png">
-        <ShellContent Title="Messages" ContentTemplate="{DataTemplate views:ViewUsersList}"></ShellContent>
+    <FlyoutItem Title="Messenger" Icon="iconMail2.png">
+        <ShellContent Title="Messenger" ContentTemplate="{DataTemplate views:ViewUsersList}"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Settings" Icon="iconSettings.png">
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:ViesSettings}"></ShellContent>

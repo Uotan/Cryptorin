@@ -2,7 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.Views.ViewUsersList"
-             Style="{StaticResource cntPageColor}">
+             Style="{StaticResource cntPageColor}"
+             Title="Messenger">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="testIcon" Text="PrimaryItem" Order="Primary" Priority="0"></ToolbarItem>
+        <ToolbarItem x:Name="tbiFindUser" Text="Find User" Order="Secondary" Priority="1" ></ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to User List"></Label>

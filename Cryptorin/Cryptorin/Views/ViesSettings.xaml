@@ -4,8 +4,48 @@
              x:Class="Cryptorin.Views.ViesSettings"
              Style="{StaticResource cntPageColor}">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Settings"></Label>
-        </StackLayout>
+        <ScrollView HeightRequest="5000">
+            <StackLayout>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="button"></Button>
+                <Label Text="Welcome to Settings"></Label>
+                <Button Text="END"></Button>
+            </StackLayout>
+        </ScrollView>
+        
     </ContentPage.Content>
 </ContentPage>
