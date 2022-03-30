@@ -16,6 +16,7 @@ namespace Cryptorin
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(ViewChat),typeof(ViewChat));
 
         }
         async void chane()

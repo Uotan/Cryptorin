@@ -18,10 +18,12 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
 
-            var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
-            this.testIcon.IconImageSource = ImageSource.FromStream(() => new MemoryStream(byteArray));
-            //this.testIcon.IconImageSource = FileImageSource.FromStream(() => new MemoryStream(byteArray));
 
+        }
+
+        private async void tbiFindUser_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync(nameof(ViewChat));
         }
     }
 }

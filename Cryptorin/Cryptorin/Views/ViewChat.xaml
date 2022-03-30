@@ -3,6 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.Views.ViewChat"
              Style="{StaticResource cntPageColor}">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="testIcon" Text="icon" Order="Primary" Priority="0"></ToolbarItem>
+        <ToolbarItem x:Name="tbiClearAll" Text="Clear all" Order="Secondary" Priority="1"></ToolbarItem>
+        <ToolbarItem x:Name="tbiDeleteChat" Text="Delete chat" Order="Secondary" Priority="2"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Welcome to CHAT" />

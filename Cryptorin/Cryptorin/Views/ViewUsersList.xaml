@@ -5,8 +5,7 @@
              Style="{StaticResource cntPageColor}"
              Title="Messenger">
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="testIcon" Text="PrimaryItem" Order="Primary" Priority="0"></ToolbarItem>
-        <ToolbarItem x:Name="tbiFindUser" Text="Find User" Order="Secondary" Priority="1" ></ToolbarItem>
+        <ToolbarItem x:Name="tbiFindUser" Text="Find User" Order="Secondary" Priority="1" Clicked="tbiFindUser_Clicked" ></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
