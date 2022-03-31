@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Cryptorin.Common.FlayoutHeaderTemplate"
+      BackgroundColor="{DynamicResource colorMainAccent}">
+    
+    
+    <StackLayout Padding="20" Margin="0,0,0,80" BackgroundColor="Transparent" Orientation="Vertical">
+
+        <Frame Padding="0"
+                   HeightRequest="150"
+                   WidthRequest="150"
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                   CornerRadius="100"
+                        BackgroundColor="Coral">
+            <Image x:Name="myPhoto" Aspect="Fill"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"></Image>
+        </Frame>
+        <Label Margin="20" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
+    </StackLayout>
+</Grid>

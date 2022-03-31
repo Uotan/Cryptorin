@@ -40,6 +40,20 @@
             <Setter Property="TextColor" Value="{DynamicResource colorLabel}"/>
         </Style>
 
+        <Style x:Key="FABPrimary" TargetType="Button">
+            <Setter Property="CornerRadius" Value="100"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorMainAccent}"/>
+            <Setter Property="HeightRequest" Value="60"/>
+            <Setter Property="WidthRequest" Value="60"/>
+            <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="Margin" Value="0,0,25,25"/>
+            <!--<Setter Property="TextColor" Value="{DynamicResource colorLabel}"/>-->
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontSize" Value="32"/>
+        </Style>
+        
 
         <Color x:Key="colorLabel">Black</Color>
 

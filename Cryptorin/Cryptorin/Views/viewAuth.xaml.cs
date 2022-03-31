@@ -23,7 +23,7 @@ namespace Cryptorin.Views
 
         private void btnSignIn_Clicked(object sender, EventArgs e)
         {
-            
+            App.Current.MainPage = new AppShell();
         }
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)

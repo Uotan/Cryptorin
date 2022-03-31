@@ -11,8 +11,8 @@
             
             <Entry x:Name="tbPublicName" Placeholder="Public name"/>
             <Entry x:Name="tbLogin" Placeholder="Login"/>
-            <Entry x:Name="tbPassw" Placeholder="Password" IsPassword="True"/>
-            <Entry x:Name="tbRepPassw" Placeholder="Repeat password" IsPassword="True"/>
+            <Entry x:Name="tbPassw" Placeholder="Password" TextChanged="tbPassw_TextChanged" IsPassword="True"/>
+            <Entry x:Name="tbRepPassw" Placeholder="Repeat password" TextChanged="tbRepPassw_TextChanged" IsPassword="True"/>
 
             <Frame  Margin="0,10,0,5" Padding="0"
                    HeightRequest="150"
@@ -29,7 +29,7 @@
                        VerticalOptions="Center"/>
             </Frame>
             <Label Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
-            <Button Text="Sign up"/>
+            <Button x:Name="btnSignUp" Text="Sign up" Clicked="btnSignUp_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

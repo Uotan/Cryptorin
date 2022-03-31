@@ -4,12 +4,15 @@
              x:Class="Cryptorin.Views.ViewUsersList"
              Style="{StaticResource cntPageColor}"
              Title="Messenger">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="tbiFindUser" Text="Find User" Order="Secondary" Priority="1" Clicked="tbiFindUser_Clicked" ></ToolbarItem>
-    </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+    <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
         <StackLayout>
             <Label Text="Welcome to User List"></Label>
         </StackLayout>
-    </ContentPage.Content>
+        <Button x:Name="AddItemButton" Text="+"
+                IsVisible="True"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
+                Style="{StaticResource FABPrimary}"/>
+    </AbsoluteLayout>
+    
 </ContentPage>

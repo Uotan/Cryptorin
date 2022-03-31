@@ -3,20 +3,31 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Views;
 using Cryptorin.Classes;
+using Cryptorin.Data;
+using System.IO;
 
 namespace Cryptorin
 {
     public partial class App : Application
     {
+        static controllerSQLite myDataBase;
+        public static controllerSQLite myDB
+        {
+            get
+            {
+                if (myDataBase == null)
+                {
+                    myDataBase = new controllerSQLite(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "myData.db"));
+                    //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NotesDatabase.db"));
+                }
+                return myDataBase;
+            }
+        }
         public App()
         {
             InitializeComponent();
 
-            NavigationPage startLoginPage = new NavigationPage(new ViewAuth())
-            {
-                //BarBackgroundColor = Color.FromHex("#a7c5c7"),
-                //BarTextColor = Color.White
-            };
+            NavigationPage startLoginPage = new NavigationPage(new ViewAuth());
             OSAppTheme currentTheme = Application.Current.RequestedTheme;
             Application.Current.RequestedThemeChanged += (object sender, AppThemeChangedEventArgs e) =>
             {
@@ -37,8 +48,8 @@ namespace Cryptorin
                 themeManager.SetLight();
             }
 
-            MainPage = new AppShell();
-            //MainPage = startLoginPage;
+            //MainPage = new AppShell();
+            MainPage = startLoginPage;
 
         }
 

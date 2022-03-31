@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.AppShell"
        xmlns:views="clr-namespace:Cryptorin.Views"
+       xmlns:common="clr-namespace:Cryptorin.Common"
        FlyoutBackgroundColor="{DynamicResource colorMainAccent}"
        ForegroundColor="Transparent"
-       BackgroundColor="{DynamicResource colorMainAccent}">
+       BackgroundColor="{DynamicResource colorMainAccent}"
+       FlyoutHeaderTemplate="{DataTemplate common:FlayoutHeaderTemplate}">
 
+    
 
-    <Shell.FlyoutHeaderTemplate>
+    <!--<Shell.FlyoutHeader>
         <DataTemplate>
             <StackLayout Padding="20" Margin="0,0,0,80" BackgroundColor="Transparent" Orientation="Vertical">
                 
@@ -21,18 +24,18 @@
                         BackgroundColor="Coral">
                     <Image Aspect="Fill" Source="https://cryptorin.ru/images/filename.jpg"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center"></Image>
                 </Frame>
                 <Label Margin="20" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
             </StackLayout>
         </DataTemplate>
-    </Shell.FlyoutHeaderTemplate>
+    </Shell.FlyoutHeader>-->
     <FlyoutItem Title="Messenger" Icon="iconMail2.png">
         <ShellContent Title="Messenger" ContentTemplate="{DataTemplate views:ViewUsersList}"></ShellContent>
     </FlyoutItem>
     <FlyoutItem Title="Settings" Icon="iconSettings.png">
         <ShellContent Title="Settings" ContentTemplate="{DataTemplate views:ViesSettings}"></ShellContent>
     </FlyoutItem>
-    <MenuItem IconImageSource="iconGitSource.png" Text="Source"></MenuItem>
-    <MenuItem IconImageSource="iconQuit.png" Text="Quit"></MenuItem>
+    <MenuItem x:Name="mnItmSource" IconImageSource="iconGitSource.png" Text="Source"></MenuItem>
+    <MenuItem x:Name="mnItmQuit" IconImageSource="iconQuit.png" Clicked="mnItmQuit_Clicked" Text="Quit"></MenuItem>
 </Shell>
