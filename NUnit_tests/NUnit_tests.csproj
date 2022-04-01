@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Cryptorin\Cryptorin\Cryptorin.csproj" />
+  </ItemGroup>
+
 </Project>

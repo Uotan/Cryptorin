@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net;
+using System.Diagnostics;
+using Cryptorin.Data;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -16,7 +18,10 @@ namespace Cryptorin.Views
         public ViewAuth()
         {
             InitializeComponent();
-
+            classAES qwe = new classAES("4elpsGky8'}|;I[*11111111");
+            string _data = qwe.Encrypt("hello Xamarin");
+            string decrypt = qwe.Decrypt(_data);
+            Debug.WriteLine(decrypt);
         }
 
 
