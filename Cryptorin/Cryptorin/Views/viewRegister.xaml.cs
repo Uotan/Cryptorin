@@ -40,17 +40,26 @@ namespace Cryptorin.Views
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PopAsync();
-        }
+            //string regexpass = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$";
+            //if (Regex.IsMatch(tbPassw.Text, regexpass)&& Regex.IsMatch(tbRepPassw.Text, regexpass)&&tbPassw.Text==tbRepPassw.Text)
+            //{
 
-        private void tbPassw_TextChanged(object sender, TextChangedEventArgs e)
+            //    await DisplayAlert("Done", "Registration is completed!", "Ok");
+            //    await Navigation.PopAsync();
+            //}
+
+            if (tbPassw.Text == tbRepPassw.Text)
+            {
+
+                await DisplayAlert("Done", "Registration is completed!", "Ok");
+                await Navigation.PopAsync();
+            }
+        }
+        public bool checkLoginCoincidence(string _login)
         {
 
-        }
-
-        private void tbRepPassw_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            bool result = false;
+            return result;
         }
     }
 }

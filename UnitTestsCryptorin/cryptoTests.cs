@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Cryptorin.Data;
+using Cryptorin.Views;
+using Cryptorin.Common;
 
 namespace UnitTestsCryptorin
 {
     [TestClass]
-    public class UnitTest1
+    public class cryptoTests
     {
         [TestMethod]
         public void TestAESmethod()
@@ -30,6 +32,21 @@ namespace UnitTestsCryptorin
             string decrypt = rsa.Decrypt(crypt);
             bool result = false;
             if (decrypt.Contains("hello"))
+            {
+                result = true;
+            }
+            Assert.AreEqual(true, result);
+        }
+
+
+        [TestMethod]
+        public void TestSHA256()
+        {
+            classSHA256 rsa = new classSHA256();
+            string assert = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824";
+            string hash = rsa.ComputeSha256Hash("hello");
+            bool result = false;
+            if (hash.Contains(assert))
             {
                 result = true;
             }
