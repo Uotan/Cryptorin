@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -43,11 +44,22 @@ namespace Cryptorin
 
         }
 
-        private void mnItmQuit_Clicked(object sender, EventArgs e)
+        private async void mnItmQuit_Clicked(object sender, EventArgs e)
         {
+            bool answer = await DisplayAlert("Are you sure?", "This will destroy all data locally and in the database!", "Yes", "No");
+            if (answer)
+            {
+                //delete all data methods
+                App.Current.MainPage = new NavigationPage(new ViewAuth());
+            }
             
-            App.Current.MainPage = new NavigationPage(new ViewAuth());
             
+        }
+
+        private async void mnItmSource_Clicked(object sender, EventArgs e)
+        {
+            Uri uri = new Uri("https://github.com/Uotan/Cryptorin");
+            await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }
     }
 }

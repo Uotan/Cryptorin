@@ -20,25 +20,9 @@ namespace Cryptorin.Common
 
 
 
-            var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
-            myPhoto.Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+            //var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
+            //myPhoto.Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
             
-            //startsht();
-
-
-        }
-
-        void startsht()
-        {
-            PrintAsync();
-        }
-
-        async Task PrintAsync()
-        {
-            await Task.Run(() => {
-                var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
-                myPhoto.Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-            });
         }
     }
 }

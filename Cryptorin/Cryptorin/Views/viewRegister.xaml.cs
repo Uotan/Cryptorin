@@ -4,16 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using Cryptorin.Data;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
+using System.IO;
 
 namespace Cryptorin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewRegister : ContentPage
     {
+        string base64ImageRepresentation = null;
         FileResult file;
         public ViewRegister()
         {
@@ -40,26 +43,52 @@ namespace Cryptorin.Views
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
+            if (file!=null)
+            {
+                byte[] imageArray = File.ReadAllBytes(file.FullPath);
+                base64ImageRepresentation = Convert.ToBase64String(imageArray);
+            }
+
             //string regexpass = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$";
             //if (Regex.IsMatch(tbPassw.Text, regexpass)&& Regex.IsMatch(tbRepPassw.Text, regexpass)&&tbPassw.Text==tbRepPassw.Text)
             //{
-
             //    await DisplayAlert("Done", "Registration is completed!", "Ok");
             //    await Navigation.PopAsync();
             //}
 
-            if (tbPassw.Text == tbRepPassw.Text)
+            try
             {
+                if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="")
+                {
+                    classSignature signInstance = new classSignature();
+                    if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
+                    {
+                        classSHA256 classSHA256instance = new classSHA256();
+                        string hashPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
+                        string result = signInstance.SignUp(tbPublicName.Text, tbLogin.Text, hashPassword, base64ImageRepresentation);
+                        if (result == "created")
+                        {
+                            await DisplayAlert("Done", "Registration is completed!", "Ok");
+                            await Navigation.PopAsync();
+                        }
+                        else
+                        {
+                            await DisplayAlert("Error", "error(((", "Ok");
+                        }
+                        
+                    }
+                    else
+                    {
+                        await DisplayAlert("Error", "This login already exists", "Ok");
+                    }
 
-                await DisplayAlert("Done", "Registration is completed!", "Ok");
-                await Navigation.PopAsync();
+                }
             }
-        }
-        public bool checkLoginCoincidence(string _login)
-        {
-
-            bool result = false;
-            return result;
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error",ex.Message,"Ok");
+            }
+            
         }
     }
 }
