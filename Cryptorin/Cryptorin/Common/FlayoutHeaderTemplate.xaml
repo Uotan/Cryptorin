@@ -5,9 +5,9 @@
       BackgroundColor="{DynamicResource colorMainAccent}">
     
     
-    <StackLayout Padding="20" Margin="0,0,0,80" BackgroundColor="Transparent" Orientation="Vertical">
+    <StackLayout Padding="20" Margin="0,0,0,60" BackgroundColor="Transparent" Orientation="Vertical">
 
-        <Frame Padding="0"
+        <Frame x:Name="frameTamplate" Padding="0"
                    HeightRequest="150"
                    WidthRequest="150"
                    HorizontalOptions="Center"
@@ -18,6 +18,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"></Image>
         </Frame>
-        <Label Margin="20" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
+        <Label HorizontalOptions="Center" Text="#4230" FontSize="Small"></Label>
+        <Label Margin="10" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
     </StackLayout>
 </Grid>

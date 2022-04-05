@@ -41,5 +41,19 @@ namespace Cryptorin.Data
             db.DeleteAllAsync<User>();
         }
 
+        public void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _hexColor, int _keyNumber, string _image)
+        {
+            MyData myData = new MyData();
+            myData.id = _id;
+            myData.public_name = _publicName;
+            myData.aes_key = _aesKey;
+            myData.private_key = _privateKey;
+            myData.login = _login;
+            myData.password = _password;
+            myData.hex_color = _hexColor;
+            myData.key_number = _keyNumber;
+            myData.image = _image;
+            SaveMyDataAsync(myData);
+        }
     }
 }

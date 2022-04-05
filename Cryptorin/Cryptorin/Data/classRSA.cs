@@ -34,6 +34,13 @@ namespace Cryptorin.Data
             _publickey = csp.ExportParameters(false);
         }
 
+        public void RSAinputKeys()
+        {
+            _privatekey = csp.ExportParameters(true);
+            _publickey = csp.ExportParameters(false);
+        }
+
+
         public void SetKeySize()
         {
             csp.KeySize = 2048;

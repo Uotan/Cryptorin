@@ -98,5 +98,28 @@ namespace Cryptorin.Data
             }
             
         }
+
+
+
+        public string SignInUpdateKeys(string _login, string _pass,string _publicKey)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("login", _login);
+            param.Add("password", _pass);
+            param.Add("publicKey", _publicKey);
+            try
+            {
+                var response = client.UploadValues("https://cryptorin.ru/API/newRSAkey.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                result = result.Trim();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
     }
 }

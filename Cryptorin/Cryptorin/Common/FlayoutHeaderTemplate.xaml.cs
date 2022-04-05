@@ -22,6 +22,7 @@ namespace Cryptorin.Common
 
             //var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
             //myPhoto.Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+            //frameTamplate.BackgroundColor = Color.FromHex();
             
         }
     }

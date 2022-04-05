@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using Cryptorin.Data;
 using Cryptorin.Classes;
+using PasswordGenerator;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -31,19 +32,8 @@ namespace Cryptorin.Views
             publicUserData fetchedData = classSign.SignIn(tbLogin.Text,SHA.ComputeSha256Hash(tbPassword.Text));
             if (fetchedData!=null)
             {
-                MyData myData = new MyData();
-                myData.id = 1;
-                myData.public_name = "qawe";
-                myData.aes_key = "ads";
-                myData.private_key = "awe";
-                myData.login = "awe";
-                myData.password = "awe";
-                myData.hex_color = "awe";
-                myData.key_number = 1;
-                myData.image = "sdafs";
-
-                App.myDB.SaveMyDataAsync(myData);
                 await DisplayAlert("Yeaaah!","","ok");
+                WriteLocalData(fetchedData,tbLogin.Text,tbPassword.Text);
                 App.Current.MainPage = new AppShell();
             }
             else
@@ -56,5 +46,20 @@ namespace Cryptorin.Views
         {
             await Navigation.PushAsync(new ViewRegister());
         }
+
+        void WriteLocalData(publicUserData _fetcheData, string _login,string _password)
+        {
+            App.myDB.DeleteAllData();
+            var pwd = new Password().IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
+            string AESkey = pwd.Next();
+            classRSA rsa = new classRSA();
+            string publicKey = rsa.GetPublicKey();
+            string privateKey = rsa.GetPrivateKey();
+            
+            //not works;
+            //string newPassword = Membership.GeneratePassword(15, 0);
+            App.myDB.WriteMyData(_fetcheData.id,_fetcheData.public_name,AESkey,);
+        }
+        
     }
 }
