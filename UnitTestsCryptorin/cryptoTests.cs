@@ -52,5 +52,6 @@ namespace UnitTestsCryptorin
             }
             Assert.AreEqual(true, result);
         }
+
     }
 }

@@ -50,15 +50,19 @@ namespace Cryptorin.Views
         void WriteLocalData(publicUserData _fetcheData, string _login,string _password)
         {
             App.myDB.DeleteAllData();
-            var pwd = new Password().IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
+            var pwd = new Password(16).IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
             string AESkey = pwd.Next();
+
+
             classRSA rsa = new classRSA();
-            string publicKey = rsa.GetPublicKey();
-            string privateKey = rsa.GetPrivateKey();
+            string publicKey = Convert.ToBase64String(rsa.publicKeyBytes);
+            string privateKey = Convert.ToBase64String(rsa.privateKeyBytes);
+
+
+            var random = new Random();
+            var color = String.Format("#{0:X6}", random.Next(0x1000000));
             
-            //not works;
-            //string newPassword = Membership.GeneratePassword(15, 0);
-            App.myDB.WriteMyData(_fetcheData.id,_fetcheData.public_name,AESkey,);
+            App.myDB.WriteMyData(_fetcheData.id,_fetcheData.public_name,AESkey, privateKey,tbLogin.Text,tbPassword.Text);
         }
         
     }

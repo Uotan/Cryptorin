@@ -10,8 +10,8 @@ namespace Cryptorin.Data
 {
     public class classRSA
     {
-        byte[] publicKeyBytes;
-        byte[] privateKeyBytes;
+        public byte[] publicKeyBytes;
+        public byte[] privateKeyBytes;
 
 
         RSACryptoServiceProvider cspNew;
@@ -33,13 +33,6 @@ namespace Cryptorin.Data
             _privatekey = csp.ExportParameters(true);
             _publickey = csp.ExportParameters(false);
         }
-
-        public void RSAinputKeys()
-        {
-            _privatekey = csp.ExportParameters(true);
-            _publickey = csp.ExportParameters(false);
-        }
-
 
         public void SetKeySize()
         {
@@ -65,20 +58,22 @@ namespace Cryptorin.Data
             return key;
         }
 
-        public string Encrypt(string plainText)
+        public string Encrypt(string plainText, byte[] _publickeyBytes)
         {
-            cspNew = new RSACryptoServiceProvider();
-            cspNew.ImportParameters(_publickey);
+            RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
+            cspNew.FromXmlString(Encoding.UTF8.GetString(_publickeyBytes));
+
             var data = Encoding.Unicode.GetBytes(plainText);
-            var cypher = csp.Encrypt(data, false);
+            var cypher = cspNew.Encrypt(data, false);
             return Convert.ToBase64String(cypher);
         }
 
-        public string Decrypt(string cypherText)
+        public string Decrypt(string cypherText, byte[] _privatekeyBytes)
         {
+            RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
+            cspNew.FromXmlString(Encoding.UTF8.GetString(_privatekeyBytes));
             var dataBytes = Convert.FromBase64String(cypherText);
-            cspNew.ImportParameters(_privatekey);
-            var plainText = csp.Decrypt(dataBytes, false);
+            var plainText = cspNew.Decrypt(dataBytes, false);
             return Encoding.Unicode.GetString(plainText);
         }
 
