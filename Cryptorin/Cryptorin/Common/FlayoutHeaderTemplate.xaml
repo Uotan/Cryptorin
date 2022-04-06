@@ -12,13 +12,13 @@
                    WidthRequest="150"
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
-                   CornerRadius="100"
-                        BackgroundColor="Coral">
+                   CornerRadius="100">
             <Image x:Name="myPhoto" Aspect="Fill"
                        HorizontalOptions="Center"
+                   BackgroundColor="#6b6a68"
                        VerticalOptions="Center"></Image>
         </Frame>
-        <Label HorizontalOptions="Center" Text="#4230" FontSize="Small"></Label>
-        <Label Margin="10" HorizontalOptions="Center" FontSize="Medium">UserTest</Label>
+        <Label x:Name="lblId" HorizontalOptions="Center" Text="#0000" FontSize="Small"></Label>
+        <Label x:Name="lblPublicName" Margin="10" HorizontalOptions="Center" FontSize="Medium">???</Label>
     </StackLayout>
 </Grid>

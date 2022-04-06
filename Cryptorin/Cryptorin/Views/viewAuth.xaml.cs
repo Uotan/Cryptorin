@@ -32,7 +32,6 @@ namespace Cryptorin.Views
             publicUserData fetchedData = classSign.SignIn(tbLogin.Text,SHA.ComputeSha256Hash(tbPassword.Text));
             if (fetchedData!=null)
             {
-                await DisplayAlert("Yeaaah!","","ok");
                 WriteLocalData(fetchedData,tbLogin.Text,tbPassword.Text);
                 App.Current.MainPage = new AppShell();
             }
@@ -62,10 +61,14 @@ namespace Cryptorin.Views
             string privateKey = rsa.GetPrivateBase64();
 
             //just create hex color just for fun
-            var random = new Random();
-            var color = String.Format("#{0:X6}", random.Next(0x1000000));
+            //var random = new Random();
+            //var color = String.Format("#{0:X6}", random.Next(0x1000000));
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password,color,1,_fetcheData.image_path);
+            //fetch the current key number in the database
+            classSignature signInstance = new classSignature();
+            string numberResult = signInstance.SignInUpdateKeys(_login, _password, publicKey);
+
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password, numberResult);
         }
         
     }

@@ -47,8 +47,10 @@ namespace UnitTestsCryptorin
             string _puplicBase = rsa.GetPubliceBase64();
             classSignature signature = new classSignature();
             string result = signature.SignInUpdateKeys("first", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
-            result = result.Trim();
-            Assert.AreEqual("ok", result);
+            //int count = Convert.ToInt32(result);
+            Console.WriteLine(result);
+
+            Assert.AreEqual("26", result);
         }
     }
 }

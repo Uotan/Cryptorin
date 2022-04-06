@@ -8,6 +8,5 @@ namespace Cryptorin.Classes
     {
         public int id;
         public string public_name;
-        public string image_path;
     }
 }

@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using SQLite;
 using Cryptorin.Classes.SQLiteClasses;
+using Cryptorin.Classes;
+
 
 namespace Cryptorin.Data
 {
@@ -19,9 +21,9 @@ namespace Cryptorin.Data
             
         }
 
-        public  void SaveMyDataAsync(MyData data)
+        public async Task SaveMyDataAsync(MyData data)
         {
-            db.InsertAsync(data);
+            await db.InsertAsync(data);
    
         }
 
@@ -36,12 +38,12 @@ namespace Cryptorin.Data
 
         public void DeleteAllData()
         {
-            db.DeleteAllAsync<MyData>();
-            db.DeleteAllAsync<Message>();
-            db.DeleteAllAsync<User>();
+            db.DeleteAllAsync<MyData>().Wait();
+            db.DeleteAllAsync<Message>().Wait();
+            db.DeleteAllAsync<User>().Wait();
         }
 
-        public void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _hexColor, int _keyNumber, string _image)
+        public async void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _keyNumber)
         {
             MyData myData = new MyData();
             myData.id = _id;
@@ -50,10 +52,19 @@ namespace Cryptorin.Data
             myData.private_key = _privateKey;
             myData.login = _login;
             myData.password = _password;
-            myData.hex_color = _hexColor;
             myData.key_number = _keyNumber;
-            myData.image = _image;
-            SaveMyDataAsync(myData);
+            //myData.image = _image;
+            await SaveMyDataAsync(myData);
+            //staticUserData.myData = await ReadMyData();
         }
+
+
+        public Task<MyData> ReadMyData()
+        {
+            return db.Table<MyData>().FirstAsync();
+        }
+
+
+
     }
 }
