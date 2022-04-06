@@ -15,12 +15,9 @@ namespace UnitTestsCryptorin
             classAES aes = new classAES("4elpsGky8'}|;I[*11111111");
             string crypt = aes.Encrypt("hello");
             string decrypt = aes.Decrypt(crypt);
-            bool result = false;
-            if (decrypt.Contains("hello"))
-            {
-                result = true;
-            }
-            Assert.AreEqual(true, result);
+            decrypt = decrypt.Trim();
+            Console.WriteLine(decrypt);
+            Assert.AreEqual("hello", decrypt);
         }
 
 
@@ -28,14 +25,13 @@ namespace UnitTestsCryptorin
         public void TestRSAmethod()
         {
             classRSA rsa = new classRSA();
-            string crypt = rsa.Encrypt("hello");
-            string decrypt = rsa.Decrypt(crypt);
-            bool result = false;
-            if (decrypt.Contains("hello"))
-            {
-                result = true;
-            }
-            Assert.AreEqual(true, result);
+            string _privateBase = rsa.GetPrivateBase64();
+            string _puplicBase = rsa.GetPubliceBase64();
+            string crypt = rsa.Encrypt("hello",_puplicBase);
+            string decrypt = rsa.Decrypt(crypt,_privateBase);
+            decrypt = decrypt.Trim();
+            Console.WriteLine(decrypt);
+            Assert.AreEqual("hello", decrypt);
         }
 
 
@@ -45,12 +41,7 @@ namespace UnitTestsCryptorin
             classSHA256 rsa = new classSHA256();
             string assert = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824";
             string hash = rsa.ComputeSha256Hash("hello");
-            bool result = false;
-            if (hash.Contains(assert))
-            {
-                result = true;
-            }
-            Assert.AreEqual(true, result);
+            Assert.AreEqual(assert, hash);
         }
 
     }

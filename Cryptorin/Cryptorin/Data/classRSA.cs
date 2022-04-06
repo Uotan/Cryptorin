@@ -10,14 +10,11 @@ namespace Cryptorin.Data
 {
     public class classRSA
     {
-        public byte[] publicKeyBytes;
-        public byte[] privateKeyBytes;
-
-
-        RSACryptoServiceProvider cspNew;
+        byte[] publicKeyBytes;
+        byte[] privateKeyBytes;
         RSACryptoServiceProvider csp;
-        RSAParameters _privatekey;
-        RSAParameters _publickey;
+        RSAParameters _privatekeyParametrs;
+        RSAParameters _publickeyParametrs;
 
         public classRSA()
         {
@@ -27,51 +24,69 @@ namespace Cryptorin.Data
             privateKeyBytes = GetPrivateKey();
         }
 
-        public void RSAexportKeys()
+        void RSAexportKeys()
         {
             SetKeySize();
-            _privatekey = csp.ExportParameters(true);
-            _publickey = csp.ExportParameters(false);
+            _privatekeyParametrs = csp.ExportParameters(true);
+            _publickeyParametrs = csp.ExportParameters(false);
         }
 
-        public void SetKeySize()
+        void SetKeySize()
         {
             csp.KeySize = 2048;
         }
 
-        public byte[] GetPublicKey()
+        byte[] GetPublicKey()
         {
             var sw = new StringWriter();
             XmlSerializer xs = new XmlSerializer(typeof(RSAParameters));
-            xs.Serialize(sw, _publickey);
+            xs.Serialize(sw, _publickeyParametrs);
             byte[] key = Encoding.ASCII.GetBytes(sw.ToString());
             return key;
 
         }
 
-        public byte[] GetPrivateKey()
+        byte[] GetPrivateKey()
         {
             var sw = new StringWriter();
             XmlSerializer xs = new XmlSerializer(typeof(RSAParameters));
-            xs.Serialize(sw, _privatekey);
+            xs.Serialize(sw, _privatekeyParametrs);
             byte[] key = Encoding.ASCII.GetBytes(sw.ToString());
             return key;
         }
 
-        public string Encrypt(string plainText, byte[] _publickeyBytes)
+
+
+        public string GetPubliceBase64()
         {
+            string key = Convert.ToBase64String(publicKeyBytes);
+            return key;
+        }
+
+        public string GetPrivateBase64()
+        {
+            string key = Convert.ToBase64String(privateKeyBytes);
+            return key;
+        }
+
+
+
+        public string Encrypt(string plainText, string _publickeyBase64)
+        {
+            byte[] base64EncodedBytes = Convert.FromBase64String(_publickeyBase64);
             RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
-            cspNew.FromXmlString(Encoding.UTF8.GetString(_publickeyBytes));
+            cspNew.FromXmlString(Encoding.UTF8.GetString(base64EncodedBytes));
 
             var data = Encoding.Unicode.GetBytes(plainText);
             var cypher = cspNew.Encrypt(data, false);
             return Convert.ToBase64String(cypher);
         }
 
-        public string Decrypt(string cypherText, byte[] _privatekeyBytes)
+        public string Decrypt(string cypherText, string _privatekeyBase64)
         {
+            byte[] base64EncodedBytes = Convert.FromBase64String(_privatekeyBase64);
             RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
-            cspNew.FromXmlString(Encoding.UTF8.GetString(_privatekeyBytes));
+            cspNew.FromXmlString(Encoding.UTF8.GetString(base64EncodedBytes));
             var dataBytes = Convert.FromBase64String(cypherText);
             var plainText = cspNew.Decrypt(dataBytes, false);
             return Encoding.Unicode.GetString(plainText);

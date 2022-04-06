@@ -49,20 +49,23 @@ namespace Cryptorin.Views
 
         void WriteLocalData(publicUserData _fetcheData, string _login,string _password)
         {
+            //Delete all local data
             App.myDB.DeleteAllData();
+
+            //generate hard password to AES encryption
             var pwd = new Password(16).IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
             string AESkey = pwd.Next();
 
-
+            //Generate and fetch RSA keys
             classRSA rsa = new classRSA();
-            string publicKey = Convert.ToBase64String(rsa.publicKeyBytes);
-            string privateKey = Convert.ToBase64String(rsa.privateKeyBytes);
+            string publicKey = rsa.GetPubliceBase64();
+            string privateKey = rsa.GetPrivateBase64();
 
-
+            //just create hex color just for fun
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
-            
-            App.myDB.WriteMyData(_fetcheData.id,_fetcheData.public_name,AESkey, privateKey,tbLogin.Text,tbPassword.Text);
+
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password,color,1,_fetcheData.image_path);
         }
         
     }

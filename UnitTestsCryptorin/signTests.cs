@@ -37,5 +37,18 @@ namespace UnitTestsCryptorin
             Console.WriteLine(result.public_name);
             Assert.AreEqual(1, result.id);
         }
+
+
+
+        [TestMethod]
+        public void TestUpdateKey()
+        {
+            classRSA rsa = new classRSA();
+            string _puplicBase = rsa.GetPubliceBase64();
+            classSignature signature = new classSignature();
+            string result = signature.SignInUpdateKeys("first", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
+            result = result.Trim();
+            Assert.AreEqual("ok", result);
+        }
     }
 }
