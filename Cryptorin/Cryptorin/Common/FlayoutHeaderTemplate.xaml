@@ -15,7 +15,7 @@
                    CornerRadius="100">
             <Image x:Name="myPhoto" Aspect="Fill"
                        HorizontalOptions="Center"
-                   BackgroundColor="#6b6a68"
+                   BackgroundColor="#3C3C3C"
                        VerticalOptions="Center"></Image>
         </Frame>
         <Label x:Name="lblId" HorizontalOptions="Center" Text="#0000" FontSize="Small"></Label>

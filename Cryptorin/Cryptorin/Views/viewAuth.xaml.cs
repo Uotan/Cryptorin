@@ -61,18 +61,14 @@ namespace Cryptorin.Views
             string publicKey = rsa.GetPublicBase64();
             string privateKey = rsa.GetPrivateBase64();
 
-            Debug.WriteLine(publicKey);
-
-            //just create hex color just for fun
-            //var random = new Random();
-            //var color = String.Format("#{0:X6}", random.Next(0x1000000));
-
             //fetch the current key number in the database
             classSignature signInstance = new classSignature();
 
             string numberResult = signInstance.SignInUpdateKeys(_login, _password, publicKey);
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password, numberResult);
+            string imageBase64 = signInstance.GetImage(_fetcheData.id);
+
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password, numberResult,imageBase64);
         }
         
     }

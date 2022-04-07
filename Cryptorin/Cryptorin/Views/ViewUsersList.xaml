@@ -6,7 +6,31 @@
              Title="Messenger">
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
         <StackLayout>
-            <Label Text="Welcome to User List"></Label>
+            <CollectionView x:Name="userCollection"
+                    SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical">
+                            <Frame x:Name="frameTamplate" Padding="0"
+                                HeightRequest="50"
+                                WidthRequest="50"
+                                HorizontalOptions="Center"
+                                IsClippedToBounds="True"
+                                CornerRadius="100">
+                                <Image x:Name="userPhoto" Aspect="Fill"
+                                HorizontalOptions="Center"
+                                BackgroundColor="{Binding hex_color}"
+                                VerticalOptions="Center"></Image>
+                            </Frame>
+                            <Label Text="{Binding public_name}" FontSize="Default" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
         </StackLayout>
         <Button x:Name="AddItemButton" Text="+"
                 IsVisible="True"

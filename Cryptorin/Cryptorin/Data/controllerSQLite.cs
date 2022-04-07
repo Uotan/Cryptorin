@@ -43,7 +43,7 @@ namespace Cryptorin.Data
             db.DeleteAllAsync<User>().Wait();
         }
 
-        public async void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _keyNumber)
+        public async void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _keyNumber,string _image)
         {
             MyData myData = new MyData();
             myData.id = _id;
@@ -53,9 +53,36 @@ namespace Cryptorin.Data
             myData.login = _login;
             myData.password = _password;
             myData.key_number = _keyNumber;
-            //myData.image = _image;
+            myData.image = _image;
             await SaveMyDataAsync(myData);
-            //staticUserData.myData = await ReadMyData();
+        }
+
+        public async Task SaveUserDataAsync(User newUserData)
+        {
+            await db.InsertAsync(newUserData);
+
+        }
+
+
+        public async void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor)
+        {
+            User newUserData = new User();
+            newUserData.id = _id;
+            newUserData.public_name = _publicName;
+            newUserData.public_key = _publicKey;
+            newUserData.key_number = _keyNumber;
+            newUserData.image = _image;
+            newUserData.hex_color = _hexColor;
+            await SaveUserDataAsync(newUserData);
+        }
+
+
+        public async Task<List<User>> getUserList(int _id)
+        {
+            var queryString = db.Table<User>().Where(s => s.id==_id);
+            var result = await queryString.ToListAsync();
+            return result;
+
         }
 
 
