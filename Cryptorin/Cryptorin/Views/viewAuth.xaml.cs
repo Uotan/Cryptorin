@@ -11,6 +11,7 @@ using PasswordGenerator;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Classes.SQLiteClasses;
+using System.Diagnostics;
 
 namespace Cryptorin.Views
 {
@@ -28,11 +29,11 @@ namespace Cryptorin.Views
         {
             classSignature classSign = new classSignature();
             classSHA256 SHA = new classSHA256();
-
-            publicUserData fetchedData = classSign.SignIn(tbLogin.Text,SHA.ComputeSha256Hash(tbPassword.Text));
+            string Hash = SHA.ComputeSha256Hash(tbPassword.Text);
+            publicUserData fetchedData = classSign.SignIn(tbLogin.Text, Hash);
             if (fetchedData!=null)
             {
-                WriteLocalData(fetchedData,tbLogin.Text,tbPassword.Text);
+                WriteLocalData(fetchedData,tbLogin.Text, Hash);
                 App.Current.MainPage = new AppShell();
             }
             else
@@ -57,8 +58,10 @@ namespace Cryptorin.Views
 
             //Generate and fetch RSA keys
             classRSA rsa = new classRSA();
-            string publicKey = rsa.GetPubliceBase64();
+            string publicKey = rsa.GetPublicBase64();
             string privateKey = rsa.GetPrivateBase64();
+
+            Debug.WriteLine(publicKey);
 
             //just create hex color just for fun
             //var random = new Random();
@@ -66,6 +69,7 @@ namespace Cryptorin.Views
 
             //fetch the current key number in the database
             classSignature signInstance = new classSignature();
+
             string numberResult = signInstance.SignInUpdateKeys(_login, _password, publicKey);
 
             App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password, numberResult);

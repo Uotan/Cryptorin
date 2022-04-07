@@ -57,7 +57,7 @@ namespace Cryptorin.Data
 
 
 
-        public string GetPubliceBase64()
+        public string GetPublicBase64()
         {
             string key = Convert.ToBase64String(publicKeyBytes);
             return key;

@@ -44,13 +44,12 @@ namespace UnitTestsCryptorin
         public void TestUpdateKey()
         {
             classRSA rsa = new classRSA();
-            string _puplicBase = rsa.GetPubliceBase64();
+            string _puplicBase = rsa.GetPublicBase64();
             classSignature signature = new classSignature();
-            string result = signature.SignInUpdateKeys("first", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
-            //int count = Convert.ToInt32(result);
+            string result = signature.SignInUpdateKeys("qqq", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
             Console.WriteLine(result);
 
-            Assert.AreEqual("26", result);
+            Assert.AreEqual("28", result);
         }
     }
 }

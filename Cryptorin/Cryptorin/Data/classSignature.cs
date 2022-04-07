@@ -152,5 +152,26 @@ namespace Cryptorin.Data
             }
 
         }
+
+
+
+        public fetchedUser fetchUserData(int _id)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("id", _id.ToString());
+            try
+            {
+                var response = client.UploadValues("https://cryptorin.ru/API/findUser.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
+                return userData;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
     }
 }

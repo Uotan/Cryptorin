@@ -26,7 +26,7 @@ namespace UnitTestsCryptorin
         {
             classRSA rsa = new classRSA();
             string _privateBase = rsa.GetPrivateBase64();
-            string _puplicBase = rsa.GetPubliceBase64();
+            string _puplicBase = rsa.GetPublicBase64();
             string crypt = rsa.Encrypt("hello",_puplicBase);
             string decrypt = rsa.Decrypt(crypt,_privateBase);
             decrypt = decrypt.Trim();

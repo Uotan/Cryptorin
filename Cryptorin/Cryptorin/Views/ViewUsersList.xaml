@@ -12,7 +12,8 @@
                 IsVisible="True"
                 AbsoluteLayout.LayoutFlags="PositionProportional"
                 AbsoluteLayout.LayoutBounds="1, 1, AutoSize, AutoSize"
-                Style="{StaticResource FABPrimary}"/>
+                Style="{StaticResource FABPrimary}"
+                Clicked="AddItemButton_Clicked"/>
     </AbsoluteLayout>
     
 </ContentPage>
