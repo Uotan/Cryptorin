@@ -18,23 +18,17 @@ namespace Cryptorin.Data
             db.CreateTableAsync<MyData>().Wait();
             db.CreateTableAsync<User>().Wait();
             db.CreateTableAsync<Message>().Wait();
-            
         }
-
-        public async Task SaveMyDataAsync(MyData data)
-        {
-            await db.InsertAsync(data);
-   
-        }
-
 
         public Task<MyData> GetMyData()
         {
             return db.Table<MyData>().FirstAsync();
-
         }
 
-
+        public Task<MyData> ReadMyData()
+        {
+            return db.Table<MyData>().FirstAsync();
+        }
 
         public void DeleteAllData()
         {
@@ -43,12 +37,12 @@ namespace Cryptorin.Data
             db.DeleteAllAsync<User>().Wait();
         }
 
-        public async void WriteMyData(int _id,string _publicName,string _aesKey,string _privateKey,string _login, string _password, string _keyNumber,string _image)
+
+        public async void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
         {
             MyData myData = new MyData();
             myData.id = _id;
             myData.public_name = _publicName;
-            myData.aes_key = _aesKey;
             myData.private_key = _privateKey;
             myData.login = _login;
             myData.password = _password;
@@ -56,12 +50,13 @@ namespace Cryptorin.Data
             myData.image = _image;
             await SaveMyDataAsync(myData);
         }
-
-        public async Task SaveUserDataAsync(User newUserData)
+        public async Task SaveMyDataAsync(MyData data)
         {
-            await db.InsertAsync(newUserData);
+            await db.InsertAsync(data);
 
         }
+
+
 
 
         public async void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor)
@@ -75,21 +70,29 @@ namespace Cryptorin.Data
             newUserData.hex_color = _hexColor;
             await SaveUserDataAsync(newUserData);
         }
-
-
-        public async Task<List<User>> getUserList(int _id)
+        public async Task SaveUserDataAsync(User newUserData)
         {
-            var queryString = db.Table<User>().Where(s => s.id==_id);
-            var result = await queryString.ToListAsync();
-            return result;
+            await db.InsertAsync(newUserData);
 
         }
 
 
-        public Task<MyData> ReadMyData()
+        public async Task<User> getUser(int _id)
         {
-            return db.Table<MyData>().FirstAsync();
+            User user = await db.Table<User>().Where(x => x.id == _id).FirstOrDefaultAsync();
+            //qwe = Convert.ToInt32(qwe);
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
         }
+
+
+        
 
 
 

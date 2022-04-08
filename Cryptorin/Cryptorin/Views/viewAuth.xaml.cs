@@ -53,8 +53,8 @@ namespace Cryptorin.Views
             App.myDB.DeleteAllData();
 
             //generate hard password to AES encryption
-            var pwd = new Password(16).IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
-            string AESkey = pwd.Next();
+            //var pwd = new Password(16).IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
+            //string AESkey = pwd.Next();
 
             //Generate and fetch RSA keys
             classRSA rsa = new classRSA();
@@ -68,8 +68,13 @@ namespace Cryptorin.Views
 
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, AESkey, privateKey, _login, _password, numberResult,imageBase64);
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, privateKey, _login, _password, numberResult,imageBase64);
         }
-        
+
+        private void tbLogin_Completed(object sender, EventArgs e)
+        {
+            var _passentry = tbPassword;
+            _passentry?.Focus();
+        }
     }
 }

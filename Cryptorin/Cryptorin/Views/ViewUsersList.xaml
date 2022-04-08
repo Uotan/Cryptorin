@@ -6,7 +6,7 @@
              Title="Messenger">
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
         <StackLayout>
-            <CollectionView x:Name="userCollection"
+            <CollectionView x:Name="userCollector"
                     SelectionMode="None">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"></LinearItemsLayout>
