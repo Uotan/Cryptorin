@@ -4,22 +4,23 @@
              x:Class="Cryptorin.Views.ViewUsersList"
              Style="{StaticResource cntPageColor}"
              Title="Messenger">
-    <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-        <StackLayout Margin="10">
+    <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent">
+        <StackLayout Margin="10" BackgroundColor="Transparent">
             <CollectionView x:Name="userCollector"
                     SelectionMode="None">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" ></LinearItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" ></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Horizontal">
                             <Frame x:Name="frameTamplate" Padding="0" Margin="0,0,20,0"
-                                HeightRequest="50"
-                                WidthRequest="50"
+                                HeightRequest="40"
+                                WidthRequest="40"
                                 HorizontalOptions="Center"
                                 IsClippedToBounds="True"
-                                CornerRadius="100">
+                                CornerRadius="100"
+                                   BackgroundColor="{Binding hex_color}">
 
                                 <Image x:Name="userPhoto" Aspect="Fill"
                                 HorizontalOptions="Center"

@@ -23,7 +23,7 @@ namespace Cryptorin.Views
         {
             public int id { get; set; }
             public string public_name { get; set; }
-            public string hex_color { get; set; }
+            public Color hex_color { get; set; }
             public ImageSource image_source { get; set; }
 
         }
@@ -59,47 +59,29 @@ namespace Cryptorin.Views
                 }
                 else
                 {
-                    AddUser(fetchedUser);
+                    AddUser2DataBase(fetchedUser);
 
                     User user2 = App.myDB.GetUser(fetchedUser.id);
 
                     UserForList userTemplate = new UserForList();
                     userTemplate.id = user2.id;
                     userTemplate.public_name = user2.public_name;
-                    userTemplate.hex_color = "#"+user2.hex_color;
-
-                    byte[] byteArray = Convert.FromBase64String(user.image);
-                    Image image = new Image();
-                    ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                    userTemplate.image_source = image_Source;
-
-                    //try
-                    //{
-                    //    byte[] byteArray = Convert.FromBase64String(user.image);
-                    //    Image image = new Image();
-                    //    ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                    //    userTemplate.image_source = image_Source;
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    userTemplate.image_source = null;
-                    //}
-
-
-
-
+                    userTemplate.hex_color = Color.FromHex(user2.hex_color);
+                    userTemplate.image_source = null;
+                    try
+                    {
+                        if (user2.image != null || user2.image != "")
+                        {
+                            byte[] byteArray = Convert.FromBase64String(user2.image);
+                            ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                            userTemplate.image_source = image_Source;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
                     userList.Add(userTemplate);
-                    //userCollector.ItemsSource = userList;
-
-                    await DisplayAlert("qwe", user2.hex_color, "qwe");
-
-
-
-
-
-                    //userCollector.ItemsSource = userList;
                 }
-
             }
             catch (Exception ex)
             {
@@ -109,7 +91,7 @@ namespace Cryptorin.Views
         }
 
 
-        private void AddUser(fetchedUser _fetchedUser)
+        private void AddUser2DataBase(fetchedUser _fetchedUser)
         {
             classSignature classSignature = new classSignature();
             string baseImage = classSignature.GetImage(_fetchedUser.id);

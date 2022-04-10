@@ -12,10 +12,10 @@
                    WidthRequest="150"
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
-                   CornerRadius="100">
+                   CornerRadius="100"
+               BackgroundColor="#3C3C3C">
             <Image x:Name="myPhoto" Aspect="Fill"
                        HorizontalOptions="Center"
-                   BackgroundColor="#3C3C3C"
                        VerticalOptions="Center"></Image>
         </Frame>
         <Label x:Name="lblId" HorizontalOptions="Center" Text="#0000" FontSize="Small"></Label>

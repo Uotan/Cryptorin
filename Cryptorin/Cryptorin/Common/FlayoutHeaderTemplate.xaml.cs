@@ -23,7 +23,7 @@ namespace Cryptorin.Common
         public FlayoutHeaderTemplate()
         {
             InitializeComponent();
-            //Load();
+            Load();
         }
 
         async void Load()
@@ -34,7 +34,6 @@ namespace Cryptorin.Common
             try
             {
                 byte[] byteArray = Convert.FromBase64String(myData.image);
-                Image image = new Image();
                 Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
                 myPhoto.Source = Source;
             }
