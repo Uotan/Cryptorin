@@ -27,19 +27,25 @@ namespace Cryptorin.Views
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
+            btnSignIn.IsEnabled = false;
+            btnSignUp.IsEnabled = false;
             classSignature classSign = new classSignature();
             classSHA256 SHA = new classSHA256();
             string Hash = SHA.ComputeSha256Hash(tbPassword.Text);
             publicUserData fetchedData = classSign.SignIn(tbLogin.Text, Hash);
             if (fetchedData!=null)
             {
+                
                 WriteLocalData(fetchedData,tbLogin.Text, Hash);
                 App.Current.MainPage = new AppShell();
             }
             else
             {
+
                 await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
             }
+            btnSignIn.IsEnabled = true;
+            btnSignUp.IsEnabled = true;
         }
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)

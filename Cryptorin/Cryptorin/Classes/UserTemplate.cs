@@ -10,7 +10,7 @@ namespace Cryptorin.Classes
         public int id { get; set; }
         public string public_name { get; set; }
         public string hex_color { get; set; }
-        //public ImageSource image_source;
+        public ImageSource image_source { get; set; }
 
     }
 }

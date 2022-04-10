@@ -11,34 +11,35 @@ namespace Cryptorin.Data
 {
     public class controllerSQLite
     {
-        readonly SQLiteAsyncConnection db;
+        readonly SQLiteAsyncConnection dbAsync;
+        readonly SQLiteConnection db;
         public controllerSQLite(string connectionString)
         {
-            db = new SQLiteAsyncConnection(connectionString);
-            db.CreateTableAsync<MyData>().Wait();
-            db.CreateTableAsync<User>().Wait();
-            db.CreateTableAsync<Message>().Wait();
+            dbAsync = new SQLiteAsyncConnection(connectionString);
+            db = new SQLiteConnection(connectionString);
+            dbAsync.CreateTableAsync<MyData>().Wait();
+            dbAsync.CreateTableAsync<User>().Wait();
+            dbAsync.CreateTableAsync<Message>().Wait();
+        }
+        public Task<MyData> ReadMyDataAsync()
+        {
+            return dbAsync.Table<MyData>().FirstAsync();
         }
 
-        public Task<MyData> GetMyData()
+        public MyData ReadMyData()
         {
-            return db.Table<MyData>().FirstAsync();
-        }
-
-        public Task<MyData> ReadMyData()
-        {
-            return db.Table<MyData>().FirstAsync();
+            return db.Table<MyData>().First();
         }
 
         public void DeleteAllData()
         {
-            db.DeleteAllAsync<MyData>().Wait();
-            db.DeleteAllAsync<Message>().Wait();
-            db.DeleteAllAsync<User>().Wait();
+            db.DeleteAll<MyData>();
+            db.DeleteAll<Message>();
+            db.DeleteAll<User>();
         }
 
 
-        public async void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
+        public void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
         {
             MyData myData = new MyData();
             myData.id = _id;
@@ -48,18 +49,10 @@ namespace Cryptorin.Data
             myData.password = _password;
             myData.key_number = _keyNumber;
             myData.image = _image;
-            await SaveMyDataAsync(myData);
-        }
-        public async Task SaveMyDataAsync(MyData data)
-        {
-            await db.InsertAsync(data);
-
+            db.Insert(myData);
         }
 
-
-
-
-        public async void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor)
+        public void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor)
         {
             User newUserData = new User();
             newUserData.id = _id;
@@ -68,19 +61,13 @@ namespace Cryptorin.Data
             newUserData.key_number = _keyNumber;
             newUserData.image = _image;
             newUserData.hex_color = _hexColor;
-            await SaveUserDataAsync(newUserData);
-        }
-        public async Task SaveUserDataAsync(User newUserData)
-        {
-            await db.InsertAsync(newUserData);
-
+            db.Insert(newUserData);
         }
 
 
-        public async Task<User> getUser(int _id)
+        public User GetUser(int _id)
         {
-            User user = await db.Table<User>().Where(x => x.id == _id).FirstOrDefaultAsync();
-            //qwe = Convert.ToInt32(qwe);
+            User user = db.Table<User>().Where(x => x.id == _id).FirstOrDefault();
             if (user != null)
             {
                 return user;
@@ -90,11 +77,5 @@ namespace Cryptorin.Data
                 return null;
             }
         }
-
-
-        
-
-
-
     }
 }

@@ -5,25 +5,28 @@
              Style="{StaticResource cntPageColor}"
              Title="Messenger">
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-        <StackLayout>
+        <StackLayout Margin="10">
             <CollectionView x:Name="userCollector"
                     SelectionMode="None">
                 <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"></LinearItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" ></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Vertical">
-                            <Frame x:Name="frameTamplate" Padding="0"
+                        <StackLayout Orientation="Horizontal">
+                            <Frame x:Name="frameTamplate" Padding="0" Margin="0,0,20,0"
                                 HeightRequest="50"
                                 WidthRequest="50"
                                 HorizontalOptions="Center"
                                 IsClippedToBounds="True"
                                 CornerRadius="100">
+
                                 <Image x:Name="userPhoto" Aspect="Fill"
                                 HorizontalOptions="Center"
-                                BackgroundColor="{Binding hex_color}"
-                                VerticalOptions="Center"></Image>
+                                VerticalOptions="Center"
+                                       Source="{Binding image_source}">
+                                </Image>
+
                             </Frame>
                             <Label Text="{Binding public_name}" FontSize="Default" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
                         </StackLayout>
@@ -39,5 +42,5 @@
                 Style="{StaticResource FABPrimary}"
                 Clicked="AddItemButton_Clicked"/>
     </AbsoluteLayout>
-    
+
 </ContentPage>

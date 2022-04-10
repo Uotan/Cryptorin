@@ -23,13 +23,13 @@ namespace Cryptorin.Common
         public FlayoutHeaderTemplate()
         {
             InitializeComponent();
-            Load();
+            //Load();
         }
 
         async void Load()
         {
 
-            MyData myData = await App.myDB.ReadMyData();
+            MyData myData = await App.myDB.ReadMyDataAsync();
             //var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/" + myData.login + ".jpg");
             try
             {
@@ -40,6 +40,7 @@ namespace Cryptorin.Common
             }
             catch (Exception ex)
             {
+                
             }
             lblId.Text = "#" + myData.id.ToString();
             lblPublicName.Text = myData.public_name;

@@ -28,7 +28,7 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource colorMainAccent}"/>
         </Style>
 
-
+ 
         <Style TargetType="{x:Type Button}">
             <Setter Property="BackgroundColor" Value="{DynamicResource colorButtonBackground}"/>
             <Setter Property="FontFamily" Value="NotoSans"/>
