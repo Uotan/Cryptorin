@@ -9,6 +9,10 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource colorBackgroundMain}"></Setter>
         </Style>
 
+        <Style TargetType="{x:Type ContentPage}">
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorBackgroundMain}"></Setter>
+        </Style>
+
         <Style TargetType="{x:Type Entry}">
             <Setter Property="TextColor" Value="{DynamicResource colorEntryTextColor}"></Setter>
             <Setter Property="BackgroundColor" Value="{DynamicResource colorEntryBackground}" />
@@ -16,6 +20,14 @@
             <Setter Property="FontSize" Value="20" />
             <Setter Property="HorizontalTextAlignment" Value="Center"/>
             <Setter Property="HeightRequest" Value="60"/>
+            <Setter Property="FontFamily" Value="NotoSans"/>
+        </Style>
+
+        <Style TargetType="{x:Type Editor}">
+            <Setter Property="TextColor" Value="{DynamicResource colorEntryTextColor}"></Setter>
+            <Setter Property="BackgroundColor" Value="{DynamicResource colorEntryBackground}" />
+            <Setter Property="PlaceholderColor" Value="{DynamicResource colorEntryPlaceholder}" />
+            <Setter Property="FontSize" Value="18" />
             <Setter Property="FontFamily" Value="NotoSans"/>
         </Style>
 
@@ -48,7 +60,7 @@
             <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
             <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
             <Setter Property="Padding" Value="2"/>
-            <Setter Property="Margin" Value="0,0,25,25"/>
+            <Setter Property="Margin" Value="0,0,20,20"/>
             <!--<Setter Property="TextColor" Value="{DynamicResource colorLabel}"/>-->
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="FontSize" Value="32"/>

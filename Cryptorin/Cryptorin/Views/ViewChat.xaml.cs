@@ -18,8 +18,6 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
 
-            var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
-            this.testIcon.IconImageSource = ImageSource.FromStream(() => new MemoryStream(byteArray));
         }
     }
 }

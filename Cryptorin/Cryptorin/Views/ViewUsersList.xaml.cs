@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Cryptorin.Classes;
 using Cryptorin.Classes.SQLiteClasses;
 using Cryptorin.Data;
@@ -19,16 +20,7 @@ namespace Cryptorin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewUsersList : ContentPage
     {
-        public class UserForList
-        {
-            public int id { get; set; }
-            public string public_name { get; set; }
-            public Color hex_color { get; set; }
-            public ImageSource image_source { get; set; }
-
-        }
-
-        ObservableCollection<UserForList> userList = new ObservableCollection<UserForList>();
+        ObservableCollection<UserTemplate> userList = new ObservableCollection<UserTemplate>();
         public ViewUsersList()
         {
             InitializeComponent();
@@ -53,9 +45,9 @@ namespace Cryptorin.Views
                 {
                     throw new Exception("Are you trying to add yourself -_-");
                 }
-                else if (user !=  null)
+                else if (user != null)
                 {
-                    throw new Exception("Such a user already exists");
+                    throw new Exception("Such a user already exists\n\nThis is - "+ user.public_name);
                 }
                 else
                 {
@@ -63,7 +55,7 @@ namespace Cryptorin.Views
 
                     User user2 = App.myDB.GetUser(fetchedUser.id);
 
-                    UserForList userTemplate = new UserForList();
+                    UserTemplate userTemplate = new UserTemplate();
                     userTemplate.id = user2.id;
                     userTemplate.public_name = user2.public_name;
                     userTemplate.hex_color = Color.FromHex(user2.hex_color);
@@ -98,6 +90,29 @@ namespace Cryptorin.Views
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
             App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color);
+        }
+
+        private async void userCollector_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            var MyCollectionView = sender as CollectionView;
+            if (MyCollectionView.SelectedItem == null)
+                return;
+
+
+            UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
+            await DisplayAlert("ok", userItem.public_name, "ok");
+            await Shell.Current.GoToAsync(nameof(ViewChat));
+            ((CollectionView)sender).SelectedItem = null;
+
+
+            
+        }
+
+        private async void RefreshView_Refreshing(object sender, EventArgs e)
+        {
+            await Task.Delay(3000);
+            ((RefreshView)sender).IsRefreshing = false;
         }
     }
 }

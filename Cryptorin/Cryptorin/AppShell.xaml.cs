@@ -18,26 +18,16 @@ namespace Cryptorin
     public partial class AppShell : Shell
     {
 
-        //ImageSource imgSourcePhoto;
-        
         public AppShell()
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(ViewChat),typeof(ViewChat));
-
-            
-            //var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/filename.jpg");
-            //imgSourcePhoto = ImageSource.FromStream(() => new MemoryStream(byteArray));
-
-
-
 
             Device.StartTimer(new TimeSpan(0, 0, 5), () =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     //tampering check
-
                 });
                 return true;
             });
@@ -50,6 +40,7 @@ namespace Cryptorin
             if (answer)
             {
                 //delete all data methods
+                App.myDB.DeleteAllData();
                 App.Current.MainPage = new NavigationPage(new ViewAuth());
             }
             

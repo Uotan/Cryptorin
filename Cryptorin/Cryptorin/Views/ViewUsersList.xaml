@@ -2,40 +2,45 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.Views.ViewUsersList"
-             Style="{StaticResource cntPageColor}"
+             Style="{DynamicResource cntPageColor}"
              Title="Messenger">
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent">
-        <StackLayout Margin="10" BackgroundColor="Transparent">
-            <CollectionView x:Name="userCollector"
-                    SelectionMode="None">
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" ></LinearItemsLayout>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <StackLayout Orientation="Horizontal">
-                            <Frame x:Name="frameTamplate" Padding="0" Margin="0,0,20,0"
-                                HeightRequest="40"
-                                WidthRequest="40"
-                                HorizontalOptions="Center"
-                                IsClippedToBounds="True"
-                                CornerRadius="100"
-                                   BackgroundColor="{Binding hex_color}">
+        <RefreshView Refreshing="RefreshView_Refreshing">
+            <ScrollView>
+                <CollectionView Margin="10,10,0,0" x:Name="userCollector"
+                    SelectionMode="Single" SelectionChanged="userCollector_SelectionChanged">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" ></LinearItemsLayout>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal" Padding="0">
+                                <Frame x:Name="frameTamplate" Padding="0" Margin="0,0,20,0"
+                                        HeightRequest="50"
+                                        WidthRequest="50"
+                                        HorizontalOptions="Center"
+                                        IsClippedToBounds="True"
+                                        CornerRadius="100"
+                                        BackgroundColor="{Binding hex_color}">
 
-                                <Image x:Name="userPhoto" Aspect="Fill"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center"
-                                       Source="{Binding image_source}">
-                                </Image>
+                                    <Image x:Name="userPhoto" Aspect="Fill"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center"
+                                            Source="{Binding image_source}">
+                                    </Image>
 
-                            </Frame>
-                            <Label Text="{Binding public_name}" FontSize="Default" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
+                                </Frame>
+                                <Label Text="{Binding public_name}" FontSize="20" VerticalTextAlignment="Center" VerticalOptions="Center"></Label>
+                            </StackLayout>
 
-            </CollectionView>
-        </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </ScrollView>
+        </RefreshView>
+        
+
         <Button x:Name="AddItemButton" Text="+"
                 IsVisible="True"
                 AbsoluteLayout.LayoutFlags="PositionProportional"

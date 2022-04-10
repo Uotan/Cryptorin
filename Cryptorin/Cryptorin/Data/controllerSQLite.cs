@@ -77,5 +77,9 @@ namespace Cryptorin.Data
                 return null;
             }
         }
+        public void DeleteUser(int _id)
+        {
+            db.Table<User>().Delete(x => x.id == _id);
+        }
     }
 }

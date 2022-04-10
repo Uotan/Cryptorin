@@ -2,10 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.Views.ViesSettings"
-             Style="{StaticResource cntPageColor}">
+             Style="{DynamicResource cntPageColor}">
     <ContentPage.Content>
         <ScrollView HeightRequest="5000">
             <StackLayout>
+                <Label>Settings</Label>
             </StackLayout>
         </ScrollView>
         

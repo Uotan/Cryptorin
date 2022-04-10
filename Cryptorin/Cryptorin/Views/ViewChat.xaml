@@ -2,17 +2,37 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Cryptorin.Views.ViewChat"
-             Style="{StaticResource cntPageColor}">
+             Style="{DynamicResource cntPageColor}"
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutItemIsVisible="False"
+             Shell.FlyoutBehavior="Disabled">
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="testIcon" Text="icon" Order="Primary" Priority="0"></ToolbarItem>
-        <ToolbarItem x:Name="tbiClearAll" Text="Clear all" Order="Secondary" Priority="1"></ToolbarItem>
-        <ToolbarItem x:Name="tbiDeleteChat" Text="Delete chat" Order="Secondary" Priority="2"></ToolbarItem>
-    </ContentPage.ToolbarItems>
-    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to CHAT" />
-        </StackLayout>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <StackLayout BackgroundColor="{DynamicResource colorMainAccent}" Orientation="Horizontal" Grid.Row="0">
+                <Frame x:Name="frameTop" Margin="20,10,0,10" Padding="0"
+                   HeightRequest="50"
+                   WidthRequest="50"
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                   CornerRadius="100"
+                        BackgroundColor="Coral">
+                    <Image x:Name="imageUser" Aspect="Fill"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                <Label Margin="40,0,0,0" VerticalTextAlignment="Center">user name</Label>
+                
+            </StackLayout>
+            <Entry Grid.Row="2" HorizontalTextAlignment="Start"></Entry>
+        </Grid>
+
     </ContentPage.Content>
 </ContentPage>
