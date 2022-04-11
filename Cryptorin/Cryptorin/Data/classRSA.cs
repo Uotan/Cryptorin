@@ -71,23 +71,23 @@ namespace Cryptorin.Data
 
 
 
-        public string Encrypt(string plainText, string _publickeyBase64)
+        public string Encrypt(string _plainText, string _publickeyBase64)
         {
             byte[] base64EncodedBytes = Convert.FromBase64String(_publickeyBase64);
             RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
             cspNew.FromXmlString(Encoding.UTF8.GetString(base64EncodedBytes));
 
-            var data = Encoding.Unicode.GetBytes(plainText);
+            var data = Encoding.Unicode.GetBytes(_plainText);
             var cypher = cspNew.Encrypt(data, false);
             return Convert.ToBase64String(cypher);
         }
 
-        public string Decrypt(string cypherText, string _privatekeyBase64)
+        public string Decrypt(string _cypherText, string _privatekeyBase64)
         {
             byte[] base64EncodedBytes = Convert.FromBase64String(_privatekeyBase64);
             RSACryptoServiceProvider cspNew = new RSACryptoServiceProvider();
             cspNew.FromXmlString(Encoding.UTF8.GetString(base64EncodedBytes));
-            var dataBytes = Convert.FromBase64String(cypherText);
+            var dataBytes = Convert.FromBase64String(_cypherText);
             var plainText = cspNew.Decrypt(dataBytes, false);
             return Encoding.Unicode.GetString(plainText);
         }

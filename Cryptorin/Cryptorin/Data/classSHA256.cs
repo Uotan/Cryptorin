@@ -13,19 +13,19 @@ namespace Cryptorin.Data
         /// </summary>
         /// <param name="rawData"></param>
         /// <returns></returns>
-        public string ComputeSha256Hash(string rawData)
+        public string ComputeSha256Hash(string _rawData)
         {
             // Create a SHA256   
             using (SHA256 sha256Hash = SHA256.Create())
             {
-                if (rawData==null)
+                if (_rawData == null)
                 {
                     return null;
                 }
                 else
                 {
                     // ComputeHash - returns byte array  
-                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(_rawData));
 
                     // Convert byte array to a string   
                     StringBuilder builder = new StringBuilder();

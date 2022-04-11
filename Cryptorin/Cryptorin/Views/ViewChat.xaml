@@ -22,13 +22,12 @@
                    WidthRequest="50"
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
-                   CornerRadius="100"
-                        BackgroundColor="Coral">
+                   CornerRadius="100">
                     <Image x:Name="imageUser" Aspect="Fill"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 </Frame>
-                <Label Margin="40,0,0,0" VerticalTextAlignment="Center">user name</Label>
+                <Label x:Name="userName" FontSize="22" Margin="8,0,0,0" VerticalTextAlignment="Center"></Label>
                 
             </StackLayout>
             <Entry Grid.Row="2" HorizontalTextAlignment="Start"></Entry>

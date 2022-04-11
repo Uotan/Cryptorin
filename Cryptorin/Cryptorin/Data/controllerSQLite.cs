@@ -13,10 +13,10 @@ namespace Cryptorin.Data
     {
         readonly SQLiteAsyncConnection dbAsync;
         readonly SQLiteConnection db;
-        public controllerSQLite(string connectionString)
+        public controllerSQLite(string _connectionString)
         {
-            dbAsync = new SQLiteAsyncConnection(connectionString);
-            db = new SQLiteConnection(connectionString);
+            dbAsync = new SQLiteAsyncConnection(_connectionString);
+            db = new SQLiteConnection(_connectionString);
             dbAsync.CreateTableAsync<MyData>().Wait();
             dbAsync.CreateTableAsync<User>().Wait();
             dbAsync.CreateTableAsync<Message>().Wait();

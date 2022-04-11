@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using Cryptorin.Data;
+using Cryptorin.Classes.SQLiteClasses;
 using Cryptorin.Views;
 using Cryptorin.Common;
 using System.Net;
+using System.Collections.Generic;
 
 namespace UnitTestsCryptorin
 {
@@ -46,13 +48,38 @@ namespace UnitTestsCryptorin
         }
 
         [TestMethod]
+        public void TestGetCountMessage()
+        {
+            classMessages signature = new classMessages();
+            int result = signature.GetCountOfMessages(12,15,"huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2");
+
+            Console.WriteLine("Count:"+result);
+            Assert.AreEqual(11, result);
+        }
+
+
+        [TestMethod]
         public void TestSendMessage()
         {
-            classSignature signature = new classSignature();
-            publicUserData result = signature.SignIn("user", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3");
-            //string result = signature.SignUp("QwertyUiop", "qwerty12", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null);
-            Console.WriteLine(result.public_name);
-            Assert.AreEqual(1, result.id);
+            classMessages signature = new classMessages();
+            string result = signature.SendMessage(12, 15, "huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2", "unit_test");
+
+            Console.WriteLine(result);
+
+        }
+
+
+        [TestMethod]
+        public void GetMessagesTests()
+        {
+            classMessages signature = new classMessages();
+
+            List<Message> result = signature.GetMessages(12, 15, "huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2", 11);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.from_whom+" - "+item.for_whom+": "+item.rsa_cipher);
+            }
+
         }
 
     }

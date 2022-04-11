@@ -101,8 +101,7 @@ namespace Cryptorin.Views
 
 
             UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
-            await DisplayAlert("ok", userItem.public_name, "ok");
-            await Shell.Current.GoToAsync(nameof(ViewChat));
+            await Shell.Current.GoToAsync($"{nameof(ViewChat)}?{nameof(ViewChat.UserID)}={userItem.id}");
             ((CollectionView)sender).SelectedItem = null;
 
 
