@@ -21,10 +21,34 @@ namespace Cryptorin.Views
     public partial class ViewUsersList : ContentPage
     {
         ObservableCollection<UserTemplate> userList = new ObservableCollection<UserTemplate>();
+        List<User> userListFromDB = new List<User>();
         public ViewUsersList()
         {
             InitializeComponent();
+            userListFromDB = App.myDB.GetUsers();
+            foreach (var item in userListFromDB)
+            {
+                UserTemplate userForList = new UserTemplate();
+                userForList.id = item.id;
+                userForList.public_name = item.public_name;
+                userForList.hex_color = Color.FromHex(item.hex_color);
+                userForList.image_source = null;
+                try
+                {
+                    if (item.image != null || item.image != "")
+                    {
+                        byte[] byteArray = Convert.FromBase64String(item.image);
+                        ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                        userForList.image_source = image_Source;
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+                userList.Add(userForList);
+            }
             userCollector.ItemsSource = userList;
+
         }
 
         private async void tbiFindUser_Clicked(object sender, EventArgs e)

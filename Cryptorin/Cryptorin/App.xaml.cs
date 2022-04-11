@@ -5,6 +5,7 @@ using Cryptorin.Views;
 using Cryptorin.Classes;
 using Cryptorin.Data;
 using System.IO;
+using Cryptorin.Classes.SQLiteClasses;
 
 namespace Cryptorin
 {
@@ -48,9 +49,15 @@ namespace Cryptorin
                 themeManager.SetLight();
             }
 
-            //MainPage = new AppShell();
-            MainPage = startLoginPage;
-
+            MyData myData = App.myDB.ReadMyData();
+            if (myData!=null)
+            {
+                MainPage = new AppShell();
+            }
+            else
+            {
+                MainPage = startLoginPage;
+            }
         }
 
         protected override void OnStart()

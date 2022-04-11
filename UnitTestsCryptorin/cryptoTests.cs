@@ -70,7 +70,7 @@ namespace UnitTestsCryptorin
 
 
         [TestMethod]
-        public void GetMessagesTests()
+        public void TestGetMessages()
         {
             classMessages signature = new classMessages();
 

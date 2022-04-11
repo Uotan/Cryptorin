@@ -28,7 +28,15 @@ namespace Cryptorin.Data
 
         public MyData ReadMyData()
         {
-            return db.Table<MyData>().First();
+            try
+            {
+                return db.Table<MyData>().First();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
         public void DeleteAllData()
@@ -71,6 +79,19 @@ namespace Cryptorin.Data
             if (user != null)
             {
                 return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public List<User> GetUsers()
+        {
+            List<User> users = db.Table<User>().ToList();
+            if (users != null)
+            {
+                return users;
             }
             else
             {

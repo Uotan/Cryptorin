@@ -58,7 +58,7 @@ namespace Cryptorin.Views
 
             try
             {
-                if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="")
+                if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="" && tbPublicName.Text!="")
                 {
                     classSignature signInstance = new classSignature();
                     if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
