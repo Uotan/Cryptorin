@@ -31,7 +31,6 @@ namespace Cryptorin.Data
             {
                 return null;
             }
-
         }
 
 
@@ -65,7 +64,6 @@ namespace Cryptorin.Data
             {
                 return null;
             }
-
         }
 
 
@@ -96,7 +94,6 @@ namespace Cryptorin.Data
             {
                 return null;
             }
-
         }
 
 
@@ -130,7 +127,6 @@ namespace Cryptorin.Data
                 return null;
                 //return 0;
             }
-
         }
 
 
@@ -150,7 +146,6 @@ namespace Cryptorin.Data
             {
                 return null;
             }
-
         }
 
 
@@ -171,7 +166,6 @@ namespace Cryptorin.Data
             {
                 return null;
             }
-
         }
     }
 }
