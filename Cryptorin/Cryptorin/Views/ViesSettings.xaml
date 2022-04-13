@@ -5,8 +5,44 @@
              Style="{DynamicResource cntPageColor}">
     <ContentPage.Content>
         <ScrollView HeightRequest="5000">
-            <StackLayout>
-                <Label>Settings</Label>
+            <StackLayout Margin="10,0,10,50">
+                <Label FontSize="20">Change Public Name</Label>
+                <Entry x:Name="entryChgPubName"></Entry>
+                <Button x:Name="btnChgPubName" Text="Change name" Clicked="btnChgPubName_Clicked"></Button>
+                
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+                
+                <Label FontSize="20">Change Password</Label>
+                <Entry x:Name="entrPassOld" Placeholder="Old password"></Entry>
+                <Entry x:Name="entrPassNew1" Placeholder="New password"></Entry>
+                <Entry x:Name="entrPassNew2" Placeholder="Repeat new password"></Entry>
+                <Button x:Name="btnCngPassword" Text="Change password" Clicked="btnCngPassword_Clicked"></Button>
+                
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
+                <Frame  Margin="0,10,0,5" Padding="0"
+                   HeightRequest="150"
+                   WidthRequest="150"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="#adacaa">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Frame.GestureRecognizers>
+                    <Image x:Name="imagePicker" Aspect="Fill" Source="iconImage.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                <Label Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
+                <Button x:Name="btnChangeImage" Text="Change image" Clicked="btnChangeImage_Clicked"/>
+
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
+                <Label FontSize="20">Update keys (delete all messages)</Label>
+                <Button x:Name="btnUpdateKeys" BackgroundColor="#d41406" TextColor="White" Text="Update a key pair" Clicked="btnUpdateKeys_Clicked"/>
+                
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
             </StackLayout>
         </ScrollView>
         
