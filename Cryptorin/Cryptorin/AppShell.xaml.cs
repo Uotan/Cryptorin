@@ -11,6 +11,8 @@ using Xamarin.Essentials;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Cryptorin.Data;
+using Cryptorin.Classes;
 
 namespace Cryptorin
 {
@@ -23,6 +25,8 @@ namespace Cryptorin
             InitializeComponent();
             Routing.RegisterRoute(nameof(ViewChat),typeof(ViewChat));
 
+            checkConnection2server();
+
             Device.StartTimer(new TimeSpan(0, 0, 5), () =>
             {
                 Device.BeginInvokeOnMainThread(() =>
@@ -33,6 +37,17 @@ namespace Cryptorin
             });
 
         }
+
+        async void checkConnection2server()
+        {
+            checkConnection checker = new checkConnection();
+            bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            if (!result)
+            {
+                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+            }
+        }
+
 
         private async void mnItmQuit_Clicked(object sender, EventArgs e)
         {

@@ -21,8 +21,18 @@ namespace Cryptorin.Views
         public ViewAuth()
         {
             InitializeComponent();
+            checkConnection2server();
         }
 
+        async void checkConnection2server()
+        {
+            checkConnection checker = new checkConnection();
+            bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            if (!result)
+            {
+                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+            }
+        }
 
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)

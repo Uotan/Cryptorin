@@ -5,6 +5,7 @@ using System.Net;
 using System.Collections.Specialized;
 using Cryptorin.Classes.SQLiteClasses;
 using Newtonsoft.Json;
+using Cryptorin.Classes;
 
 namespace Cryptorin.Data
 {
@@ -20,7 +21,7 @@ namespace Cryptorin.Data
             param.Add("password", _password);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/getCountOfMessages.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getCountOfMessages.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 return Convert.ToInt32(result);
             }
@@ -41,7 +42,7 @@ namespace Cryptorin.Data
             param.Add("content", _content);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/sendMessage.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/sendMessage.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 result = result.Trim();
                 return result;
@@ -64,7 +65,7 @@ namespace Cryptorin.Data
             param.Add("count", _count.ToString());
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/getMessages.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getMessages.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 List<Message> Data = JsonConvert.DeserializeObject<List<Message>>(result);
                 return Data;

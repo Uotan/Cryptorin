@@ -22,7 +22,7 @@ namespace Cryptorin.Data
             param.Add("login", _login);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/checkLoginCoincidence.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/checkLoginCoincidence.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 result = result.Trim();
                 return result;
@@ -55,7 +55,7 @@ namespace Cryptorin.Data
             param.Add("image", _imageBade64);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/signup.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/signup.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 result = result.Trim();
                 return result;
@@ -85,7 +85,7 @@ namespace Cryptorin.Data
             param.Add("password", _pass);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/signin.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/signin.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 publicUserData userData = JsonConvert.DeserializeObject<publicUserData>(result);
                 return userData;
@@ -113,7 +113,7 @@ namespace Cryptorin.Data
             param.Add("publicKey", _publicKey);
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/newRSAkey.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/newRSAkey.php", "POST", param);
                 string stringResult = Encoding.Default.GetString(response);
                 stringResult = stringResult.Trim();
                 //int currentKeyNumber = Convert.ToInt32(stringResult);
@@ -137,7 +137,7 @@ namespace Cryptorin.Data
             param.Add("id", _id.ToString());
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/getbase64.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getbase64.php", "POST", param);
                 string resultBase64 = Encoding.Default.GetString(response);
                 resultBase64 = resultBase64.Trim();
                 return resultBase64;
@@ -157,7 +157,7 @@ namespace Cryptorin.Data
             param.Add("id", _id.ToString());
             try
             {
-                var response = client.UploadValues("https://cryptorin.ru/API/findUser.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/findUser.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
                 return userData;

@@ -53,5 +53,14 @@ namespace UnitTestsCryptorin
 
             Assert.AreEqual("28", result);
         }
+
+
+        [TestMethod]
+        public void TestConnection()
+        {
+            checkConnection _checkConnection = new checkConnection();
+            bool result = _checkConnection.ConnectionAvailable(ServerAddress.srvrAddress);
+            Assert.AreEqual(true, result);
+        }
     }
 }
