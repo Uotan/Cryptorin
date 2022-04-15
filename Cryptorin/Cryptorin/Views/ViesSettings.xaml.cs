@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Cryptorin.Classes;
+using Cryptorin.Classes.SQLiteClasses;
+using Cryptorin.Data;
 
 namespace Cryptorin.Views
 {
@@ -52,9 +55,21 @@ namespace Cryptorin.Views
 
         }
 
-        private void btnChangeImage_Clicked(object sender, EventArgs e)
+        private async void btnChangeImage_Clicked(object sender, EventArgs e)
         {
-
+            if (file != null)
+            {
+                byte[] imageArray = File.ReadAllBytes(file.FullPath);
+                string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+                var myData = App.myDB.ReadMyData();
+                classSignature classSignature = new classSignature();
+                string result = classSignature.UpdateImage(myData.login,myData.password,base64ImageRepresentation);
+                await DisplayAlert("Report", result,"Ok");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Image not selected...", "Ok");
+            }
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)

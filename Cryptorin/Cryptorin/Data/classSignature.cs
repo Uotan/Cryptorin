@@ -167,5 +167,27 @@ namespace Cryptorin.Data
                 return null;
             }
         }
+
+        public string UpdateImage(string _login, string _password, string _imageBase64)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("login", _login);
+            param.Add("password", _login);
+            param.Add("image", _imageBase64);
+            try
+            {
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updateImage.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                result = result.Trim();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
     }
 }
