@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,8 @@ namespace Cryptorin.Classes.SQLiteClasses
 {
     public class MyData
     {
+        [PrimaryKey, AutoIncrement]
+        public int IDlocal { get; set; }
         public int id { get; set; }
         public string public_name { get; set; }
         public string login { get; set; }

@@ -173,7 +173,7 @@ namespace Cryptorin.Data
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
             param.Add("login", _login);
-            param.Add("password", _login);
+            param.Add("password", _password);
             param.Add("image", _imageBase64);
             try
             {

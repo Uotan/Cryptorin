@@ -24,6 +24,7 @@ namespace Cryptorin.Common
         {
             InitializeComponent();
             Load();
+
         }
 
         async void Load()

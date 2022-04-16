@@ -102,5 +102,14 @@ namespace Cryptorin.Data
         {
             db.Table<User>().Delete(x => x.id == _id);
         }
+
+
+
+
+
+        public void UpdateMyData(MyData _data)
+        {
+            db.Update(_data);
+        }
     }
 }

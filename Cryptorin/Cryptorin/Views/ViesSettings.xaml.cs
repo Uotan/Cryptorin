@@ -9,7 +9,6 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Classes;
-using Cryptorin.Classes.SQLiteClasses;
 using Cryptorin.Data;
 
 namespace Cryptorin.Views
@@ -31,12 +30,12 @@ namespace Cryptorin.Views
             {
                 myData = await App.myDB.ReadMyDataAsync();
                 entryChgPubName.Placeholder = myData.public_name;
-                if (myData.image != null)
-                {
-                    byte[] byteArray = Convert.FromBase64String(myData.image);
-                    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                    imagePicker.Source = Source;
-                }
+                //if (myData.image != null)
+                //{
+                //    byte[] byteArray = Convert.FromBase64String(myData.image);
+                //    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                //    imagePicker.Source = Source;
+                //}
             }
             catch (Exception ex)
             {
@@ -57,19 +56,26 @@ namespace Cryptorin.Views
 
         private async void btnChangeImage_Clicked(object sender, EventArgs e)
         {
+            string baseImage = null;
             if (file != null)
             {
                 byte[] imageArray = File.ReadAllBytes(file.FullPath);
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-                var myData = App.myDB.ReadMyData();
                 classSignature classSignature = new classSignature();
-                string result = classSignature.UpdateImage(myData.login,myData.password,base64ImageRepresentation);
-                await DisplayAlert("Report", result,"Ok");
+                string result = classSignature.UpdateImage(myData.login, myData.password,base64ImageRepresentation);
+                baseImage = classSignature.GetImage(myData.id);
+                myData.image = baseImage;
+                App.myDB.UpdateMyData(myData);
+                await DisplayAlert("Report", result+ "\nRestart the application", "Ok");
+                imagePicker.Source = "iconImage.png";
+                
             }
             else
             {
                 await DisplayAlert("Error", "Image not selected...", "Ok");
             }
+            
+
         }
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
