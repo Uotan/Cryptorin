@@ -62,5 +62,31 @@ namespace UnitTestsCryptorin
             bool result = _checkConnection.ConnectionAvailable(ServerAddress.srvrAddress);
             Assert.AreEqual(true, result);
         }
+
+
+
+        [TestMethod]
+        public void TestUpdatePassword()
+        {
+            classSHA256 rsa = new classSHA256();
+            string hash1 = rsa.ComputeSha256Hash("123");
+            string hash2 = rsa.ComputeSha256Hash("qwe");
+            classSignature signature = new classSignature();
+            string result = signature.UpdatePassword("qwe", hash2, hash1);
+            Console.WriteLine(result);
+
+            Assert.AreEqual("Updated", result);
+        }
+
+
+        [TestMethod]
+        public void TestUpdatePublicName()
+        {
+            classSignature signature = new classSignature();
+            string result = signature.UpdatePublicName("test", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", "upy");
+            Console.WriteLine(result);
+
+            Assert.AreEqual("Updated", result);
+        }
     }
 }

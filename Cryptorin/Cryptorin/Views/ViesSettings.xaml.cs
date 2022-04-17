@@ -30,12 +30,12 @@ namespace Cryptorin.Views
             {
                 myData = await App.myDB.ReadMyDataAsync();
                 entryChgPubName.Placeholder = myData.public_name;
-                //if (myData.image != null)
-                //{
-                //    byte[] byteArray = Convert.FromBase64String(myData.image);
-                //    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                //    imagePicker.Source = Source;
-                //}
+                if (myData.image != null)
+                {
+                    byte[] byteArray = Convert.FromBase64String(myData.image);
+                    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                    imagePicker.Source = Source;
+                }
             }
             catch (Exception ex)
             {
@@ -44,14 +44,47 @@ namespace Cryptorin.Views
             
 
         }
-        private void btnChgPubName_Clicked(object sender, EventArgs e)
+        private async void btnChgPubName_Clicked(object sender, EventArgs e)
         {
-
+            if (entryChgPubName.Text!=null)
+            {
+                classSignature signature = new classSignature();
+                string result = signature.UpdatePublicName(myData.login, myData.password, entryChgPubName.Text);
+                myData.public_name = entryChgPubName.Text;
+                App.myDB.UpdateMyData(myData);
+                entryChgPubName.Placeholder = myData.public_name;
+                entryChgPubName.Text = "";
+                await DisplayAlert("Report", result + "\nRestart the application", "Ok");
+            }
+            else
+            {
+                await DisplayAlert("Error", "Incorrectly entered data", "Ok");
+            }
+            
         }
 
-        private void btnCngPassword_Clicked(object sender, EventArgs e)
+        private async void btnCngPassword_Clicked(object sender, EventArgs e)
         {
-
+            classSHA256 sha = new classSHA256();
+            string oldPassHash = sha.ComputeSha256Hash(entrPassOld.Text);
+            if (entrPassNew1.Text!=entrPassNew2.Text||entrPassNew1.Text==""||entrPassOld.Text==""|| oldPassHash != myData.password)
+            {
+                await DisplayAlert("Error", "Incorrectly entered data", "Ok");
+                
+            }
+            else
+            {
+                classSignature classSign = new classSignature();
+                string newPassHash = sha.ComputeSha256Hash(entrPassNew1.Text);
+                string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
+                if (result == "Updated")
+                {
+                    myData.password = newPassHash;
+                    App.myDB.UpdateMyData(myData);
+                    await DisplayAlert("Report", result , "Ok");
+                }
+            }
+                
         }
 
         private async void btnChangeImage_Clicked(object sender, EventArgs e)
@@ -105,5 +138,10 @@ namespace Cryptorin.Views
             //    App.Current.MainPage = new NavigationPage(new ViewAuth());
             //}
         }
+
+        //private void btnChgLogin_Clicked(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }
