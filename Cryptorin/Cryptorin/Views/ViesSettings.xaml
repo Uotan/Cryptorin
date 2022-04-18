@@ -13,11 +13,17 @@
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
                 <Label  Margin="0,0,0,20" FontSize="20">Change Password</Label>
-                <Entry x:Name="entrPassOld" Placeholder="Old password"></Entry>
-                <Entry x:Name="entrPassNew1" Placeholder="New password"></Entry>
-                <Entry x:Name="entrPassNew2" Placeholder="Repeat new password"></Entry>
+                <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="Old password"></Entry>
+                <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="New password"></Entry>
+                <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="Repeat new password"></Entry>
                 <Button x:Name="btnCngPassword" Text="Change" Clicked="btnCngPassword_Clicked"></Button>
                 
+                <!--<BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
+                <Label Margin="0,0,0,20" FontSize="20">Change Login</Label>
+                <Entry x:Name="entryChgLogin"></Entry>
+                <Button x:Name="btnChgLogin" Text="Change" Clicked="btnChgLogin_Clicked"></Button>-->
+
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
                 <Label  Margin="0,0,0,20" FontSize="20">Change image</Label>

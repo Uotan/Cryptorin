@@ -113,7 +113,7 @@ namespace Cryptorin.Data
             param.Add("publicKey", _publicKey);
             try
             {
-                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/newRSAkey.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePublicKey.php", "POST", param);
                 string stringResult = Encoding.Default.GetString(response);
                 stringResult = stringResult.Trim();
                 //int currentKeyNumber = Convert.ToInt32(stringResult);
@@ -178,6 +178,47 @@ namespace Cryptorin.Data
             try
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updateImage.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                result = result.Trim();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public string UpdatePassword(string _login, string _password, string _newPassword)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("login", _login);
+            param.Add("password", _password);
+            param.Add("newPassword", _newPassword);
+            try
+            {
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePassword.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                result = result.Trim();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
+        public string UpdatePublicName(string _login, string _password, string _newPublicName)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("login", _login);
+            param.Add("password", _password);
+            param.Add("newPublicName", _newPublicName);
+            try
+            {
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePublicName.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 result = result.Trim();
                 return result;
