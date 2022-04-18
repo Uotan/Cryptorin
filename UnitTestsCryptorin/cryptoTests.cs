@@ -6,6 +6,8 @@ using Cryptorin.Views;
 using Cryptorin.Common;
 using System.Net;
 using System.Collections.Generic;
+using Konscious.Security.Cryptography;
+using System.Text;
 
 namespace UnitTestsCryptorin
 {
@@ -80,6 +82,33 @@ namespace UnitTestsCryptorin
                 Console.WriteLine(item.from_whom+" - "+item.for_whom+": "+item.rsa_cipher);
             }
 
+        }
+
+
+
+        [TestMethod]
+        public void TestArgon2d()
+        {
+            byte[] salt = Encoding.ASCII.GetBytes("saltsalt69");
+            //byte[] userUuidBytes;
+            byte[] password = Encoding.ASCII.GetBytes("hello2");
+            var argon2 = new Argon2d(password);
+
+            argon2.DegreeOfParallelism = 10;
+            argon2.MemorySize = 8192;
+            argon2.Iterations = 20;
+            argon2.Salt = salt;
+
+            var hash = argon2.GetBytes(100);
+
+            StringBuilder hex = new StringBuilder(hash.Length * 2);
+            foreach (byte b in hash)
+            {
+                hex.AppendFormat("{0:x2}", b);
+            }
+
+
+            Console.WriteLine(hex);
         }
 
     }
