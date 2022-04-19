@@ -63,9 +63,11 @@ namespace Cryptorin.Views
                     classSignature signInstance = new classSignature();
                     if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
                     {
-                        classSHA256 classSHA256instance = new classSHA256();
-                        string hashPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
-                        string result = signInstance.SignUp(tbPublicName.Text, tbLogin.Text, hashPassword, base64ImageRepresentation);
+                        //classSHA256 classSHA256instance = new classSHA256();
+                        //string hashPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
+                        Argon argon = new Argon();
+                        string hashPasswordHex = argon.Argon2id(tbPassw.Text);
+                        string result = signInstance.SignUp(tbPublicName.Text, tbLogin.Text, hashPasswordHex, base64ImageRepresentation);
                         if (result == "created")
                         {
                             await DisplayAlert("Done", "Registration is completed!", "Ok");

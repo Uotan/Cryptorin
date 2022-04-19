@@ -8,15 +8,15 @@
             <StackLayout Margin="10,0,10,0">
                 <Label Margin="0,30,0,20" FontSize="20">Change Public Name</Label>
                 <Entry x:Name="entryChgPubName"></Entry>
-                <Button x:Name="btnChgPubName" Text="Change" Clicked="btnChgPubName_Clicked"></Button>
+                <Button x:Name="btnChgPubName" Text="change" Clicked="btnChgPubName_Clicked"></Button>
                 
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
                 <Label  Margin="0,0,0,20" FontSize="20">Change Password</Label>
-                <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="Old password"></Entry>
-                <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="New password"></Entry>
-                <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="Repeat new password"></Entry>
-                <Button x:Name="btnCngPassword" Text="Change" Clicked="btnCngPassword_Clicked"></Button>
+                <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="old password"></Entry>
+                <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="new password"></Entry>
+                <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="repeat new password"></Entry>
+                <Button x:Name="btnCngPassword" Text="change" Clicked="btnCngPassword_Clicked"></Button>
                 
                 <!--<BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
@@ -42,12 +42,12 @@
                        VerticalOptions="Center"/>
                 </Frame>
                 <Label  Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
-                <Button x:Name="btnChangeImage" Text="Change" Clicked="btnChangeImage_Clicked"/>
+                <Button x:Name="btnChangeImage" Text="change" Clicked="btnChangeImage_Clicked"/>
 
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
                 <Label  Margin="0,0,0,20" FontSize="20">Update keys (delete all messages)</Label>
-                <Button x:Name="btnUpdateKeys" BackgroundColor="#d41406" TextColor="White" Text="Update" Clicked="btnUpdateKeys_Clicked"/>
+                <Button x:Name="btnUpdateKeys" BackgroundColor="#d41406" TextColor="White" Text="update" Clicked="btnUpdateKeys_Clicked"/>
                 
                 <BoxView Margin="0,30,0,20" HeightRequest="1" Color="Transparent" IsVisible="True"/>
             </StackLayout>

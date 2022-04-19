@@ -65,8 +65,8 @@ namespace Cryptorin.Views
 
         private async void btnCngPassword_Clicked(object sender, EventArgs e)
         {
-            classSHA256 sha = new classSHA256();
-            string oldPassHash = sha.ComputeSha256Hash(entrPassOld.Text);
+            Argon argon = new Argon();
+            string oldPassHash = argon.Argon2id(entrPassOld.Text);
             if (entrPassNew1.Text!=entrPassNew2.Text||entrPassNew1.Text==""||entrPassOld.Text==""|| oldPassHash != myData.password)
             {
                 await DisplayAlert("Error", "Incorrectly entered data", "Ok");
@@ -75,7 +75,9 @@ namespace Cryptorin.Views
             else
             {
                 classSignature classSign = new classSignature();
-                string newPassHash = sha.ComputeSha256Hash(entrPassNew1.Text);
+                string newPassHash = argon.Argon2id(entrPassNew1.Text);
+
+
                 string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
                 if (result == "Updated")
                 {
@@ -84,6 +86,9 @@ namespace Cryptorin.Views
                     await DisplayAlert("Report", result , "Ok");
                 }
             }
+            entrPassNew1.Text = null;
+            entrPassNew2.Text = null;
+            entrPassOld.Text = null;
                 
         }
 

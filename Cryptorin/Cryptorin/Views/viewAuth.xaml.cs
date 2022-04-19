@@ -40,18 +40,21 @@ namespace Cryptorin.Views
             btnSignIn.IsEnabled = false;
             btnSignUp.IsEnabled = false;
             classSignature classSign = new classSignature();
-            classSHA256 SHA = new classSHA256();
-            string Hash = SHA.ComputeSha256Hash(tbPassword.Text);
-            publicUserData fetchedData = classSign.SignIn(tbLogin.Text, Hash);
+
+            //classSHA256 SHA = new classSHA256();
+
+            Argon argon = new Argon();
+            string hashPasswordHex = argon.Argon2id(tbPassword.Text);
+
+            //string Hash = SHA.ComputeSha256Hash(tbPassword.Text);
+            publicUserData fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex);
             if (fetchedData!=null)
             {
-                
-                WriteLocalData(fetchedData,tbLogin.Text, Hash);
+                WriteLocalData(fetchedData,tbLogin.Text, hashPasswordHex);
                 App.Current.MainPage = new AppShell();
             }
             else
             {
-
                 await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
             }
             btnSignIn.IsEnabled = true;
