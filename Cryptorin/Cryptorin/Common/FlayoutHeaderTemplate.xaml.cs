@@ -43,7 +43,7 @@ namespace Cryptorin.Common
                 
             }
             lblId.Text = "#" + myData.id.ToString();
-            lblPublicName.Text = myData.public_name;
+            lblPublicName.Text = WebUtility.UrlDecode(myData.public_name);
 
 
         }

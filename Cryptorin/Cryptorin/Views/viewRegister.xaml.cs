@@ -58,8 +58,10 @@ namespace Cryptorin.Views
 
             try
             {
+                
                 if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="" && tbPublicName.Text!="")
                 {
+                    var urlEncodedPublicName = System.Net.WebUtility.UrlEncode(tbPublicName.Text);
                     classSignature signInstance = new classSignature();
                     if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
                     {
@@ -67,7 +69,7 @@ namespace Cryptorin.Views
                         //string hashPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
                         Argon argon = new Argon();
                         string hashPasswordHex = argon.Argon2id(tbPassw.Text);
-                        string result = signInstance.SignUp(tbPublicName.Text, tbLogin.Text, hashPasswordHex, base64ImageRepresentation);
+                        string result = signInstance.SignUp(urlEncodedPublicName, tbLogin.Text, hashPasswordHex, base64ImageRepresentation);
                         if (result == "created")
                         {
                             await DisplayAlert("Done", "Registration is completed!", "Ok");

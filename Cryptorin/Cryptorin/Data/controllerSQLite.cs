@@ -47,6 +47,12 @@ namespace Cryptorin.Data
         }
 
 
+        public void DeleteMessages()
+        {
+            db.DeleteAll<Message>();
+        }
+
+
         public void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
         {
             MyData myData = new MyData();

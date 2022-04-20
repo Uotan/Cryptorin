@@ -5,6 +5,7 @@ using System.Net;
 using System.Collections.Specialized;
 using Newtonsoft.Json;
 using Cryptorin.Classes;
+using System.Diagnostics;
 
 namespace Cryptorin.Data
 {
@@ -77,17 +78,18 @@ namespace Cryptorin.Data
         /// <param name="_login"></param>
         /// <param name="_pass"></param>
         /// <returns></returns>
-        public publicUserData SignIn(string _login, string _pass)
+        public fetchedUser SignIn(string _login, string _pass, string _publicKey)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
             param.Add("login", _login);
             param.Add("password", _pass);
+            param.Add("publicKey", _publicKey);
             try
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/signin.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
-                publicUserData userData = JsonConvert.DeserializeObject<publicUserData>(result);
+                fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
                 return userData;
             }
             catch (Exception)
@@ -104,7 +106,7 @@ namespace Cryptorin.Data
         /// <param name="_pass"></param>
         /// <param name="_publicKey"></param>
         /// <returns>return the current key number in the database</returns>
-        public string SignInUpdateKeys(string _login, string _pass, string _publicKey)
+        public string UpdateKeys(string _login, string _pass, string _publicKey)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -116,8 +118,6 @@ namespace Cryptorin.Data
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePublicKey.php", "POST", param);
                 string stringResult = Encoding.Default.GetString(response);
                 stringResult = stringResult.Trim();
-                //int currentKeyNumber = Convert.ToInt32(stringResult);
-                //return currentKeyNumber;
                 return stringResult;
             }
             catch (Exception)

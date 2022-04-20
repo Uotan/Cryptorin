@@ -5,7 +5,7 @@
       BackgroundColor="{DynamicResource colorMainAccent}">
     
     
-    <StackLayout Padding="20" Margin="0,0,0,60" BackgroundColor="Transparent" Orientation="Vertical">
+    <StackLayout Padding="0,20,0,10" Margin="0,0,0,30" BackgroundColor="Transparent" Orientation="Vertical">
 
         <Frame Padding="0"
                    HeightRequest="150"
@@ -18,7 +18,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"></Image>
         </Frame>
-        <Label x:Name="lblId" HorizontalOptions="Center" Text="#0000" FontSize="Small"></Label>
-        <Label x:Name="lblPublicName" Margin="10" HorizontalOptions="Center" FontSize="Medium">???</Label>
+        <Label x:Name="lblId" HorizontalOptions="Center" Margin="10" Text="#0000" FontSize="Medium">???</Label>
+        <Label x:Name="lblPublicName" Margin="3" HorizontalOptions="Center" FontSize="30">???</Label>
     </StackLayout>
 </Grid>

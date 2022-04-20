@@ -37,28 +37,40 @@ namespace Cryptorin.Views
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
-            btnSignIn.IsEnabled = false;
-            btnSignUp.IsEnabled = false;
-            classSignature classSign = new classSignature();
-
-            //classSHA256 SHA = new classSHA256();
-
-            Argon argon = new Argon();
-            string hashPasswordHex = argon.Argon2id(tbPassword.Text);
-
-            //string Hash = SHA.ComputeSha256Hash(tbPassword.Text);
-            publicUserData fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex);
-            if (fetchedData!=null)
+            if (tbLogin.Text==null||tbPassword.Text==null)
             {
-                WriteLocalData(fetchedData,tbLogin.Text, hashPasswordHex);
-                App.Current.MainPage = new AppShell();
+                await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
             }
             else
             {
-                await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
+                btnSignIn.IsEnabled = false;
+                btnSignUp.IsEnabled = false;
+                classSignature classSign = new classSignature();
+
+                Argon argon = new Argon();
+                string hashPasswordHex = argon.Argon2id(tbPassword.Text);
+
+                classRSA rsa = new classRSA();
+                string publicKey = rsa.GetPublicBase64();
+                string privateKey = rsa.GetPrivateBase64();
+
+
+                fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, publicKey);
+
+
+                if (fetchedData != null)
+                {
+                    WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, privateKey);
+                    App.Current.MainPage = new AppShell();
+                }
+                else
+                {
+                    await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
+                }
+                btnSignIn.IsEnabled = true;
+                btnSignUp.IsEnabled = true;
             }
-            btnSignIn.IsEnabled = true;
-            btnSignUp.IsEnabled = true;
+            
         }
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
@@ -66,34 +78,22 @@ namespace Cryptorin.Views
             await Navigation.PushAsync(new ViewRegister());
         }
 
-        void WriteLocalData(publicUserData _fetcheData, string _login,string _password)
+        void WriteLocalData(fetchedUser _fetcheData, string _login,string _password,string _privateKey)
         {
             //Delete all local data
             App.myDB.DeleteAllData();
 
-            //generate hard password to AES encryption
-            //var pwd = new Password(16).IncludeLowercase().IncludeUppercase().IncludeNumeric().IncludeSpecial("!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~");
-            //string AESkey = pwd.Next();
-
-            //Generate and fetch RSA keys
-            classRSA rsa = new classRSA();
-            string publicKey = rsa.GetPublicBase64();
-            string privateKey = rsa.GetPrivateBase64();
-
-            //fetch the current key number in the database
             classSignature signInstance = new classSignature();
-
-            string numberResult = signInstance.SignInUpdateKeys(_login, _password, publicKey);
 
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, privateKey, _login, _password, numberResult,imageBase64);
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64);
         }
 
-        private void tbLogin_Completed(object sender, EventArgs e)
-        {
-            var _passentry = tbPassword;
-            _passentry?.Focus();
-        }
+        //private void tbLogin_Completed(object sender, EventArgs e)
+        //{
+        //    var _passentry = tbPassword;
+        //    _passentry?.Focus();
+        //}
     }
 }

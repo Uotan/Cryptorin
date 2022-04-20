@@ -51,7 +51,8 @@ namespace Cryptorin.Views
             }
 
             frameTop.BackgroundColor = Color.FromHex(user.hex_color);
-            userName.Text = user.public_name;
+            //userName.Text = user.public_name;
+            userName.Text = WebUtility.UrlDecode(user.public_name);
         }
     }
 }

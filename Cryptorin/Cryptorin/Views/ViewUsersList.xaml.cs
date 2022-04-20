@@ -30,7 +30,8 @@ namespace Cryptorin.Views
             {
                 UserTemplate userForList = new UserTemplate();
                 userForList.id = item.id;
-                userForList.public_name = item.public_name;
+                //userForList.public_name = item.public_name;
+                userForList.public_name = WebUtility.UrlDecode(item.public_name);
                 userForList.hex_color = Color.FromHex(item.hex_color);
                 userForList.image_source = null;
                 try
@@ -81,7 +82,7 @@ namespace Cryptorin.Views
 
                     UserTemplate userTemplate = new UserTemplate();
                     userTemplate.id = user2.id;
-                    userTemplate.public_name = user2.public_name;
+                    userTemplate.public_name = WebUtility.UrlDecode(user2.public_name);
                     userTemplate.hex_color = Color.FromHex(user2.hex_color);
                     userTemplate.image_source = null;
                     try

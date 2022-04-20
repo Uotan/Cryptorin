@@ -33,9 +33,10 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestSignIn()
         {
+            classRSA rsa = new classRSA();
+            string _puplicBase = rsa.GetPublicBase64();
             classSignature signature = new classSignature();
-            publicUserData result = signature.SignIn("user", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3");
-            //string result = signature.SignUp("QwertyUiop", "qwerty12", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", null);
+            fetchedUser result = signature.SignIn("user", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
             Console.WriteLine(result.public_name);
             Assert.AreEqual(1, result.id);
         }
@@ -48,7 +49,7 @@ namespace UnitTestsCryptorin
             classRSA rsa = new classRSA();
             string _puplicBase = rsa.GetPublicBase64();
             classSignature signature = new classSignature();
-            string result = signature.SignInUpdateKeys("qqq", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
+            string result = signature.UpdateKeys("qqq", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3", _puplicBase);
             Console.WriteLine(result);
 
             Assert.AreEqual("28", result);

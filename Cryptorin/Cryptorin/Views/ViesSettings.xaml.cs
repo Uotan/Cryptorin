@@ -136,12 +136,24 @@ namespace Cryptorin.Views
         private async void btnUpdateKeys_Clicked(object sender, EventArgs e)
         {
             bool answer = await DisplayAlert("Are you sure?", "This will delete all data!!!", "Yes", "No");
-            //if (answer)
-            //{
-            //    //delete all data methods
-            //    App.myDB.DeleteAllData();
-            //    App.Current.MainPage = new NavigationPage(new ViewAuth());
-            //}
+            if (answer)
+            {
+
+                App.myDB.DeleteMessages();
+
+                classRSA rsa = new classRSA();
+                string publicKey = rsa.GetPublicBase64();
+                string privateKey = rsa.GetPrivateBase64();
+
+                classSignature signature = new classSignature();
+                string newKeyNumb = signature.UpdateKeys(myData.login,myData.password,publicKey);
+
+                myData.private_key = privateKey;
+                myData.key_number = newKeyNumb;
+                App.myDB.UpdateMyData(myData);
+                await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
+
+            }
         }
 
         //private void btnChgLogin_Clicked(object sender, EventArgs e)
