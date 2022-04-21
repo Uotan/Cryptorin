@@ -10,7 +10,7 @@
             <Label Text="Sign up to Cryptorin" Margin="0,0,0,30" FontSize="Title" HorizontalTextAlignment="Center"></Label>
             
             <Entry x:Name="tbPublicName" Placeholder="Public name"/>
-            <Entry x:Name="tbLogin" Placeholder="Login"/>
+            <Entry x:Name="tbLogin" Placeholder="Login" IsPassword="True"/>
             <Entry x:Name="tbPassw" Placeholder="Password" IsPassword="True"/>
             <Entry x:Name="tbRepPassw" Placeholder="Repeat password" IsPassword="True"/>
 

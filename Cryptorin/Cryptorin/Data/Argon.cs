@@ -7,9 +7,9 @@ namespace Cryptorin.Data
 {
     public class Argon
     {
-        public string Argon2d(string _message)
+        public string Argon2d(string _message, string _salt)
         {
-            byte[] salt = Encoding.ASCII.GetBytes("ln45rQ7JqqXPTRTs");
+            byte[] salt = Encoding.ASCII.GetBytes(_salt);
             byte[] password = Encoding.ASCII.GetBytes(_message);
             var argon2d = new Argon2d(password);
 
@@ -29,9 +29,9 @@ namespace Cryptorin.Data
         }
 
 
-        public string Argon2i(string _message)
+        public string Argon2i(string _message, string _salt)
         {
-            byte[] salt = Encoding.ASCII.GetBytes("ln45rQ7JqqXPTRTs");
+            byte[] salt = Encoding.ASCII.GetBytes(_salt);
             byte[] password = Encoding.ASCII.GetBytes(_message);
             var argon2i = new Argon2i(password);
 
@@ -50,9 +50,9 @@ namespace Cryptorin.Data
             return hex.ToString();
         }
 
-        public string Argon2id(string _message)
+        public string Argon2id(string _message,string _salt)
         {
-            byte[] salt = Encoding.ASCII.GetBytes("ln45rQ7JqqXPTRTs");
+            byte[] salt = Encoding.ASCII.GetBytes(_salt);
             byte[] password = Encoding.ASCII.GetBytes(_message);
             var argon2id = new Argon2id(password);
 

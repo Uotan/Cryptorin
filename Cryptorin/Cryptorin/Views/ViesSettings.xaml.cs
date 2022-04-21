@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Classes;
 using Cryptorin.Data;
+using System.Net;
 
 namespace Cryptorin.Views
 {
@@ -24,18 +25,22 @@ namespace Cryptorin.Views
             LoadMyData();
         }
 
+
+
+
+
         async void LoadMyData()
         {
             try
             {
                 myData = await App.myDB.ReadMyDataAsync();
-                entryChgPubName.Placeholder = myData.public_name;
-                if (myData.image != null)
-                {
-                    byte[] byteArray = Convert.FromBase64String(myData.image);
-                    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                    imagePicker.Source = Source;
-                }
+                entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
+                //if (myData.image != null)
+                //{
+                //    byte[] byteArray = Convert.FromBase64String(myData.image);
+                //    ImageSource Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                //    imagePicker.Source = Source;
+                //}
             }
             catch (Exception ex)
             {
@@ -44,17 +49,31 @@ namespace Cryptorin.Views
             
 
         }
+
+
+
+
+
         private async void btnChgPubName_Clicked(object sender, EventArgs e)
         {
             if (entryChgPubName.Text!=null)
             {
+                var urlEncodedPublicName = WebUtility.UrlEncode(entryChgPubName.Text);
                 classSignature signature = new classSignature();
-                string result = signature.UpdatePublicName(myData.login, myData.password, entryChgPubName.Text);
-                myData.public_name = entryChgPubName.Text;
-                App.myDB.UpdateMyData(myData);
-                entryChgPubName.Placeholder = myData.public_name;
-                entryChgPubName.Text = "";
-                await DisplayAlert("Report", result + "\nRestart the application", "Ok");
+                string result = signature.UpdatePublicName(myData.login, myData.password, urlEncodedPublicName);
+                if (result== "Updated")
+                {
+                    myData.public_name = urlEncodedPublicName;
+                    App.myDB.UpdateMyData(myData);
+                    entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
+                    entryChgPubName.Text = "";
+                    await DisplayAlert("Report", result + "\nRestart the application", "Ok");
+                }
+                else
+                {
+                    await DisplayAlert("Error", result, "Ok");
+                }
+                
             }
             else
             {
@@ -63,10 +82,19 @@ namespace Cryptorin.Views
             
         }
 
+
+
+
+
         private async void btnCngPassword_Clicked(object sender, EventArgs e)
         {
+
+            classSHA256 classSHA256instance = new classSHA256();
+            string hashSaltOld = classSHA256instance.ComputeSha256Hash(myData.login + entrPassOld.Text);
+
             Argon argon = new Argon();
-            string oldPassHash = argon.Argon2id(entrPassOld.Text);
+            string oldPassHash = argon.Argon2id(entrPassOld.Text, hashSaltOld);
+
             if (entrPassNew1.Text!=entrPassNew2.Text||entrPassNew1.Text==""||entrPassOld.Text==""|| oldPassHash != myData.password)
             {
                 await DisplayAlert("Error", "Incorrectly entered data", "Ok");
@@ -75,7 +103,9 @@ namespace Cryptorin.Views
             else
             {
                 classSignature classSign = new classSignature();
-                string newPassHash = argon.Argon2id(entrPassNew1.Text);
+
+                string hashSaltNew = classSHA256instance.ComputeSha256Hash(myData.login + entrPassNew1.Text);
+                string newPassHash = argon.Argon2id(entrPassNew1.Text, hashSaltNew);
 
 
                 string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
@@ -91,6 +121,11 @@ namespace Cryptorin.Views
             entrPassOld.Text = null;
                 
         }
+
+
+
+
+
 
         private async void btnChangeImage_Clicked(object sender, EventArgs e)
         {
@@ -116,6 +151,11 @@ namespace Cryptorin.Views
 
         }
 
+
+
+
+
+
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
             try
@@ -132,6 +172,11 @@ namespace Cryptorin.Views
                 await DisplayAlert("Error", ex.Message, "Ok");
             }
         }
+
+
+
+
+
 
         private async void btnUpdateKeys_Clicked(object sender, EventArgs e)
         {
@@ -155,10 +200,5 @@ namespace Cryptorin.Views
 
             }
         }
-
-        //private void btnChgLogin_Clicked(object sender, EventArgs e)
-        //{
-
-        //}
     }
 }

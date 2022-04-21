@@ -52,10 +52,21 @@ namespace Cryptorin.Views
 
         }
 
+
+
+
+
+
         private async void tbiFindUser_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync(nameof(ViewChat));
         }
+
+
+
+
+
+
 
         private async void AddItemButton_Clicked(object sender, EventArgs e)
         {
@@ -108,6 +119,12 @@ namespace Cryptorin.Views
         }
 
 
+
+
+
+
+
+
         private void AddUser2DataBase(fetchedUser _fetchedUser)
         {
             classSignature classSignature = new classSignature();
@@ -116,6 +133,12 @@ namespace Cryptorin.Views
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
             App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color);
         }
+
+
+
+
+
+
 
         private async void userCollector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -132,6 +155,11 @@ namespace Cryptorin.Views
 
             
         }
+
+
+
+
+
 
         private async void RefreshView_Refreshing(object sender, EventArgs e)
         {

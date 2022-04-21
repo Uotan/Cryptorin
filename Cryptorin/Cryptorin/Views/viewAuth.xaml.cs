@@ -24,6 +24,11 @@ namespace Cryptorin.Views
             checkConnection2server();
         }
 
+
+
+
+
+
         async void checkConnection2server()
         {
             checkConnection checker = new checkConnection();
@@ -35,20 +40,31 @@ namespace Cryptorin.Views
         }
 
 
+
+
+
+
+
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
+            btnSignIn.IsEnabled = false;
+            btnSignUp.IsEnabled = false;
+
             if (tbLogin.Text==null||tbPassword.Text==null)
             {
                 await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
             }
             else
             {
-                btnSignIn.IsEnabled = false;
-                btnSignUp.IsEnabled = false;
-                classSignature classSign = new classSignature();
+
+                classSHA256 classSHA256instance = new classSHA256();
+                string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
 
                 Argon argon = new Argon();
-                string hashPasswordHex = argon.Argon2id(tbPassword.Text);
+                string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
+
+                classSignature classSign = new classSignature();
+
 
                 classRSA rsa = new classRSA();
                 string publicKey = rsa.GetPublicBase64();
@@ -67,16 +83,29 @@ namespace Cryptorin.Views
                 {
                     await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
                 }
-                btnSignIn.IsEnabled = true;
-                btnSignUp.IsEnabled = true;
+                
             }
-            
+
+            btnSignIn.IsEnabled = true;
+            btnSignUp.IsEnabled = true;
         }
+
+
+
+
+
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
+            tbLogin.Text = null;
+            tbPassword.Text = null;
             await Navigation.PushAsync(new ViewRegister());
         }
+
+
+
+
+
 
         void WriteLocalData(fetchedUser _fetcheData, string _login,string _password,string _privateKey)
         {

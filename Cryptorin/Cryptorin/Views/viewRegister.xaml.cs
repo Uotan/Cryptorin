@@ -10,18 +10,22 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 using System.IO;
+using System.Net;
 
 namespace Cryptorin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewRegister : ContentPage
     {
-        string base64ImageRepresentation = null;
+        
         FileResult file;
         public ViewRegister()
         {
             InitializeComponent();
         }
+
+
+
 
 
         private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
@@ -41,8 +45,15 @@ namespace Cryptorin.Views
             }
         }
 
+
+
+
+
+
+
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
+            string base64ImageRepresentation = null;
             if (file!=null)
             {
                 byte[] imageArray = File.ReadAllBytes(file.FullPath);
@@ -61,14 +72,18 @@ namespace Cryptorin.Views
                 
                 if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="" && tbPublicName.Text!="")
                 {
-                    var urlEncodedPublicName = System.Net.WebUtility.UrlEncode(tbPublicName.Text);
+                    var urlEncodedPublicName = WebUtility.UrlEncode(tbPublicName.Text);
+
                     classSignature signInstance = new classSignature();
                     if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
                     {
-                        //classSHA256 classSHA256instance = new classSHA256();
-                        //string hashPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
+
+                        classSHA256 classSHA256instance = new classSHA256();
+                        string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassw.Text);
+
                         Argon argon = new Argon();
-                        string hashPasswordHex = argon.Argon2id(tbPassw.Text);
+                        string hashPasswordHex = argon.Argon2id(tbPassw.Text, hashSalt);
+
                         string result = signInstance.SignUp(urlEncodedPublicName, tbLogin.Text, hashPasswordHex, base64ImageRepresentation);
                         if (result == "created")
                         {

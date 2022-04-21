@@ -34,6 +34,10 @@ namespace Cryptorin.Views
             }
         }
 
+
+
+
+
         void ShowUserData(int _id)
         {
             user = App.myDB.GetUser(_id);

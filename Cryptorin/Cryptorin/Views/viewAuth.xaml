@@ -10,7 +10,7 @@
         </Frame>
         
         <StackLayout Padding="15,70,15,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">
-            <Entry x:Name="tbLogin" Margin="0,0,0,20" HorizontalTextAlignment="Center"  Placeholder="Enter login" />
+            <Entry x:Name="tbLogin" Margin="0,0,0,20" HorizontalTextAlignment="Center" IsPassword="True" Placeholder="Enter login" />
             <Entry x:Name="tbPassword" HorizontalTextAlignment="Center" Placeholder="Enter password" IsPassword="True"/>
             <Button x:Name="btnSignIn" Margin="0,50,0,0" Text="Sign In" Clicked="btnSignIn_Clicked"/>
             <Label Text="or" FontSize="Medium" HorizontalTextAlignment="Center"></Label>

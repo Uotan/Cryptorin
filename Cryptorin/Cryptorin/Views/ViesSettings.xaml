@@ -18,11 +18,6 @@
                 <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="repeat new password"></Entry>
                 <Button x:Name="btnCngPassword" Text="change" Clicked="btnCngPassword_Clicked"></Button>
                 
-                <!--<BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
-
-                <Label Margin="0,0,0,20" FontSize="20">Change Login</Label>
-                <Entry x:Name="entryChgLogin"></Entry>
-                <Button x:Name="btnChgLogin" Text="Change" Clicked="btnChgLogin_Clicked"></Button>-->
 
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
