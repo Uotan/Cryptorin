@@ -54,7 +54,7 @@ namespace Cryptorin.Data
         }
 
 
-        public List<Message> GetMessages(int _from, int _to, string _login, string _password, int _count)
+        public List<fetchedMessage> GetMessages(int _from, int _to, string _login, string _password, int _count)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -67,7 +67,7 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getMessages.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
-                List<Message> Data = JsonConvert.DeserializeObject<List<Message>>(result);
+                List<fetchedMessage> Data = JsonConvert.DeserializeObject<List<fetchedMessage>>(result);
                 return Data;
             }
             catch (Exception)

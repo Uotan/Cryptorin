@@ -30,6 +30,28 @@
                 <Label x:Name="userName" FontSize="22" Margin="8,0,0,0" VerticalTextAlignment="Center"></Label>
                 
             </StackLayout>
+            
+            <CollectionView x:Name="collectionView" Grid.Row="1"
+                    SelectionMode="Single" SelectionChanged="collectionView_SelectionChanged">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding from_whom}" FontSize="Small"></Label>
+                                <Label Text=": " FontSize="Small"></Label>
+                                <Label Text="{Binding content}" FontSize="Small"></Label>
+                            </StackLayout>
+
+                            <Label Text="{Binding datetime}" TextColor="Gray"  FontSize="Small"></Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+            
             <Entry Grid.Row="2" HorizontalTextAlignment="Start"></Entry>
         </Grid>
 

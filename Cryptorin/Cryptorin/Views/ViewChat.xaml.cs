@@ -20,10 +20,16 @@ namespace Cryptorin.Views
     public partial class ViewChat : ContentPage
     {
         User user;
+        int CountMessOnDB;
+        int CountMessLocal;
+        MyData myData;
         public ViewChat()
         {
             InitializeComponent();
-
+            myData = App.myDB.ReadMyData();
+            classMessages classMess = new classMessages();
+            CountMessOnDB = classMess.GetCountOfMessages(myData.id,user.id,myData.login,myData.password);
+            CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
         }
 
         public int UserID
@@ -33,11 +39,6 @@ namespace Cryptorin.Views
                 ShowUserData(value);
             }
         }
-
-
-
-
-
         void ShowUserData(int _id)
         {
             user = App.myDB.GetUser(_id);
@@ -58,5 +59,9 @@ namespace Cryptorin.Views
             //userName.Text = user.public_name;
             userName.Text = WebUtility.UrlDecode(user.public_name);
         }
+
+
+
+
     }
 }
