@@ -9,33 +9,91 @@
 
 
                 <Label Margin="0,30,0,20" FontSize="20">Setting up the app Theme</Label>
-                <StackLayout Orientation="Horizontal" RadioButtonGroup.GroupName="themes">
-                    <RadioButton Content="Light" />
-                    <RadioButton Content="Dark" />
-                    <RadioButton Content="System" />
-                </StackLayout>
+                <Frame  Margin="0,10,0,20" Padding="0"
+                   HeightRequest="110"
+                   WidthRequest="110"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="Transparent">
+                    <Image Aspect="Fill" Source="theme_black.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                
+                <Grid RadioButtonGroup.GroupName="themes">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <RadioButton x:Name="radioBtnLight" CheckedChanged="radioBtnLight_CheckedChanged" Content="Light" Grid.Column="0"/>
+                    <RadioButton x:Name="radioBtnDark" CheckedChanged="radioBtnDark_CheckedChanged" Content="Dark" Grid.Column="1"/>
+                    <RadioButton x:Name="radioBtnSystem" CheckedChanged="radioBtnSystem_CheckedChanged" Content="System" Grid.Column="2"/>
+                </Grid>
 
-                <BoxView Margin="0,0,0,20" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
-
-                <Label Margin="0,30,0,20" FontSize="20">Change Public Name</Label>
-                <Entry x:Name="entryChgPubName"></Entry>
-                <Button x:Name="btnChgPubName" Text="change" Clicked="btnChgPubName_Clicked"></Button>
+                
                 
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
+                
+                
+                <Label Margin="0,0,0,20" FontSize="20">Change Public Name</Label>
+                <Frame  Margin="0,10,0,20" Padding="0"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="Transparent">
+                    <Image Aspect="Fill" Source="usericon.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                <Entry x:Name="entryChgPubName"></Entry>
+                <Button x:Name="btnChgPubName" Text="change" Clicked="btnChgPubName_Clicked"></Button>
+                
+                
+                
+                
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
+                
+                
+                
+                
                 <Label  Margin="0,0,0,20" FontSize="20">Change Password</Label>
+                <Frame  Margin="0,10,0,20" Padding="0"
+                   HeightRequest="100"
+                   WidthRequest="100"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="Transparent">
+                    <Image Aspect="Fill" Source="password.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
                 <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="old password"></Entry>
                 <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="new password"></Entry>
                 <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="repeat new password"></Entry>
                 <Button x:Name="btnCngPassword" Text="change" Clicked="btnCngPassword_Clicked"></Button>
                 
 
+                
+                
+                
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
+                
+                
+                
+                
                 <Label  Margin="0,0,0,20" FontSize="20">Change image</Label>
                 <Frame  Margin="0,10,0,5" Padding="0"
                    HeightRequest="150"
                    WidthRequest="150"
+                        CornerRadius="10"
                    
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
@@ -50,9 +108,29 @@
                 <Label  Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
                 <Button x:Name="btnChangeImage" Text="change" Clicked="btnChangeImage_Clicked"/>
 
+                
+                
+                
+                
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
+                
+                
+                
+                
                 <Label  Margin="0,0,0,20" FontSize="20">Update keys (delete all messages)</Label>
+
+                <Frame  Margin="0,10,0,20" Padding="0"
+                   HeightRequest="100"
+                   WidthRequest="100"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="Transparent">
+                    <Image Aspect="Fill" Source="key.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
                 <Button x:Name="btnUpdateKeys" BackgroundColor="#d41406" TextColor="White" Text="update" Clicked="btnUpdateKeys_Clicked"/>
                 
                 <BoxView Margin="0,30,0,20" HeightRequest="1" Color="Transparent" IsVisible="True"/>

@@ -4,29 +4,29 @@ namespace Cryptorin.Classes
 {
     public class ThemeManager
     {
-        public Color colorLabelDark = Color.White;
-        public Color colorlabelLight = Color.Black;
+        Color colorLabelDark = Color.White;
+        Color colorlabelLight = Color.Black;
 
-        public Color colorDarkButton = Color.FromArgb(255, 74, 80, 89);
-        public Color colorLightButton = Color.FromArgb(255, 124, 148, 166);
+        Color colorDarkButton = Color.FromArgb(255, 74, 80, 89);
+        Color colorLightButton = Color.FromArgb(255, 124, 148, 166);
 
-        public Color colorMainBackgroundDark = Color.FromArgb(255, 44, 52, 64);
-        public Color colorMainBackgroundLight = Color.FromArgb(255, 246, 246, 246);
-
-
+        Color colorMainBackgroundDark = Color.FromArgb(255, 44, 52, 64);
+        Color colorMainBackgroundLight = Color.FromArgb(255, 244, 244, 244);
 
 
-        public Color colorEntryBackgroundDark = Color.FromArgb(255, 36, 38, 43);
-        public Color colorEntryBackgroundLight = Color.FromArgb(255, 236, 236, 236);
 
-        public Color colorEntryTextColorDark = Color.White;
-        public Color colorEntryTextColorLight = Color.Black;
 
-        public Color colorEntryPlaceHolderColorDark = Color.FromArgb(255, 184, 184, 184);
-        public Color colorEntryPlaceHolderColorLight = Color.FromArgb(255, 158, 142, 142);
+        Color colorEntryBackgroundDark = Color.FromArgb(255, 36, 38, 43);
+        Color colorEntryBackgroundLight = Color.FromArgb(255, 236, 236, 236);
 
-        public Color colorcolorMainAccentDark = Color.FromArgb(255, 88, 102, 122);
-        public Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
+        Color colorEntryTextColorDark = Color.White;
+        Color colorEntryTextColorLight = Color.Black;
+
+        Color colorEntryPlaceHolderColorDark = Color.FromArgb(255, 184, 184, 184);
+        Color colorEntryPlaceHolderColorLight = Color.FromArgb(255, 158, 142, 142);
+
+        Color colorcolorMainAccentDark = Color.FromArgb(255, 88, 102, 122);
+        Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
 
 
         

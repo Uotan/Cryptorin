@@ -65,7 +65,14 @@
             <Setter Property="TextColor" Value="White"/>
             <Setter Property="FontSize" Value="32"/>
         </Style>
-        
+
+
+        <Style TargetType="{x:Type RadioButton}">
+            <Setter Property="TextColor" Value="{DynamicResource colorLabel}"></Setter>
+            <Setter Property="BorderColor" Value="{DynamicResource colorEntryBackground}"></Setter>
+            <Setter Property="BackgroundColor" Value="Transparent"></Setter>
+        </Style>
+
 
         <Color x:Key="colorLabel">Black</Color>
 

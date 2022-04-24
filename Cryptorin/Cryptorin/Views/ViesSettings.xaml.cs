@@ -22,6 +22,7 @@ namespace Cryptorin.Views
         public ViesSettings()
         {
             InitializeComponent();
+            setRadioBtnTheme();
             LoadMyData();
         }
 
@@ -199,6 +200,50 @@ namespace Cryptorin.Views
                 await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
 
             }
+        }
+
+        void setRadioBtnTheme()
+        {
+            string theme = Preferences.Get("theme", null);
+            switch (theme)
+            {
+                case "light": radioBtnLight.IsChecked = true; break; 
+                case "dark": radioBtnDark.IsChecked = true; break; 
+                case "system": radioBtnSystem.IsChecked = true; break; 
+                default:break;
+            }
+        }
+
+        private void radioBtnSystem_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            string theme = "system";
+            Preferences.Set("theme", theme);
+            ThemeManager themeManager = new ThemeManager();
+            OSAppTheme currentTheme = Application.Current.RequestedTheme;
+            if (currentTheme == OSAppTheme.Dark)
+            {
+                themeManager.SetDark();
+            }
+            if (currentTheme == OSAppTheme.Light)
+            {
+                themeManager.SetLight();
+            }
+        }
+
+        private void radioBtnDark_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            string theme = "dark";
+            Preferences.Set("theme", theme);
+            ThemeManager themeManager = new ThemeManager();
+            themeManager.SetDark();
+        }
+
+        private void radioBtnLight_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            string theme = "light";
+            Preferences.Set("theme", theme);
+            ThemeManager themeManager = new ThemeManager();
+            themeManager.SetLight();
         }
     }
 }
