@@ -31,8 +31,8 @@
                 
             </StackLayout>
             
-            <CollectionView x:Name="collectionView" Grid.Row="1"
-                    SelectionMode="Single" SelectionChanged="collectionView_SelectionChanged">
+            <CollectionView x:Name="collectionMessages" Grid.Row="1"
+                    SelectionMode="Single" SelectionChanged="collectionMessages_SelectionChanged">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"></LinearItemsLayout>
                 </CollectionView.ItemsLayout>
@@ -52,7 +52,7 @@
 
             </CollectionView>
             
-            <Entry Grid.Row="2" HorizontalTextAlignment="Start"></Entry>
+            <Entry x:Name="entrContent" Grid.Row="2" HorizontalTextAlignment="Start" Completed="entrContent_Completed"></Entry>
         </Grid>
 
     </ContentPage.Content>

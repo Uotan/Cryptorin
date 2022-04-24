@@ -81,7 +81,7 @@ namespace Cryptorin.Data
         public void AddMessage(fetchedMessage _message, string _content)
         {
             Message newMessage = new Message();
-            newMessage.id = _message.id;
+            //newMessage.id = _message.id;
             newMessage.from_whom = _message.from_whom;
             newMessage.for_whom = _message.for_whom;
             newMessage.content = _content;
@@ -89,10 +89,25 @@ namespace Cryptorin.Data
             db.Insert(newMessage);
         }
 
-        public List<Message> GetMessages(int _userIDfirst, int _userIDsecond)
+        public void AddMessageCompleted(Message _message)
+        {
+            db.Insert(_message);
+        }
+
+        public List<MessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
         {
             List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond)|| (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
-            return messages;
+            List<MessageTemplate> messages2 = new List<MessageTemplate>();
+            foreach (var item in messages)
+            {
+                MessageTemplate messageTemplate = new MessageTemplate();
+                messageTemplate.from_whom = item.from_whom;
+                messageTemplate.content = item.content;
+                messageTemplate.for_whom = item.for_whom;
+                messageTemplate.datetime = item.datetime;
+                messages2.Add(messageTemplate);
+            }
+            return messages2;
         }
 
         public int GetCountOfMessagesLocal(int _userIDfirst, int _userIDsecond)

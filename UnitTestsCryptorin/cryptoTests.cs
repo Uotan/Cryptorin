@@ -74,13 +74,13 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestGetMessages()
         {
-            classMessages signature = new classMessages();
+            //classMessages signature = new classMessages();
 
-            List<Message> result = signature.GetMessages(12, 15, "huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2", 11);
-            foreach (var item in result)
-            {
-                Console.WriteLine(item.from_whom+" - "+item.for_whom+": "+item.rsa_cipher);
-            }
+            //List<Message> result = signature.GetMessages(12, 15, "huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2", 11);
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item.from_whom+" - "+item.for_whom+": "+item.rsa_cipher);
+            //}
 
         }
 

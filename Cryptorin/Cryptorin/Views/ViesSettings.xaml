@@ -6,6 +6,17 @@
     <ContentPage.Content>
         <ScrollView HeightRequest="5000">
             <StackLayout Margin="10,0,10,0">
+
+
+                <Label Margin="0,30,0,20" FontSize="20">Setting up the app Theme</Label>
+                <StackLayout Orientation="Horizontal" RadioButtonGroup.GroupName="themes">
+                    <RadioButton Content="Light" />
+                    <RadioButton Content="Dark" />
+                    <RadioButton Content="System" />
+                </StackLayout>
+
+                <BoxView Margin="0,0,0,20" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
                 <Label Margin="0,30,0,20" FontSize="20">Change Public Name</Label>
                 <Entry x:Name="entryChgPubName"></Entry>
                 <Button x:Name="btnChgPubName" Text="change" Clicked="btnChgPubName_Clicked"></Button>
