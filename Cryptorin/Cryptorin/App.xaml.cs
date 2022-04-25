@@ -49,6 +49,10 @@ namespace Cryptorin
 
             string themeStart = Preferences.Get("theme", null);
 
+            if (themeStart == null)
+            {
+                Preferences.Set("theme", "system");
+            }
 
             Application.Current.RequestedThemeChanged += (object sender, AppThemeChangedEventArgs e) =>
             {

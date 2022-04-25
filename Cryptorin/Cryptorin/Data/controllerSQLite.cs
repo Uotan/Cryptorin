@@ -94,20 +94,23 @@ namespace Cryptorin.Data
             db.Insert(_message);
         }
 
-        public List<MessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
+        public List<Message> GetMessages(int _userIDfirst, int _userIDsecond)
         {
-            List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond)|| (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
-            List<MessageTemplate> messages2 = new List<MessageTemplate>();
-            foreach (var item in messages)
+            int count = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).Count();
+            //int count = 3;
+            if (count>0)
             {
-                MessageTemplate messageTemplate = new MessageTemplate();
-                messageTemplate.from_whom = item.from_whom;
-                messageTemplate.content = item.content;
-                messageTemplate.for_whom = item.for_whom;
-                messageTemplate.datetime = item.datetime;
-                messages2.Add(messageTemplate);
+                List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
+                //List<Message> messages = db.Table<Message>().Where(x => x.for_whom == _userIDfirst && x.from_whom == _userIDsecond).ToList();
+
+
+                return messages;
             }
-            return messages2;
+            else
+            {
+                return null;
+            }
+            
         }
 
         public int GetCountOfMessagesLocal(int _userIDfirst, int _userIDsecond)

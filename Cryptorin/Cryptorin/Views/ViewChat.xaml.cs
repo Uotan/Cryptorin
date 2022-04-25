@@ -25,40 +25,43 @@ namespace Cryptorin.Views
         User user;
         int CountMessOnDB;
         int CountMessLocal;
-        MyData myData = App.myDB.ReadMyData();
+        MyData myData;
         classMessages classMess = new classMessages();
-
-        List<MessageTemplate> messages;
 
 
         public ViewChat()
         {
             InitializeComponent();
-            messages = new List<MessageTemplate>();
-            messages = GetMessagesFromLocal(myData.id, user.id);
-
-            if (messages.Count != 0)
+            myData = App.myDB.ReadMyData();
+            try
             {
-                collectionMessages.ItemsSource = messages;
-                collectionMessages.ScrollTo(messages.Count - 1);
-            }
-
-
-            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
+                var messages = GetMessagesFromLocal(myData.id, user.id);
+                if (messages != null)
                 {
-                    MessageShow();
-                });
-                return true;
-            });
+                    collectionMessages.ItemsSource = messages;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            
+            
+            //Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+            //{
+            //    Device.BeginInvokeOnMainThread(() =>
+            //    {
+            //        //MessageShow();
+            //    });
+            //    return true;
+            //});
 
 
         }
 
-        List <MessageTemplate> GetMessagesFromLocal(int _idFirst, int _idSecond)
+        List <Message> GetMessagesFromLocal(int _idFirst, int _idSecond)
         {
-            var list = App.myDB.GetMessages(_idFirst,_idSecond);
+            var list = App.myDB.GetMessages(_idFirst, _idSecond);
             return list;
         }
 
@@ -155,7 +158,7 @@ namespace Cryptorin.Views
             }
             //messages = GetMessagesFromLocal(myData.id, user.id);
             //collectionMessages.ItemsSource = messages;
-            collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+            //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
 
             entrContent.Text = null;
         }
