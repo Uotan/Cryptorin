@@ -52,6 +52,16 @@ namespace Cryptorin.Data
             db.DeleteAll<Message>();
         }
 
+        public void DeleteMessagesWithUser(int _userId)
+        {
+            MyData myData = ReadMyData();
+            List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userId && x.from_whom == myData.id) || (x.for_whom == myData.id && x.from_whom == _userId)).ToList();
+            foreach (var item in messages)
+            {
+                db.Delete<Message>(item);
+            }
+        }
+
 
         public void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
         {
@@ -155,6 +165,11 @@ namespace Cryptorin.Data
 
 
         public void UpdateMyData(MyData _data)
+        {
+            db.Update(_data);
+        }
+
+        public void UpdateUserData(User _data)
         {
             db.Update(_data);
         }

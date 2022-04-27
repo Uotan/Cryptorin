@@ -89,5 +89,15 @@ namespace UnitTestsCryptorin
 
             Assert.AreEqual("Updated", result);
         }
+
+
+        [TestMethod]
+        public void TestGetKyNumber()
+        {
+            classSignature signature = new classSignature();
+            string result = signature.GetUserKeyNumber(38);
+            Console.WriteLine(result);
+
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Net;
 using System.Collections.Generic;
 using Konscious.Security.Cryptography;
 using System.Text;
+using Cryptorin.Classes;
 
 namespace UnitTestsCryptorin
 {
@@ -74,13 +75,13 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestGetMessages()
         {
-            //classMessages signature = new classMessages();
+            classMessages signature = new classMessages();
 
-            //List<Message> result = signature.GetMessages(12, 15, "huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2", 11);
-            //foreach (var item in result)
-            //{
-            //    Console.WriteLine(item.from_whom+" - "+item.for_whom+": "+item.rsa_cipher);
-            //}
+            List<fetchedMessage> result = signature.GetMessages(38, 39, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", 8);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.from_whom + " - " + item.for_whom + ": " + item.rsa_cipher);
+            }
 
         }
 
@@ -160,6 +161,19 @@ namespace UnitTestsCryptorin
 
 
             Console.WriteLine(hex);
+        }
+
+
+
+        [TestMethod]
+        public void TestTrueRSA()
+        {
+            RSAUtil rSAUtil = new RSAUtil();
+            var keys = rSAUtil.CreateKeys();
+
+            string cipher = rSAUtil.Encrypt(keys[1],"hello");
+            string decyptedMessage = rSAUtil.Decrypt(keys[0],cipher);
+            Console.Write(decyptedMessage);
         }
 
     }

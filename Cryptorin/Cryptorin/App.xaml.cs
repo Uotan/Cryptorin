@@ -28,6 +28,18 @@ namespace Cryptorin
         public App()
         {
             InitializeComponent();
+
+            if (!Preferences.ContainsKey("serverAddress"))
+            {
+                Preferences.Set("serverAddress", "https://cryptorin.ru");
+                ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+            }
+            else
+            {
+                ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+            }
+            
+
             NavigationPage startLoginPage = new NavigationPage(new ViewAuth());
             Themer();
             MyData myData = App.myDB.ReadMyData();
@@ -43,16 +55,15 @@ namespace Cryptorin
 
         void Themer()
         {
-            
+            if (!Preferences.ContainsKey("theme"))
+            {
+                Preferences.Set("theme", "system");
+                ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+            }
 
             //OSAppTheme currentTheme = Application.Current.RequestedTheme;
 
             string themeStart = Preferences.Get("theme", null);
-
-            if (themeStart == null)
-            {
-                Preferences.Set("theme", "system");
-            }
 
             Application.Current.RequestedThemeChanged += (object sender, AppThemeChangedEventArgs e) =>
             {

@@ -6,6 +6,6 @@ namespace Cryptorin.Classes
 {
     public class ServerAddress
     {
-        public static string srvrAddress = "https://cryptorin.ru";
+        public static string srvrAddress;
     }
 }

@@ -18,10 +18,16 @@ namespace Cryptorin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewAuth : ContentPage
     {
+
+        RSAUtil rSAUtil = new RSAUtil();
+        List<string> keys;
+
         public ViewAuth()
         {
             InitializeComponent();
             checkConnection2server();
+            keys = rSAUtil.CreateKeys();
+
         }
 
 
@@ -47,47 +53,55 @@ namespace Cryptorin.Views
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
-            btnSignIn.IsEnabled = false;
-            btnSignUp.IsEnabled = false;
 
-            if (tbLogin.Text==null||tbPassword.Text==null)
-            {
-                await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
-            }
-            else
-            {
+            var data = "Поддерживает RSACryptoServiceProvider размеры ключей от 384 до 16384 бит приращения 8 бит, если установлен расширенный поставщик шифрования Майкрософт. Он поддерживает размеры ключей от 384 до 512 бит приращения 8 бит, если установлен базовый поставщик шифрования Майкрософт.Допустимые размеры ключей зависят от поставщика служб шифрования(CSP), используемого экземпляром RSACryptoServiceProvider.Windows поставщики служб конфигурации обеспечивают размер ключа от 384 до 16384 бит для версий Windows до Windows 8.1 и размер ключа от 512 до 16384 бит для Windows 8.1.Дополнительные сведения см. в описании функции CryptGenKey в документации по Windows.Класс RSACryptoServiceProvider не позволяет изменять размеры ключей KeySize с помощью свойства.Любое значение, записанное в это свойство, не сможет обновить свойство без ошибок. Чтобы изменить размер ключа, используйте одну из перегрузок конструктора.";
 
-                classSHA256 classSHA256instance = new classSHA256();
-                string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
+            string cipher = rSAUtil.Encrypt(keys[1], data);
+            string decyptedMessage = rSAUtil.Decrypt(keys[0], cipher);
 
-                Argon argon = new Argon();
-                string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
+            await DisplayAlert("final", decyptedMessage, "ok");
 
-                classSignature classSign = new classSignature();
+            //btnSignIn.IsEnabled = false;
+            //btnSignUp.IsEnabled = false;
+
+            //if (tbLogin.Text==null||tbPassword.Text==null)
+            //{
+            //    await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
+            //}
+            //else
+            //{
+
+            //    classSHA256 classSHA256instance = new classSHA256();
+            //    string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
+
+            //    Argon argon = new Argon();
+            //    string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
+
+            //    classSignature classSign = new classSignature();
 
 
-                classRSA rsa = new classRSA();
-                string publicKey = rsa.GetPublicBase64();
-                string privateKey = rsa.GetPrivateBase64();
+            //    classRSA rsa = new classRSA();
+            //    string publicKey = rsa.GetPublicBase64();
+            //    string privateKey = rsa.GetPrivateBase64();
 
 
-                fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, publicKey);
+            //    fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, publicKey);
 
 
-                if (fetchedData != null)
-                {
-                    WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, privateKey);
-                    App.Current.MainPage = new AppShell();
-                }
-                else
-                {
-                    await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
-                }
+            //    if (fetchedData != null)
+            //    {
+            //        WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, privateKey);
+            //        App.Current.MainPage = new AppShell();
+            //    }
+            //    else
+            //    {
+            //        await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
+            //    }
                 
-            }
+            //}
 
-            btnSignIn.IsEnabled = true;
-            btnSignUp.IsEnabled = true;
+            //btnSignIn.IsEnabled = true;
+            //btnSignUp.IsEnabled = true;
         }
 
 

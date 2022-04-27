@@ -17,7 +17,8 @@ namespace Cryptorin.Classes
 
 
         Color colorEntryBackgroundDark = Color.FromArgb(255, 36, 38, 43);
-        Color colorEntryBackgroundLight = Color.FromArgb(255, 236, 236, 236);
+        //Color colorEntryBackgroundLight = Color.FromArgb(255, 236, 236, 236);
+        Color colorEntryBackgroundLight = Color.FromArgb(255, 205, 205, 203);
 
         Color colorEntryTextColorDark = Color.White;
         Color colorEntryTextColorLight = Color.Black;

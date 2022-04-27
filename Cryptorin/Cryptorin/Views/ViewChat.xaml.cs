@@ -23,30 +23,32 @@ namespace Cryptorin.Views
     public partial class ViewChat : ContentPage
     {
         User user;
+        string keyNumber;
         int CountMessOnDB;
         int CountMessLocal;
-        MyData myData;
+        MyData myData = App.myDB.ReadMyData();
         classMessages classMess = new classMessages();
-
+        classSignature signature = new classSignature();
 
         public ViewChat()
         {
             InitializeComponent();
-            myData = App.myDB.ReadMyData();
-            try
-            {
-                var messages = GetMessagesFromLocal(myData.id, user.id);
-                if (messages != null)
-                {
-                    collectionMessages.ItemsSource = messages;
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            
-            
+
+
+            //try
+            //{
+            //    var messages = GetMessagesFromLocal(myData.id, user.id);
+            //    if (messages != null)
+            //    {
+            //        collectionMessages.ItemsSource = messages;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Debug.WriteLine(ex.Message);
+            //}
+
+
             //Device.StartTimer(new TimeSpan(0, 0, 1), () =>
             //{
             //    Device.BeginInvokeOnMainThread(() =>
@@ -71,10 +73,10 @@ namespace Cryptorin.Views
         {
             set
             {
-                ShowUserData(value);
+                ShowUserDataAndCheck(value);
             }
         }
-        void ShowUserData(int _id)
+        void ShowUserDataAndCheck(int _id)
         {
             user = App.myDB.GetUser(_id);
             try
@@ -92,6 +94,23 @@ namespace Cryptorin.Views
 
             frameTop.BackgroundColor = Color.FromHex(user.hex_color);
             userName.Text = WebUtility.UrlDecode(user.public_name);
+
+            CheckKeyNumber();
+
+
+
+        }
+        async void CheckKeyNumber()
+        {
+            keyNumber = signature.GetUserKeyNumber(user.id);
+            if (keyNumber != user.key_number)
+            {
+                user.key_number = keyNumber;
+                App.myDB.DeleteMessagesWithUser(user.id);
+                App.myDB.UpdateUserData(user);
+                Debug.WriteLine("key updated");
+                await DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
+            }
         }
 
         private async void collectionMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -146,16 +165,16 @@ namespace Cryptorin.Views
 
             classMessages classMess = new classMessages();
             string result = classMess.SendMessage(myData.id,user.id,myData.login,myData.password, cryptedText);
-            if (result != "error")
-            {
-                //add to local table
-                Message mess = new Message();
-                mess.from_whom = myData.id;
-                mess.for_whom = user.id;
-                mess.content = urlEncodedMessage;
-                mess.datetime = result;
-                App.myDB.AddMessageCompleted(mess);
-            }
+            //if (result != "error")
+            //{
+            //    //add to local table
+            //    Message mess = new Message();
+            //    mess.from_whom = myData.id;
+            //    mess.for_whom = user.id;
+            //    mess.content = urlEncodedMessage;
+            //    mess.datetime = result;
+            //    App.myDB.AddMessageCompleted(mess);
+            //}
             //messages = GetMessagesFromLocal(myData.id, user.id);
             //collectionMessages.ItemsSource = messages;
             //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
