@@ -175,6 +175,5 @@ namespace UnitTestsCryptorin
             string decyptedMessage = rSAUtil.Decrypt(keys[0],cipher);
             Console.Write(decyptedMessage);
         }
-
     }
 }

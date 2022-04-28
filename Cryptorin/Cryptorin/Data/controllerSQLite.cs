@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using SQLite;
 using Cryptorin.Classes.SQLiteClasses;
 using Cryptorin.Classes;
-
+using System.Collections.ObjectModel;
 
 namespace Cryptorin.Data
 {
@@ -88,15 +88,10 @@ namespace Cryptorin.Data
             db.Insert(newUserData);
         }
 
-        public void AddMessage(fetchedMessage _message, string _content)
+        public void AddMessage(Message _message)
         {
-            Message newMessage = new Message();
-            //newMessage.id = _message.id;
-            newMessage.from_whom = _message.from_whom;
-            newMessage.for_whom = _message.for_whom;
-            newMessage.content = _content;
-            newMessage.datetime = _message.datetime;
-            db.Insert(newMessage);
+
+            db.Insert(_message);
         }
 
         public void AddMessageCompleted(Message _message)
@@ -104,17 +99,28 @@ namespace Cryptorin.Data
             db.Insert(_message);
         }
 
-        public List<Message> GetMessages(int _userIDfirst, int _userIDsecond)
+        public ObservableCollection<classMessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
         {
             int count = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).Count();
-            //int count = 3;
+
             if (count>0)
             {
                 List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
                 //List<Message> messages = db.Table<Message>().Where(x => x.for_whom == _userIDfirst && x.from_whom == _userIDsecond).ToList();
 
+                ObservableCollection<classMessageTemplate> messages2return = new ObservableCollection<classMessageTemplate>();
 
-                return messages;
+                foreach (var item in messages)
+                {
+                    classMessageTemplate template = new classMessageTemplate();
+                    template.from_whom = item.from_whom;
+                    template.content = item.content;
+                    template.datetime = item.datetime;
+                    messages2return.Add(template);
+                }
+
+                return messages2return;
+
             }
             else
             {

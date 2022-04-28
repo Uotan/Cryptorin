@@ -15,6 +15,7 @@ using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 using Xamarin.CommunityToolkit.Extensions;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace Cryptorin.Views
 {
@@ -26,6 +27,11 @@ namespace Cryptorin.Views
         string keyNumber;
         int CountMessOnDB;
         int CountMessLocal;
+
+        RSAUtil rSAUtil = new RSAUtil();
+
+        ObservableCollection<classMessageTemplate> MessagesCurrent;
+
         MyData myData = App.myDB.ReadMyData();
 
         classMessages classMess = new classMessages();
@@ -35,40 +41,8 @@ namespace Cryptorin.Views
         public ViewChat()
         {
             InitializeComponent();
-
-
-            //try
-            //{
-            //    var messages = GetMessagesFromLocal(myData.id, user.id);
-            //    if (messages != null)
-            //    {
-            //        collectionMessages.ItemsSource = messages;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine(ex.Message);
-            //}
-
-
-            //Device.StartTimer(new TimeSpan(0, 0, 1), () =>
-            //{
-            //    Device.BeginInvokeOnMainThread(() =>
-            //    {
-            //        //MessageShow();
-            //    });
-            //    return true;
-            //});
-
-
+            MessagesCurrent = new ObservableCollection<classMessageTemplate>();
         }
-
-        List <Message> GetMessagesFromLocal(int _idFirst, int _idSecond)
-        {
-            var list = App.myDB.GetMessages(_idFirst, _idSecond);
-            return list;
-        }
-
 
 
         public int UserID
@@ -92,18 +66,24 @@ namespace Cryptorin.Views
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
             }
 
             frameTop.BackgroundColor = Color.FromHex(user.hex_color);
             userName.Text = WebUtility.UrlDecode(user.public_name);
 
+            MessagesCurrent = App.myDB.GetMessages(user.id, myData.id);
+
+            collectionMessages.ItemsSource = MessagesCurrent;
+
             CheckKeyNumber();
 
-            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+            Device.StartTimer(new TimeSpan(0, 0, 2), () =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     CheckKeyNumber();
+                    //MessageShow();
                 });
                 return true;
             });
@@ -122,17 +102,17 @@ namespace Cryptorin.Views
                 await DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
             }
         }
-
+        
         private async void collectionMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Message messageItem = (Message)e.CurrentSelection.FirstOrDefault();
+            classMessageTemplate messageItem = (classMessageTemplate)e.CurrentSelection.FirstOrDefault();
             Debug.WriteLine(messageItem.content);
             await Clipboard.SetTextAsync(messageItem.content);
             await this.DisplayToastAsync("Text copied", 2000);
         }
 
 
-        private async void MessageShow()
+        private void MessageShow()
         {
 
             CountMessOnDB = classMess.GetCountOfMessages(myData.id, user.id, myData.login, myData.password);
@@ -148,14 +128,35 @@ namespace Cryptorin.Views
                 {
                     if (item.from_whom==user.id)
                     {
-                        classRSA rsa = new classRSA();
-                        string decryptedText = rsa.Decrypt(item.rsa_cipher,myData.private_key);
-                        App.myDB.AddMessage(item, decryptedText);
+                        
+
+                        string DEcryptedText = rSAUtil.Decrypt(myData.private_key,item.rsa_cipher);
+
+                        classMessageTemplate template = new classMessageTemplate();
+                        template.from_whom = item.from_whom;
+                        template.content = DEcryptedText;
+                        //template.content = WebUtility.UrlDecode(DEcryptedText); ;
+                        template.datetime = item.datetime;
+
+                        Debug.WriteLine(template.content);
+
+
+                        MessagesCurrent.Add(template);
+
+                        Message mess = new Message();
+                        mess.from_whom = item.from_whom;
+                        mess.for_whom = item.for_whom;
+                        //mess.content = WebUtility.UrlDecode(DEcryptedText);
+                        mess.content = DEcryptedText;
+                        mess.datetime = item.datetime;
+
+                        App.myDB.AddMessage(mess);
+
+                        
                     }
                 }
-                //messages = GetMessagesFromLocal(myData.id, user.id);
-                //collectionMessages.ItemsSource = messages;
-                collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+
+                //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
             }
 
         }
@@ -179,18 +180,28 @@ namespace Cryptorin.Views
 
             if (result != "error")
             {
+                Debug.WriteLine(result);
+
+                classMessageTemplate template = new classMessageTemplate();
+                template.from_whom = myData.id;
+                template.content = entrContent.Text;
+                //template.datetime = result;
+                template.datetime = null;
+
+                MessagesCurrent.Add(template);
+
                 //add to local table
                 Message mess = new Message();
                 mess.from_whom = myData.id;
                 mess.for_whom = user.id;
-                mess.content = urlEncodedMessage;
+                mess.content = entrContent.Text;
                 mess.datetime = result;
                 App.myDB.AddMessageCompleted(mess);
-            }
-            //messages = GetMessagesFromLocal(myData.id, user.id);
-            //collectionMessages.ItemsSource = messages;
-            //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
 
+
+                
+
+            }
             entrContent.Text = null;
         }
     }
