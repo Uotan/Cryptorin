@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Cryptorin.Data
 {
+    // thank you Zhiqiang Li
+    //https://github.com/stulzq/RSAUtil
+    //♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡
     public class RSAUtil
     {
         /// <summary>
