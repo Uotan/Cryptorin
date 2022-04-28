@@ -5,7 +5,7 @@
              Style="{DynamicResource cntPageColor}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="toolItmChangeDomain" IconImageSource="server.png" Order="Default" Priority="0" Text="Change the domain"></ToolbarItem>
+        <ToolbarItem x:Name="toolItmChangeDomain" Clicked="toolItmChangeDomain_Clicked" IconImageSource="server.png" Order="Default" Priority="0" Text="Change the domain"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <StackLayout>
         <Frame HeightRequest="125" Style="{StaticResource styleFrame}" Padding="5,0,5,30" CornerRadius="0">

@@ -27,7 +27,9 @@ namespace Cryptorin.Views
         int CountMessOnDB;
         int CountMessLocal;
         MyData myData = App.myDB.ReadMyData();
+
         classMessages classMess = new classMessages();
+
         classSignature signature = new classSignature();
 
         public ViewChat()
@@ -97,6 +99,14 @@ namespace Cryptorin.Views
 
             CheckKeyNumber();
 
+            Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    CheckKeyNumber();
+                });
+                return true;
+            });
 
 
         }
@@ -159,22 +169,24 @@ namespace Cryptorin.Views
         {
             var urlEncodedMessage = WebUtility.UrlEncode(entrContent.Text);
 
-            classRSA rsa = new classRSA();
+            RSAUtil rSAUtil = new RSAUtil();
 
-            string cryptedText = rsa.Encrypt(urlEncodedMessage, user.public_key);
+            string cryptedText = rSAUtil.Encrypt(user.public_key, urlEncodedMessage);
 
             classMessages classMess = new classMessages();
             string result = classMess.SendMessage(myData.id,user.id,myData.login,myData.password, cryptedText);
-            //if (result != "error")
-            //{
-            //    //add to local table
-            //    Message mess = new Message();
-            //    mess.from_whom = myData.id;
-            //    mess.for_whom = user.id;
-            //    mess.content = urlEncodedMessage;
-            //    mess.datetime = result;
-            //    App.myDB.AddMessageCompleted(mess);
-            //}
+
+
+            if (result != "error")
+            {
+                //add to local table
+                Message mess = new Message();
+                mess.from_whom = myData.id;
+                mess.for_whom = user.id;
+                mess.content = urlEncodedMessage;
+                mess.datetime = result;
+                App.myDB.AddMessageCompleted(mess);
+            }
             //messages = GetMessagesFromLocal(myData.id, user.id);
             //collectionMessages.ItemsSource = messages;
             //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);

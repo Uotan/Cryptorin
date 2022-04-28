@@ -187,14 +187,13 @@ namespace Cryptorin.Views
 
                 App.myDB.DeleteMessages();
 
-                classRSA rsa = new classRSA();
-                string publicKey = rsa.GetPublicBase64();
-                string privateKey = rsa.GetPrivateBase64();
+                RSAUtil rSAUtil = new RSAUtil();
+                List<string> keys = rSAUtil.CreateKeys();
 
                 classSignature signature = new classSignature();
-                string newKeyNumb = signature.UpdateKeys(myData.login,myData.password,publicKey);
+                string newKeyNumb = signature.UpdateKeys(myData.login,myData.password,keys[1]);
 
-                myData.private_key = privateKey;
+                myData.private_key = keys[0];
                 myData.key_number = newKeyNumb;
                 App.myDB.UpdateMyData(myData);
                 await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");

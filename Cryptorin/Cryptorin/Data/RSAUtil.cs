@@ -8,11 +8,13 @@ namespace Cryptorin.Data
 {
     public class RSAUtil
     {
+        /// <summary>
+        /// Generate RSA key in Pkcs1 format. Result: Index 0 is the private key and index 1 is the public key
+        /// </summary>
+        /// <returns></returns>
         public List<string> CreateKeys()
         {
             var keyList = RsaKeyGenerator.Pkcs1Key(2048, false);
-            //private Key = keyList[0];
-            //public Key = keyList[1];
             return keyList;
         }
         public string Encrypt(string _publicKey,string _data)

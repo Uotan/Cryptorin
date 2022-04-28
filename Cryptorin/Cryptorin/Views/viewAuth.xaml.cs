@@ -12,6 +12,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Classes.SQLiteClasses;
 using System.Diagnostics;
+using Xamarin.Essentials;
 
 namespace Cryptorin.Views
 {
@@ -19,14 +20,12 @@ namespace Cryptorin.Views
     public partial class ViewAuth : ContentPage
     {
 
-        RSAUtil rSAUtil = new RSAUtil();
-        List<string> keys;
+        
 
         public ViewAuth()
         {
             InitializeComponent();
             checkConnection2server();
-            keys = rSAUtil.CreateKeys();
 
         }
 
@@ -54,54 +53,47 @@ namespace Cryptorin.Views
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
 
-            var data = "Поддерживает RSACryptoServiceProvider размеры ключей от 384 до 16384 бит приращения 8 бит, если установлен расширенный поставщик шифрования Майкрософт. Он поддерживает размеры ключей от 384 до 512 бит приращения 8 бит, если установлен базовый поставщик шифрования Майкрософт.Допустимые размеры ключей зависят от поставщика служб шифрования(CSP), используемого экземпляром RSACryptoServiceProvider.Windows поставщики служб конфигурации обеспечивают размер ключа от 384 до 16384 бит для версий Windows до Windows 8.1 и размер ключа от 512 до 16384 бит для Windows 8.1.Дополнительные сведения см. в описании функции CryptGenKey в документации по Windows.Класс RSACryptoServiceProvider не позволяет изменять размеры ключей KeySize с помощью свойства.Любое значение, записанное в это свойство, не сможет обновить свойство без ошибок. Чтобы изменить размер ключа, используйте одну из перегрузок конструктора.";
 
-            string cipher = rSAUtil.Encrypt(keys[1], data);
-            string decyptedMessage = rSAUtil.Decrypt(keys[0], cipher);
+            btnSignIn.IsEnabled = false;
+            btnSignUp.IsEnabled = false;
 
-            await DisplayAlert("final", decyptedMessage, "ok");
+            if (tbLogin.Text == null || tbPassword.Text == null)
+            {
+                await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
+            }
+            else
+            {
 
-            //btnSignIn.IsEnabled = false;
-            //btnSignUp.IsEnabled = false;
+                classSHA256 classSHA256instance = new classSHA256();
+                string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
 
-            //if (tbLogin.Text==null||tbPassword.Text==null)
-            //{
-            //    await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
-            //}
-            //else
-            //{
+                Argon argon = new Argon();
+                string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
 
-            //    classSHA256 classSHA256instance = new classSHA256();
-            //    string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
-
-            //    Argon argon = new Argon();
-            //    string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
-
-            //    classSignature classSign = new classSignature();
+                classSignature classSign = new classSignature();
 
 
-            //    classRSA rsa = new classRSA();
-            //    string publicKey = rsa.GetPublicBase64();
-            //    string privateKey = rsa.GetPrivateBase64();
+                RSAUtil rSAUtil = new RSAUtil();
+                List<string> keys = rSAUtil.CreateKeys();
 
 
-            //    fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, publicKey);
+                fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, keys[1]);
 
 
-            //    if (fetchedData != null)
-            //    {
-            //        WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, privateKey);
-            //        App.Current.MainPage = new AppShell();
-            //    }
-            //    else
-            //    {
-            //        await DisplayAlert("Oh shit, I'm sorry!", "Sorry for what?", "ok");
-            //    }
-                
-            //}
+                if (fetchedData != null)
+                {
+                    WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, keys[0]);
+                    App.Current.MainPage = new AppShell();
+                }
+                else
+                {
+                    await DisplayAlert("Oh sh*t, I'm sorry!", "Sorry for what?", "ok");
+                }
 
-            //btnSignIn.IsEnabled = true;
-            //btnSignUp.IsEnabled = true;
+            }
+
+            btnSignIn.IsEnabled = true;
+            btnSignUp.IsEnabled = true;
         }
 
 
@@ -131,6 +123,16 @@ namespace Cryptorin.Views
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 
             App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64);
+        }
+
+        private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)
+        {
+            string result = await DisplayPromptAsync("Change domain", "Enter new domain (default: https://cryptorin.ru):", keyboard: Keyboard.Email);
+            if (result!=null||result!="")
+            {
+                Preferences.Set("serverAddress", result);
+                ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+            }
         }
 
         //private void tbLogin_Completed(object sender, EventArgs e)

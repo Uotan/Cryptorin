@@ -57,13 +57,6 @@ namespace Cryptorin.Views
 
 
 
-        private async void tbiFindUser_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync(nameof(ViewChat));
-        }
-
-
-
 
 
 
