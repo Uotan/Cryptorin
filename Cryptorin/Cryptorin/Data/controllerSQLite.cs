@@ -6,6 +6,7 @@ using SQLite;
 using Cryptorin.Classes.SQLiteClasses;
 using Cryptorin.Classes;
 using System.Collections.ObjectModel;
+using System.Net;
 
 namespace Cryptorin.Data
 {
@@ -113,8 +114,8 @@ namespace Cryptorin.Data
                 foreach (var item in messages)
                 {
                     classMessageTemplate template = new classMessageTemplate();
-                    template.from_whom = item.from_whom;
-                    template.content = item.content;
+                    template.from_whom = item.from_whom.ToString();
+                    template.content = WebUtility.UrlDecode(item.content);
                     template.datetime = item.datetime;
                     messages2return.Add(template);
                 }

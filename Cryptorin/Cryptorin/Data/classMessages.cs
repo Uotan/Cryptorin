@@ -44,7 +44,7 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/sendMessage.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
-                //result = result.Trim();
+                //result = result.Remove(20);
                 return result;
             }
             catch (Exception)

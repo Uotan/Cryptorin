@@ -83,7 +83,7 @@ namespace Cryptorin.Views
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     CheckKeyNumber();
-                    //MessageShow();
+                    MessageShow();
                 });
                 return true;
             });
@@ -105,10 +105,17 @@ namespace Cryptorin.Views
         
         private async void collectionMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
+            var MyCollectionView = sender as CollectionView;
+            if (MyCollectionView.SelectedItem == null)
+                return;
+
             classMessageTemplate messageItem = (classMessageTemplate)e.CurrentSelection.FirstOrDefault();
             Debug.WriteLine(messageItem.content);
             await Clipboard.SetTextAsync(messageItem.content);
             await this.DisplayToastAsync("Text copied", 2000);
+
+            ((CollectionView)sender).SelectedItem = null;
         }
 
 
@@ -133,20 +140,20 @@ namespace Cryptorin.Views
                         string DEcryptedText = rSAUtil.Decrypt(myData.private_key,item.rsa_cipher);
 
                         classMessageTemplate template = new classMessageTemplate();
-                        template.from_whom = item.from_whom;
-                        template.content = DEcryptedText;
-                        //template.content = WebUtility.UrlDecode(DEcryptedText); ;
+                        template.from_whom = item.from_whom.ToString();
+                        template.content = WebUtility.UrlDecode(DEcryptedText);
                         template.datetime = item.datetime;
 
-                        Debug.WriteLine(template.content);
-
-
                         MessagesCurrent.Add(template);
+
+                        Debug.WriteLine(item.from_whom + ": " + DEcryptedText + "[" + item.datetime + "]");
+
+                        //MessagesCurrent.Add(template);
 
                         Message mess = new Message();
                         mess.from_whom = item.from_whom;
                         mess.for_whom = item.for_whom;
-                        //mess.content = WebUtility.UrlDecode(DEcryptedText);
+                        mess.content = WebUtility.UrlDecode(DEcryptedText);
                         mess.content = DEcryptedText;
                         mess.datetime = item.datetime;
 
@@ -180,13 +187,13 @@ namespace Cryptorin.Views
 
             if (result != "error")
             {
-                Debug.WriteLine(result);
+                Debug.WriteLine(myData.id+": "+ entrContent.Text+"["+result+"]");
+
 
                 classMessageTemplate template = new classMessageTemplate();
-                template.from_whom = myData.id;
+                template.from_whom = myData.id.ToString();
                 template.content = entrContent.Text;
-                //template.datetime = result;
-                template.datetime = null;
+                template.datetime = result;
 
                 MessagesCurrent.Add(template);
 
