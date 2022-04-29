@@ -28,9 +28,11 @@ namespace Cryptorin.Views
         int CountMessOnDB;
         int CountMessLocal;
 
+        bool isReady = true;
+
         RSAUtil rSAUtil = new RSAUtil();
 
-        ObservableCollection<classMessageTemplate> MessagesCurrent;
+        ObservableCollection<classMessageTemplate> MessagesCurrent = new ObservableCollection<classMessageTemplate>();
 
         MyData myData = App.myDB.ReadMyData();
 
@@ -41,7 +43,6 @@ namespace Cryptorin.Views
         public ViewChat()
         {
             InitializeComponent();
-            MessagesCurrent = new ObservableCollection<classMessageTemplate>();
         }
 
 
@@ -72,17 +73,28 @@ namespace Cryptorin.Views
             frameTop.BackgroundColor = Color.FromHex(user.hex_color);
             userName.Text = WebUtility.UrlDecode(user.public_name);
 
-            MessagesCurrent = App.myDB.GetMessages(user.id, myData.id);
+            var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
 
-            collectionMessages.ItemsSource = MessagesCurrent;
+            if (fetchedMessagedData != null)
+            {
+                foreach (var item in fetchedMessagedData)
+                {
+                    MessagesCurrent.Add(item);
+                }
+                collectionMessages.ItemsSource = MessagesCurrent;
+                CountMessLocal = MessagesCurrent.Count;
+            }
+            
+            
 
-            CheckKeyNumber();
+            //CheckKeyNumber();
 
             Device.StartTimer(new TimeSpan(0, 0, 2), () =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     CheckKeyNumber();
+                    Task.Delay(500);
                     MessageShow();
                 });
                 return true;
@@ -121,9 +133,13 @@ namespace Cryptorin.Views
 
         private void MessageShow()
         {
-
+            if (isReady==false)
+            {
+                return;
+            }
+            isReady = false;
             CountMessOnDB = classMess.GetCountOfMessages(myData.id, user.id, myData.login, myData.password);
-            CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
+            //CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
 
             if (CountMessLocal < CountMessOnDB)
             {
@@ -145,15 +161,15 @@ namespace Cryptorin.Views
                         template.datetime = item.datetime;
 
                         MessagesCurrent.Add(template);
+                        CountMessLocal = MessagesCurrent.Count;
 
                         Debug.WriteLine(item.from_whom + ": " + DEcryptedText + "[" + item.datetime + "]");
 
-                        //MessagesCurrent.Add(template);
 
                         Message mess = new Message();
                         mess.from_whom = item.from_whom;
                         mess.for_whom = item.for_whom;
-                        mess.content = WebUtility.UrlDecode(DEcryptedText);
+                        //mess.content = WebUtility.UrlDecode(DEcryptedText);
                         mess.content = DEcryptedText;
                         mess.datetime = item.datetime;
 
@@ -165,6 +181,7 @@ namespace Cryptorin.Views
 
                 //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
             }
+            isReady = true;
 
         }
 
@@ -196,12 +213,13 @@ namespace Cryptorin.Views
                 template.datetime = result;
 
                 MessagesCurrent.Add(template);
+                CountMessLocal = MessagesCurrent.Count;
 
                 //add to local table
                 Message mess = new Message();
                 mess.from_whom = myData.id;
                 mess.for_whom = user.id;
-                mess.content = entrContent.Text;
+                mess.content = urlEncodedMessage;
                 mess.datetime = result;
                 App.myDB.AddMessageCompleted(mess);
 

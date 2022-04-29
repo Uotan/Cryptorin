@@ -66,6 +66,10 @@ namespace Cryptorin.Views
             string result = await DisplayPromptAsync("Find user", "Enter user ID:", keyboard: Keyboard.Numeric);
             try
             {
+                if (result==null)
+                {
+                    return;
+                }
                 classSignature classSignature = new classSignature();
                 fetchedUser fetchedUser = classSignature.fetchUserData(Convert.ToInt32(result));
                 MyData myData = App.myDB.ReadMyData();
