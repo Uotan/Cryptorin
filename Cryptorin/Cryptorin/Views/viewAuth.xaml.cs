@@ -20,7 +20,7 @@ namespace Cryptorin.Views
     public partial class ViewAuth : ContentPage
     {
 
-        
+
 
         public ViewAuth()
         {
@@ -53,13 +53,12 @@ namespace Cryptorin.Views
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
 
-
             btnSignIn.IsEnabled = false;
             btnSignUp.IsEnabled = false;
 
             if (tbLogin.Text == null || tbPassword.Text == null)
             {
-                await DisplayAlert("Oh shit, I'm sorry!", "No login or password entered", "ok");
+                await DisplayAlert("Oh s**t, I'm sorry!", "No login or password entered", "ok");
             }
             else
             {
@@ -87,13 +86,17 @@ namespace Cryptorin.Views
                 }
                 else
                 {
-                    await DisplayAlert("Oh sh*t, I'm sorry!", "Sorry for what?", "ok");
+                    await DisplayAlert("Oh s**t, I'm sorry!", "Authorization error.", "ok");
                 }
 
             }
 
             btnSignIn.IsEnabled = true;
             btnSignUp.IsEnabled = true;
+
+
+
+
         }
 
 
@@ -113,9 +116,8 @@ namespace Cryptorin.Views
 
 
 
-        void WriteLocalData(fetchedUser _fetcheData, string _login,string _password,string _privateKey)
+        void WriteLocalData(fetchedUser _fetcheData, string _login, string _password, string _privateKey)
         {
-            //Delete all local data
             App.myDB.DeleteAllData();
 
             classSignature signInstance = new classSignature();
@@ -128,11 +130,12 @@ namespace Cryptorin.Views
         private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)
         {
             string result = await DisplayPromptAsync("Change domain", "Enter new domain (default: https://cryptorin.ru):", keyboard: Keyboard.Email);
-            if (result!=null||result!="")
+            if (result == null || result == "")
             {
-                Preferences.Set("serverAddress", result);
-                ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+                return;
             }
+            Preferences.Set("serverAddress", result);
+            ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
         }
 
         //private void tbLogin_Completed(object sender, EventArgs e)

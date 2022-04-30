@@ -11,7 +11,7 @@ namespace Cryptorin.Data
 {
     public class classMessages
     {
-        public int GetCountOfMessages(int _from,int _to, string _login, string _password)
+        public int GetCountOfMessagesFithUser(int _from,int _to, string _login, string _password)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -21,7 +21,7 @@ namespace Cryptorin.Data
             param.Add("password", _password);
             try
             {
-                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getCountOfMessages.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getCountOfMessagesFromUser.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 return Convert.ToInt32(result);
             }
@@ -54,7 +54,7 @@ namespace Cryptorin.Data
         }
 
 
-        public List<fetchedMessage> GetMessages(int _from, int _to, string _login, string _password, int _count)
+        public List<fetchedMessage> GetMessagesFromUser(int _from, int _to, string _login, string _password, int _count)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -65,7 +65,7 @@ namespace Cryptorin.Data
             param.Add("count", _count.ToString());
             try
             {
-                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getMessages.php", "POST", param);
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getMessagesFromUser.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 List<fetchedMessage> Data = JsonConvert.DeserializeObject<List<fetchedMessage>>(result);
                 return Data;

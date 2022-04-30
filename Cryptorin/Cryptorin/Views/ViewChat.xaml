@@ -40,7 +40,7 @@
                     <DataTemplate>
                         <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding from_whom}" FontSize="Small"></Label>
+                                <Label Text="{Binding from_whom}" MinimumWidthRequest="50" FontAttributes="Bold" FontSize="Small"></Label>
                                 <Label Text=": " FontSize="Small"></Label>
                                 <Label Text="{Binding content}" FontSize="Small"></Label>
                             </StackLayout>

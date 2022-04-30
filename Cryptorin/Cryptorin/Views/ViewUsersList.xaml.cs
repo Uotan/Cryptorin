@@ -66,7 +66,7 @@ namespace Cryptorin.Views
             string result = await DisplayPromptAsync("Find user", "Enter user ID:", keyboard: Keyboard.Numeric);
             try
             {
-                if (result==null)
+                if (result==null||result=="")
                 {
                     return;
                 }

@@ -29,7 +29,7 @@ namespace Cryptorin
         {
             InitializeComponent();
 
-            if (!Preferences.ContainsKey("serverAddress"))
+            if (!Preferences.ContainsKey("serverAddress")|| Preferences.Get("serverAddress", null)=="")
             {
                 Preferences.Set("serverAddress", "https://cryptorin.ru");
                 ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
