@@ -166,6 +166,23 @@ namespace Cryptorin.Data
             }
         }
 
+        public string GetUserPublicKey(int _id)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("id", _id.ToString());
+            try
+            {
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getUserPublicKey.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
 
         public fetchedUser fetchUserData(int _id)
@@ -246,7 +263,5 @@ namespace Cryptorin.Data
                 return null;
             }
         }
-
-
     }
 }

@@ -48,7 +48,7 @@ namespace Cryptorin.Data
         }
 
 
-        public void DeleteMessages()
+        public void DeleteAllMessages()
         {
             db.DeleteAll<Message>();
         }
@@ -59,7 +59,7 @@ namespace Cryptorin.Data
             List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userId && x.from_whom == myData.id) || (x.for_whom == myData.id && x.from_whom == _userId)).ToList();
             foreach (var item in messages)
             {
-                db.Delete<Message>(item);
+                db.Delete<Message>(item.IDlocal);
             }
         }
 

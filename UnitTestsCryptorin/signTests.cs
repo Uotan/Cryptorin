@@ -92,12 +92,22 @@ namespace UnitTestsCryptorin
 
 
         [TestMethod]
-        public void TestGetKyNumber()
+        public void TestGetKeyNumber()
         {
             classSignature signature = new classSignature();
             string result = signature.GetUserKeyNumber(38);
             Console.WriteLine(result);
 
         }
+
+
+        //[TestMethod]
+        //public void TestGetUserKey()
+        //{
+        //    classSignature signature = new classSignature();
+        //    string result = signature.GetUserPublicKey(38);
+        //    Console.WriteLine(result);
+
+        //}
     }
 }

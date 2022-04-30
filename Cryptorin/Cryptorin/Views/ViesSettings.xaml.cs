@@ -19,6 +19,10 @@ namespace Cryptorin.Views
     {
         MyData myData;
         FileResult file;
+
+        classSignature signature = new classSignature();
+        RSAUtil rSAUtil = new RSAUtil();
+
         public ViesSettings()
         {
             InitializeComponent();
@@ -185,18 +189,20 @@ namespace Cryptorin.Views
             if (answer)
             {
 
-                App.myDB.DeleteMessages();
+                App.myDB.DeleteAllMessages();
 
-                RSAUtil rSAUtil = new RSAUtil();
+                
                 List<string> keys = rSAUtil.CreateKeys();
 
-                classSignature signature = new classSignature();
-                string newKeyNumb = signature.UpdateKeys(myData.login,myData.password,keys[1]);
+                
+                string newKeyNumb = signature.UpdateKeys(myData.login, myData.password, keys[1]);
 
                 myData.private_key = keys[0];
                 myData.key_number = newKeyNumb;
                 App.myDB.UpdateMyData(myData);
                 await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
+
+
 
             }
         }
