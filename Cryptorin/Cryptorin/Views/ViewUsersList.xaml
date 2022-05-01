@@ -6,7 +6,7 @@
              Title="Messenger">
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent">
         <StackLayout>
-            <SearchBar TextColor="{DynamicResource colorLabel}" CancelButtonColor="{DynamicResource colorLabel}" FontSize="20" PlaceholderColor="{DynamicResource colorEntryPlaceholder}" ></SearchBar>
+            <SearchBar x:Name="searchField" TextChanged="searchField_TextChanged" TextColor="{DynamicResource colorLabel}" CancelButtonColor="{DynamicResource colorLabel}" FontSize="20" PlaceholderColor="{DynamicResource colorEntryPlaceholder}" ></SearchBar>
             <ScrollView>
                 <CollectionView Margin="10,10,0,0" x:Name="userCollector"
                     SelectionMode="Single" SelectionChanged="userCollector_SelectionChanged">

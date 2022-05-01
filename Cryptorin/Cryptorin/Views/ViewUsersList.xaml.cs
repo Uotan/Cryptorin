@@ -21,6 +21,7 @@ namespace Cryptorin.Views
     public partial class ViewUsersList : ContentPage
     {
         ObservableCollection<UserTemplate> userList = new ObservableCollection<UserTemplate>();
+        ObservableCollection<UserTemplate> userListSorted = new ObservableCollection<UserTemplate>();
         List<User> userListFromDB = new List<User>();
         public ViewUsersList()
         {
@@ -92,7 +93,7 @@ namespace Cryptorin.Views
                     userTemplate.id = user2.id;
                     userTemplate.public_name = WebUtility.UrlDecode(user2.public_name);
                     userTemplate.hex_color = Color.FromHex(user2.hex_color);
-                    userTemplate.image_source = null;
+                    
                     try
                     {
                         if (user2.image != null || user2.image != "")
@@ -104,7 +105,9 @@ namespace Cryptorin.Views
                     }
                     catch (Exception ex)
                     {
+                        userTemplate.image_source = null;
                     }
+                    searchField.Text = null;
                     userList.Add(userTemplate);
                 }
             }
@@ -153,15 +156,23 @@ namespace Cryptorin.Views
             
         }
 
-
-
-
-
-
-        private async void RefreshView_Refreshing(object sender, EventArgs e)
+        private void searchField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            await Task.Delay(3000);
-            ((RefreshView)sender).IsRefreshing = false;
+            if (searchField.Text == null||searchField.Text == "")
+            {
+                userCollector.ItemsSource = userList;
+            }
+            else
+            {
+                userListSorted.Clear();
+                var sortedList = userList.Where(x => x.public_name.Contains(searchField.Text)).ToList();
+                foreach (var item in sortedList)
+                {
+                    userListSorted.Add(item);
+                }
+                userCollector.ItemsSource = userListSorted;
+            }
+
         }
     }
 }

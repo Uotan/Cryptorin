@@ -19,12 +19,14 @@ using System.Collections.ObjectModel;
 
 namespace Cryptorin.Views
 {
-    [QueryProperty(nameof(UserID),nameof(UserID))]
+    [QueryProperty(nameof(UserID), nameof(UserID))]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewChat : ContentPage
     {
         User user;
+
         string keyNumber;
+
         int CountMessOnDB;
         int CountMessLocal;
 
@@ -36,6 +38,7 @@ namespace Cryptorin.Views
         RSAUtil rSAUtil = new RSAUtil();
 
         ObservableCollection<classMessageTemplate> MessagesCurrent = new ObservableCollection<classMessageTemplate>();
+        
 
         MyData myData = App.myDB.ReadMyData();
 
@@ -75,12 +78,12 @@ namespace Cryptorin.Views
                             Debug.WriteLine("user public key updated");
                             //DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
                         }
-                        
+
                     }
 
                 }
             });
-            
+
         }
 
         public int UserID
@@ -107,7 +110,7 @@ namespace Cryptorin.Views
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    imageUser.Source = null;
                 }
 
                 frameTop.BackgroundColor = Color.FromHex(user.hex_color);
@@ -125,17 +128,17 @@ namespace Cryptorin.Views
                     {
                         MessagesCurrent.Add(item);
                     }
-                    
-                    CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
+
+                    //CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
                 }
 
 
                 collectionMessages.ItemsSource = MessagesCurrent;
 
-                if (CountMessLocal > 0)
-                {
-                    collectionMessages.ScrollTo(CountMessLocal - 1);
-                }
+                //if (CountMessLocal > 0)
+                //{
+                //    collectionMessages.ScrollTo(CountMessLocal - 1);
+                //}
 
 
                 Device.StartTimer(new TimeSpan(0, 0, 2), () =>
@@ -147,10 +150,14 @@ namespace Cryptorin.Views
                     return true;
                 });
             });
-            
+
         }
         async void CheckKeyNumber()
         {
+            CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
+            CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
+
+
             if (isReady2 == false)
             {
                 return;
@@ -177,10 +184,10 @@ namespace Cryptorin.Views
             isReady2 = true;
 
         }
-        
 
 
-        
+
+
 
 
         async private void FetchMessages()
@@ -192,8 +199,18 @@ namespace Cryptorin.Views
                     return;
                 }
                 isReady = false;
-                CountMessOnDB = classMess.GetCountOfMessagesFithUser(user.id, myData.id, myData.login, myData.password);
-                CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
+                if (firstTime)
+                {
+                    if (CountMessLocal>0)
+                    {
+                        //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+
+                    }
+                    
+                    firstTime = false;
+                }
+                //CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
+                //CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
                 if (CountMessLocal < CountMessOnDB)
                 {
@@ -204,30 +221,32 @@ namespace Cryptorin.Views
                     foreach (var item in _searchAnswer)
                     {
 
-                            string DEcryptedText = rSAUtil.Decrypt(myData.private_key, item.rsa_cipher);
+                        string DEcryptedText = rSAUtil.Decrypt(myData.private_key, item.rsa_cipher);
 
-                            classMessageTemplate template = new classMessageTemplate();
-                            template.from_whom = item.from_whom.ToString();
-                            template.content = WebUtility.UrlDecode(DEcryptedText);
-                            template.datetime = item.datetime;
-
-                            MessagesCurrent.Add(template);
-
-                            Debug.WriteLine(item.from_whom + ": " + DEcryptedText + "[" + item.datetime + "]");
-
-                            Message mess = new Message();
-                            mess.from_whom = item.from_whom;
-                            mess.for_whom = item.for_whom;
-                            mess.content = DEcryptedText;
-                            mess.datetime = item.datetime;
-
-                            App.myDB.AddMessage(mess);
+                        classMessageTemplate template = new classMessageTemplate();
+                        template.from_whom = item.from_whom.ToString();
+                        template.content = WebUtility.UrlDecode(DEcryptedText);
+                        template.datetime = item.datetime;
 
 
-                        
+
+                        //Debug.WriteLine(item.from_whom + ": " + DEcryptedText + "[" + item.datetime + "]");
+
+                        Message mess = new Message();
+                        mess.from_whom = item.from_whom;
+                        mess.for_whom = item.for_whom;
+                        mess.content = DEcryptedText;
+                        mess.datetime = item.datetime;
+
+                        App.myDB.AddMessage(mess);
+
+                        MessagesCurrent.Add(template);
+
+
+
                     }
 
-                    collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                    //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
                 }
                 isReady = true;
             });
@@ -237,13 +256,13 @@ namespace Cryptorin.Views
 
         void entrContent_Completed(object sender, EventArgs e)
         {
-            if (entrContent.Text == ""|| entrContent.Text == null)
+            if (entrContent.Text == "" || entrContent.Text == null)
             {
                 return;
             }
 
             isReady = false;
-            
+
             var urlEncodedMessage = WebUtility.UrlEncode(entrContent.Text);
 
             RSAUtil rSAUtil = new RSAUtil();
@@ -265,7 +284,7 @@ namespace Cryptorin.Views
                 template.content = entrContent.Text;
                 template.datetime = result;
 
-                MessagesCurrent.Add(template);
+
 
                 Message mess = new Message();
                 mess.from_whom = myData.id;
@@ -274,9 +293,9 @@ namespace Cryptorin.Views
                 mess.datetime = result;
                 App.myDB.AddMessageCompleted(mess);
 
+                MessagesCurrent.Add(template);
 
-
-
+                //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
             }
             entrContent.Text = null;
             isReady = true;

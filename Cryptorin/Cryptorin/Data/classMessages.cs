@@ -11,7 +11,7 @@ namespace Cryptorin.Data
 {
     public class classMessages
     {
-        public int GetCountOfMessagesFithUser(int _from,int _to, string _login, string _password)
+        public int GetCountOfMessagesWithUser(int _from,int _to, string _login, string _password)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
