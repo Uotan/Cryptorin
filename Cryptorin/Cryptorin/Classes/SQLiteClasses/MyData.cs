@@ -15,6 +15,7 @@ namespace Cryptorin.Classes.SQLiteClasses
         public string password { get; set; }
         public string private_key { get; set; }
         public string key_number { get; set; }
+        public string changes_index { get; set; }
         public string image { get; set; }
         
     }

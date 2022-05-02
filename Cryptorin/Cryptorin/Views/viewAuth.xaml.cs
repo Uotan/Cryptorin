@@ -124,7 +124,7 @@ namespace Cryptorin.Views
 
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64);
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64,_fetcheData.changes_index);
         }
 
         private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)

@@ -263,5 +263,24 @@ namespace Cryptorin.Data
                 return null;
             }
         }
+
+
+        public string GetUserChangeIndex(int _id)
+        {
+            WebClient client = new WebClient();
+            NameValueCollection param = new NameValueCollection();
+            param.Add("id", _id.ToString());
+            try
+            {
+                var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getUserChangeIndex.php", "POST", param);
+                string result = Encoding.Default.GetString(response);
+                result = result.Trim();
+                return result;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
     }
 }

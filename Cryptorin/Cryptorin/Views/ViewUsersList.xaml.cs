@@ -131,7 +131,7 @@ namespace Cryptorin.Views
             string baseImage = classSignature.GetImage(_fetchedUser.id);
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
-            App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color);
+            App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color,_fetchedUser.changes_index);
         }
 
 

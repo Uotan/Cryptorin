@@ -64,7 +64,7 @@ namespace Cryptorin.Data
         }
 
 
-        public void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image)
+        public void WriteMyData(int _id,string _publicName,string _privateKey,string _login, string _password, string _keyNumber,string _image, string _changes_index)
         {
             MyData myData = new MyData();
             myData.id = _id;
@@ -73,11 +73,12 @@ namespace Cryptorin.Data
             myData.login = _login;
             myData.password = _password;
             myData.key_number = _keyNumber;
+            myData.changes_index = _changes_index;
             myData.image = _image;
             db.Insert(myData);
         }
 
-        public void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor)
+        public void AddUser(int _id, string _publicName, string _publicKey, string _keyNumber, string _image, string _hexColor, string _changes_index)
         {
             User newUserData = new User();
             newUserData.id = _id;
@@ -86,6 +87,7 @@ namespace Cryptorin.Data
             newUserData.key_number = _keyNumber;
             newUserData.image = _image;
             newUserData.hex_color = _hexColor;
+            newUserData.changes_index = _changes_index;
             db.Insert(newUserData);
         }
 

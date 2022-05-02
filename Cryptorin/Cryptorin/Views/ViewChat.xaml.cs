@@ -25,10 +25,14 @@ namespace Cryptorin.Views
     {
         User user;
 
-        string keyNumber;
+        int user_id;
+
+        string keyNumber = "";
 
         int CountMessOnDB;
         int CountMessLocal;
+
+        bool timerAlive = false;
 
         bool isReady = true;
         bool isReady2 = true;
@@ -38,7 +42,7 @@ namespace Cryptorin.Views
         RSAUtil rSAUtil = new RSAUtil();
 
         ObservableCollection<classMessageTemplate> MessagesCurrent = new ObservableCollection<classMessageTemplate>();
-        
+
 
         MyData myData = App.myDB.ReadMyData();
 
@@ -49,40 +53,45 @@ namespace Cryptorin.Views
         public ViewChat()
         {
             InitializeComponent();
-            firstKeycheck();
+
+            //firstKeycheck();
 
         }
 
-        async void firstKeycheck()
+
+
+        void firstKeycheck()
         {
-            await Task.Run(() =>
+
+
+            string changeIndex = signature.GetUserChangeIndex(user.id);
+
+            keyNumber = signature.GetUserKeyNumber(user.id);
+
+            Debug.WriteLine("user change INDEX:" + changeIndex);
+
+            if (keyNumber != user.key_number)
             {
-                bool check = false;
-                while (!check)
-                {
-                    if (user != null)
-                    {
-                        check = true;
-                        keyNumber = signature.GetUserKeyNumber(user.id);
-                        if (keyNumber != user.key_number)
-                        {
-                            var fetchUser = signature.fetchUserData(user.id);
-                            user.key_number = fetchUser.key_number;
-                            user.public_key = fetchUser.public_key;
-                            App.myDB.DeleteMessagesWithUser(user.id);
+                Debug.WriteLine("I ' m  H e r e");
+                var fetchUser = signature.fetchUserData(user.id);
+                user.key_number = fetchUser.key_number;
+                user.public_key = fetchUser.public_key;
+                App.myDB.DeleteMessagesWithUser(user.id);
 
-                            App.myDB.UpdateUserData(user);
+                App.myDB.UpdateUserData(user);
 
-                            MessagesCurrent.Clear();
-                            this.DisplayToastAsync("The user has updated the keys", 2000);
-                            Debug.WriteLine("user public key updated");
-                            //DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
-                        }
+                MessagesCurrent.Clear();
+                this.DisplayToastAsync("The user has updated the keys", 2000);
 
-                    }
+                Debug.WriteLine("user public key updated");
 
-                }
-            });
+            }
+
+
+
+
+
+
 
         }
 
@@ -93,6 +102,7 @@ namespace Cryptorin.Views
                 ShowUserDataAndCheck(value);
             }
         }
+
         async void ShowUserDataAndCheck(int _id)
         {
             await Task.Run(() =>
@@ -117,9 +127,6 @@ namespace Cryptorin.Views
                 userName.Text = WebUtility.UrlDecode(user.public_name);
 
 
-
-
-
                 var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
 
                 if (fetchedMessagedData != null)
@@ -128,65 +135,91 @@ namespace Cryptorin.Views
                     {
                         MessagesCurrent.Add(item);
                     }
-
-                    //CountMessLocal = App.myDB.GetCountOfMessagesLocal(myData.id, user.id);
                 }
 
 
                 collectionMessages.ItemsSource = MessagesCurrent;
 
-                //if (CountMessLocal > 0)
+
+                timerAlive = true;
+                CheckKeyNumber();
+
+
+
+
+                //Device.StartTimer(new TimeSpan(0, 0, 2), () =>
                 //{
-                //    collectionMessages.ScrollTo(CountMessLocal - 1);
-                //}
-
-
-                Device.StartTimer(new TimeSpan(0, 0, 2), () =>
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        CheckKeyNumber();
-                    });
-                    return true;
-                });
+                //    Device.BeginInvokeOnMainThread(() =>
+                //    {
+                //        CheckKeyNumber();
+                //    });
+                //    return true;
+                //});
             });
 
         }
+
         async void CheckKeyNumber()
         {
-            CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
-            CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
-
-
-            if (isReady2 == false)
+            while (timerAlive)
             {
-                return;
-            }
-            isReady2 = false;
-            keyNumber = signature.GetUserKeyNumber(user.id);
-            if (keyNumber != user.key_number)
-            {
-                var fetchUser = signature.fetchUserData(user.id);
-                user.key_number = fetchUser.key_number;
-                user.public_key = fetchUser.public_key;
-                App.myDB.DeleteMessagesWithUser(user.id);
+                if (isReady2 == false)
+                {
+                    return;
+                }
+                isReady2 = false;
 
-                App.myDB.UpdateUserData(user);
+                Debug.WriteLine("check key number method starts");
 
-                MessagesCurrent.Clear();
+                CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
+                CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
-                await DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
+                keyNumber = signature.GetUserKeyNumber(user.id);
+                if (keyNumber != user.key_number)
+                {
+                    var fetchUser = signature.fetchUserData(user.id);
+                    user.key_number = fetchUser.key_number;
+                    user.public_key = fetchUser.public_key;
+                    App.myDB.DeleteMessagesWithUser(user.id);
+
+                    App.myDB.UpdateUserData(user);
+
+                    MessagesCurrent.Clear();
+
+                    Debug.WriteLine("user public key updated");
+                    await this.DisplayToastAsync("The user has updated the keys", 2000);
+                    //await DisplayAlert("Attention", "The user has updated the keys - all messages will be deleted.", "Ok");
+                }
+                else
+                {
+                    FetchMessages();
+                }
+                await Task.Delay(2000);
+
+                isReady2 = true;
+                Debug.WriteLine("check key number method END");
+
+
             }
-            else
-            {
-                FetchMessages();
-            }
-            isReady2 = true;
+
 
         }
 
 
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                var result = await this.DisplayAlert("Alert!", "Do you really want to exit?", "Yes", "No");
+                if (result)
+                {
+                    timerAlive = false;
+                    await Shell.Current.GoToAsync("..");
+                }
+            });
 
+            return true;
+        }
 
 
 
@@ -194,61 +227,57 @@ namespace Cryptorin.Views
         {
             await Task.Run(() =>
             {
-                if (isReady == false)
+                if (isReady != false)
                 {
-                    return;
-                }
-                isReady = false;
-                if (firstTime)
-                {
-                    if (CountMessLocal>0)
+                    isReady = false;
+                    if (firstTime)
                     {
+                        if (CountMessLocal > 0)
+                        {
+                            //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+
+                        }
+
+                        firstTime = false;
+                    }
+                    //CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
+                    //CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
+
+                    if (CountMessLocal < CountMessOnDB)
+                    {
+                        int fetchCount = CountMessOnDB - CountMessLocal;
+
+                        var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, myData.login, myData.password, fetchCount);
+
+                        foreach (var item in _searchAnswer)
+                        {
+
+                            string DEcryptedText = rSAUtil.Decrypt(myData.private_key, item.rsa_cipher);
+
+                            classMessageTemplate template = new classMessageTemplate();
+                            template.from_whom = item.from_whom.ToString();
+                            template.content = WebUtility.UrlDecode(DEcryptedText);
+                            template.datetime = item.datetime;
+
+                            Message mess = new Message();
+                            mess.from_whom = item.from_whom;
+                            mess.for_whom = item.for_whom;
+                            mess.content = DEcryptedText;
+                            mess.datetime = item.datetime;
+
+                            App.myDB.AddMessage(mess);
+
+                            MessagesCurrent.Add(template);
+
+
+
+                        }
+
                         //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
-
                     }
-                    
-                    firstTime = false;
+                    isReady = true;
                 }
-                //CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
-                //CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
-                if (CountMessLocal < CountMessOnDB)
-                {
-                    int fetchCount = CountMessOnDB - CountMessLocal;
-
-                    var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, myData.login, myData.password, fetchCount);
-
-                    foreach (var item in _searchAnswer)
-                    {
-
-                        string DEcryptedText = rSAUtil.Decrypt(myData.private_key, item.rsa_cipher);
-
-                        classMessageTemplate template = new classMessageTemplate();
-                        template.from_whom = item.from_whom.ToString();
-                        template.content = WebUtility.UrlDecode(DEcryptedText);
-                        template.datetime = item.datetime;
-
-
-
-                        //Debug.WriteLine(item.from_whom + ": " + DEcryptedText + "[" + item.datetime + "]");
-
-                        Message mess = new Message();
-                        mess.from_whom = item.from_whom;
-                        mess.for_whom = item.for_whom;
-                        mess.content = DEcryptedText;
-                        mess.datetime = item.datetime;
-
-                        App.myDB.AddMessage(mess);
-
-                        MessagesCurrent.Add(template);
-
-
-
-                    }
-
-                    //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
-                }
-                isReady = true;
             });
         }
 

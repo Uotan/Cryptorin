@@ -15,5 +15,6 @@ namespace Cryptorin.Classes.SQLiteClasses
         public string key_number { get; set; }
         public string image { get; set; }
         public string hex_color { get; set; }
+        public string changes_index { get; set; }
     }
 }
