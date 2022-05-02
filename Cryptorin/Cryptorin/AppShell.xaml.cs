@@ -19,34 +19,29 @@ namespace Cryptorin
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AppShell : Shell
     {
-
+        bool timerAlive = false;
         public AppShell()
         {
             InitializeComponent();
+
             Routing.RegisterRoute(nameof(ViewChat),typeof(ViewChat));
 
-            checkConnection2server();
+            timerAlive = !timerAlive;
 
-            Device.StartTimer(new TimeSpan(0, 0, 5), () =>
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    //tampering check
-                });
-                return true;
-            });
+            CheckConnection();
+
+            //Device.StartTimer(new TimeSpan(0, 0, 5), () =>
+            //{
+            //    Device.BeginInvokeOnMainThread(() =>
+            //    {
+            //        checkConnection2server();
+            //    });
+            //    return true;
+            //});
 
         }
 
-        async void checkConnection2server()
-        {
-            checkConnection checker = new checkConnection();
-            bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
-            if (!result)
-            {
-                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
-            }
-        }
+
 
 
         private async void mnItmQuit_Clicked(object sender, EventArgs e)
@@ -66,6 +61,20 @@ namespace Cryptorin
         {
             Uri uri = new Uri("https://github.com/Uotan/Cryptorin");
             await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+        }
+
+        async void CheckConnection()
+        {
+            while (timerAlive)
+            {
+                checkConnection checker = new checkConnection();
+                bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+                if (!result)
+                {
+                    await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                }
+                await Task.Delay(5000);
+            }
         }
     }
 }

@@ -69,6 +69,11 @@ namespace Cryptorin.Views
                 if (result== "Updated")
                 {
                     myData.public_name = urlEncodedPublicName;
+
+                    int _indexChanges = Convert.ToInt32(myData.changes_index);
+                    _indexChanges++;
+                    myData.changes_index = _indexChanges.ToString();
+
                     App.myDB.UpdateMyData(myData);
                     entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
                     entryChgPubName.Text = "";
@@ -141,11 +146,20 @@ namespace Cryptorin.Views
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
                 classSignature classSignature = new classSignature();
                 string result = classSignature.UpdateImage(myData.login, myData.password,base64ImageRepresentation);
-                baseImage = classSignature.GetImage(myData.id);
-                myData.image = baseImage;
-                App.myDB.UpdateMyData(myData);
-                await DisplayAlert("Report", result+ "\nRestart the application", "Ok");
-                imagePicker.Source = "iconImage.png";
+                if (result== "Updated")
+                {
+                    baseImage = classSignature.GetImage(myData.id);
+                    myData.image = baseImage;
+
+                    int _indexChanges = Convert.ToInt32(myData.changes_index);
+                    _indexChanges++;
+                    myData.changes_index = _indexChanges.ToString();
+
+                    App.myDB.UpdateMyData(myData);
+                    await DisplayAlert("Report", result + "\nRestart the application", "Ok");
+                    imagePicker.Source = "iconImage.png";
+                }
+                
                 
             }
             else

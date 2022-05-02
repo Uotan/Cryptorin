@@ -54,44 +54,28 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
 
-            //firstKeycheck();
 
         }
 
 
 
-        void firstKeycheck()
+        async void CheckChangeIndex()
         {
-
 
             string changeIndex = signature.GetUserChangeIndex(user.id);
 
-            keyNumber = signature.GetUserKeyNumber(user.id);
-
             Debug.WriteLine("user change INDEX:" + changeIndex);
 
-            if (keyNumber != user.key_number)
+            if (changeIndex != user.changes_index)
             {
-                Debug.WriteLine("I ' m  H e r e");
                 var fetchUser = signature.fetchUserData(user.id);
-                user.key_number = fetchUser.key_number;
-                user.public_key = fetchUser.public_key;
-                App.myDB.DeleteMessagesWithUser(user.id);
-
+                user.public_name = WebUtility.UrlDecode(fetchUser.public_name);
+                user.image = signature.GetImage(fetchUser.id);
+                user.changes_index = changeIndex;
                 App.myDB.UpdateUserData(user);
-
-                MessagesCurrent.Clear();
-                this.DisplayToastAsync("The user has updated the keys", 2000);
-
-                Debug.WriteLine("user public key updated");
-
+                await this.DisplayToastAsync("Public data has been updated", 2000);
+                Debug.WriteLine("Updated User data");
             }
-
-
-
-
-
-
 
         }
 
@@ -109,8 +93,11 @@ namespace Cryptorin.Views
             {
                 user = App.myDB.GetUser(_id);
 
+                
+
                 try
                 {
+
                     if (user.image != null || user.image != "")
                     {
                         byte[] byteArray = Convert.FromBase64String(user.image);
@@ -126,6 +113,7 @@ namespace Cryptorin.Views
                 frameTop.BackgroundColor = Color.FromHex(user.hex_color);
                 userName.Text = WebUtility.UrlDecode(user.public_name);
 
+                
 
                 var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
 
@@ -141,20 +129,29 @@ namespace Cryptorin.Views
                 collectionMessages.ItemsSource = MessagesCurrent;
 
 
+
                 timerAlive = true;
-                CheckKeyNumber();
+
+                checkConnection checker = new checkConnection();
+                bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+                if (!result)
+                {
+                    entrContent.IsEnabled = false;
+                    DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                }
+                else
+                {
+                    CheckChangeIndex();
+                    Task.Delay(200);
+                    CheckKeyNumber();
+                }
+
+                
 
 
 
 
-                //Device.StartTimer(new TimeSpan(0, 0, 2), () =>
-                //{
-                //    Device.BeginInvokeOnMainThread(() =>
-                //    {
-                //        CheckKeyNumber();
-                //    });
-                //    return true;
-                //});
+                
             });
 
         }
@@ -234,7 +231,7 @@ namespace Cryptorin.Views
                     {
                         if (CountMessLocal > 0)
                         {
-                            //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                            collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
 
                         }
 
@@ -273,7 +270,7 @@ namespace Cryptorin.Views
 
                         }
 
-                        //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                        collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
                     }
                     isReady = true;
                 }
@@ -324,7 +321,7 @@ namespace Cryptorin.Views
 
                 MessagesCurrent.Add(template);
 
-                //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
             }
             entrContent.Text = null;
             isReady = true;
