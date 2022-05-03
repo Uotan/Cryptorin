@@ -52,13 +52,20 @@ namespace Cryptorin.Views
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
+            checkConnection checker = new checkConnection();
+            bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            if (!connectionResult)
+            {
+                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                return;
+            }
 
             btnSignIn.IsEnabled = false;
             btnSignUp.IsEnabled = false;
 
             if (tbLogin.Text == null || tbPassword.Text == null)
             {
-                await DisplayAlert("Oh s**t, I'm sorry!", "No login or password entered", "ok");
+                await DisplayAlert("Oh, I'm sorry!", "No login or password entered", "ok");
             }
             else
             {

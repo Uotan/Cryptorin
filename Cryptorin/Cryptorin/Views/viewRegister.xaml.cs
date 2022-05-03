@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 using System.IO;
 using System.Net;
+using Cryptorin.Classes;
 
 namespace Cryptorin.Views
 {
@@ -53,6 +54,13 @@ namespace Cryptorin.Views
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
+            checkConnection checker = new checkConnection();
+            bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            if (!connectionResult)
+            {
+                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                return;
+            }
             string base64ImageRepresentation = null;
             if (file!=null)
             {
@@ -70,7 +78,7 @@ namespace Cryptorin.Views
             try
             {
                 
-                if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="" && tbPublicName.Text!="")
+                if (tbPassw.Text == tbRepPassw.Text && tbPassw.Text!="" && tbPublicName.Text!=""&&tbLogin.Text!="" && tbPassw.Text != null && tbPublicName.Text != null && tbLogin.Text != null)
                 {
                     var urlEncodedPublicName = WebUtility.UrlEncode(tbPublicName.Text);
 
@@ -101,6 +109,10 @@ namespace Cryptorin.Views
                         await DisplayAlert("Error", "This login already exists", "Ok");
                     }
 
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Incorrectly entered data", "Ok");
                 }
             }
             catch (Exception ex)
