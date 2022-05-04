@@ -5,31 +5,34 @@
              Style="{DynamicResource cntPageColor}">
     
     <ContentPage.Content>
-        <StackLayout Padding="10,20,10,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">
-            
-            <Label Text="Sign up to Cryptorin" Margin="0,0,0,30" FontSize="Title" HorizontalTextAlignment="Center"></Label>
-            
-            <Entry x:Name="tbPublicName" Placeholder="Public name"/>
-            <Entry x:Name="tbLogin" Placeholder="Login" IsPassword="True"/>
-            <Entry x:Name="tbPassw" Placeholder="Password" IsPassword="True"/>
-            <Entry x:Name="tbRepPassw" Placeholder="Repeat password" IsPassword="True"/>
+        <ScrollView>
+            <StackLayout Padding="10,20,10,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">
 
-            <Frame  Margin="0,10,0,5" Padding="0"
+                <Label Text="Sign up to Cryptorin" Margin="0,0,0,30" FontSize="Title" HorizontalTextAlignment="Center"></Label>
+
+                <Entry x:Name="tbPublicName" Placeholder="Public name"/>
+                <Entry x:Name="tbLogin" Placeholder="Login" IsPassword="True"/>
+                <Entry x:Name="tbPassw" Placeholder="Password" IsPassword="True"/>
+                <Entry x:Name="tbRepPassw" Placeholder="Repeat password" IsPassword="True"/>
+
+                <Frame  Margin="0,10,0,5" Padding="0"
                    HeightRequest="150"
                    WidthRequest="150"
                    
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
                         BackgroundColor="#adacaa">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                </Frame.GestureRecognizers>
-                <Image x:Name="imagePicker" Aspect="Fill" Source="iconImage.png"
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Frame.GestureRecognizers>
+                    <Image x:Name="imagePicker" Aspect="Fill" Source="iconImage.png"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
-            </Frame>
-            <Label Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
-            <Button x:Name="btnSignUp" Text="Sign up" Clicked="btnSignUp_Clicked"/>
-        </StackLayout>
+                </Frame>
+                <Label Text="Pick image (1:1 recommended) not necessary" Margin="0,0,0,40" FontSize="Small"  HorizontalTextAlignment="Center"></Label>
+                <Button x:Name="btnSignUp" Text="Sign up" Clicked="btnSignUp_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+        
     </ContentPage.Content>
 </ContentPage>

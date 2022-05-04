@@ -107,7 +107,16 @@ namespace UnitTestsCryptorin
         //    classSignature signature = new classSignature();
         //    string result = signature.GetUserPublicKey(38);
         //    Console.WriteLine(result);
-
         //}
+
+        [TestMethod]
+        public void TestGetUserChangeIndex()
+        {
+            classSignature signature = new classSignature();
+            string result = signature.GetUserChangeIndex(39);
+            Console.WriteLine("index: "+result);
+
+        }
+        
     }
 }

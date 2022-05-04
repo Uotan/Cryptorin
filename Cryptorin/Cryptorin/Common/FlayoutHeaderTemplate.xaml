@@ -18,7 +18,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"></Image>
         </Frame>
-        <Label x:Name="lblId" HorizontalOptions="Center" Margin="10" Text="#0000" FontSize="Medium">???</Label>
+        <Label x:Name="lblId" HorizontalOptions="Center" Margin="10" Text="#0000" FontSize="Medium"></Label>
         <Label x:Name="lblPublicName" Margin="3" HorizontalOptions="Center" FontSize="30">???</Label>
     </StackLayout>
 </Grid>
