@@ -4,6 +4,7 @@ using Cryptorin.Data;
 using Cryptorin.Views;
 using Cryptorin.Common;
 using Cryptorin.Classes;
+using System.Diagnostics;
 
 namespace UnitTestsCryptorin
 {
@@ -101,19 +102,21 @@ namespace UnitTestsCryptorin
         }
 
 
-        //[TestMethod]
-        //public void TestGetUserKey()
-        //{
-        //    classSignature signature = new classSignature();
-        //    string result = signature.GetUserPublicKey(38);
-        //    Console.WriteLine(result);
-        //}
+        [TestMethod]
+        public void TestGetUserKey()
+        {
+            classSignature signature = new classSignature();
+            string result = signature.GetUserPublicKey(38);
+            Console.WriteLine(result);
+            Debug.WriteLine("shit");
+            Debug.WriteLine(result);
+        }
 
         [TestMethod]
         public void TestGetUserChangeIndex()
         {
             classSignature signature = new classSignature();
-            string result = signature.GetUserChangeIndex(39);
+            string result = signature.GetUserChangeIndex(38);
             Console.WriteLine("index: "+result);
 
         }

@@ -50,40 +50,41 @@ namespace UnitTestsCryptorin
             Assert.AreEqual(assert, hash);
         }
 
-        //[TestMethod]
-        //public void TestGetCountMessage()
-        //{
-        //    classMessages signature = new classMessages();
-        //    int result = signature.GetCountOfMessages(12,15,"huy199", "187c6c9e881d33ab9c94cb369d76f8d16e505143bd6fedbfe80ccf3f413d98d2");
-
-        //    Console.WriteLine("Count:"+result);
-        //    Assert.AreEqual(11, result);
-        //}
-
-
         [TestMethod]
-        public void TestSendMessage()
+        public void TestGetCountMessage()
         {
+
             classMessages signature = new classMessages();
-            string result = signature.SendMessage(38, 39, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", "unit_test");
+            int result = signature.GetCountOfMessagesWithUser(41, 38, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b");
 
-            Console.WriteLine(result);
-
+            Console.WriteLine("Count:" + result);
+            //Assert.AreEqual(11, result);
         }
 
 
         //[TestMethod]
-        //public void TestGetMessages()
+        //public void TestSendMessage()
         //{
         //    classMessages signature = new classMessages();
+        //    string result = signature.SendMessage(38, 39, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", "unit_test");
 
-        //    List<fetchedMessage> result = signature.GetMessages(38, 39, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", 8);
-        //    foreach (var item in result)
-        //    {
-        //        Console.WriteLine(item.from_whom + " - " + item.for_whom + ": " + item.rsa_cipher);
-        //    }
+        //    Console.WriteLine(result);
 
         //}
+
+
+        [TestMethod]
+        public void TestGetMessages()
+        {
+            classMessages signature = new classMessages();
+
+            List<fetchedMessage> result = signature.GetMessagesFromUser(38, 41, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", 1);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item.from_whom + " - " + item.for_whom + ": " + item.rsa_cipher);
+            }
+
+        }
 
 
 
