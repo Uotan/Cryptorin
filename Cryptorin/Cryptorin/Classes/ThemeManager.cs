@@ -9,6 +9,7 @@ namespace Cryptorin.Classes
 
         Color colorDarkButton = Color.FromArgb(255, 74, 80, 89);
         Color colorLightButton = Color.FromArgb(255, 124, 148, 166);
+        //Color colorDarkessButton = Color.FromArgb(255, 48, 52, 59);
 
         Color colorMainBackgroundDark = Color.FromArgb(255, 44, 52, 64);
         Color colorMainBackgroundLight = Color.FromArgb(255, 244, 244, 244);

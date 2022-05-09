@@ -13,6 +13,7 @@ using Xamarin.Forms.Xaml;
 using Cryptorin.Classes.SQLiteClasses;
 using System.Diagnostics;
 using Xamarin.Essentials;
+using System.Drawing;
 
 namespace Cryptorin.Views
 {
@@ -26,6 +27,12 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
             checkConnection2server();
+
+
+            //tbLogin.Completed += (s, e) =>
+            //{
+            //    tbPassword.Focus();
+            //};
 
         }
 
@@ -46,66 +53,120 @@ namespace Cryptorin.Views
 
 
 
+        async Task<bool> checkConnet()
+        {
+            await Task.Delay(50);
+            checkConnection checker = new checkConnection();
+            bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            if (!connectionResult)
+            {
+                //btnSignIn.IsEnabled = true;
+                //btnSignUp.IsEnabled = true;
+                //btnSignIn.Text = "Sign In";
 
+                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                
+            }
+
+            return connectionResult;
+        }
 
 
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
-            checkConnection checker = new checkConnection();
-            bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
-            if (!connectionResult)
-            {
-                await DisplayAlert("Error", "The connection to the server is not established", "Ok");
-                return;
-            }
-
-            btnSignIn.IsEnabled = false;
-            btnSignUp.IsEnabled = false;
-
             if (tbLogin.Text == null || tbPassword.Text == null)
             {
                 await DisplayAlert("Oh, I'm sorry!", "No login or password entered", "ok");
             }
             else
             {
+                btnSignIn.Text = "Please Wait";
+                btnSignIn.IsEnabled = false;
+                btnSignUp.IsEnabled = false;
 
-                classSHA256 classSHA256instance = new classSHA256();
-                string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
+                var connectResult = await checkConnet();
 
-                Argon argon = new Argon();
-                string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
-
-                classSignature classSign = new classSignature();
-
-
-                RSAUtil rSAUtil = new RSAUtil();
-                List<string> keys = rSAUtil.CreateKeys();
-
-
-                fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, keys[1]);
-
-
-                if (fetchedData != null)
+                if (connectResult)
                 {
-                    WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, keys[0]);
-                    App.Current.MainPage = new AppShell();
+                    var writeResult = await AuthMethod();
+                    if (writeResult)
+                    {
+                        App.Current.MainPage = new AppShell();
+                    }
+                    else
+                    {
+                        await DisplayAlert("Oh, I'm sorry!", "Something's wrong", "ok");
+                        btnSignIn.IsEnabled = true;
+                        btnSignUp.IsEnabled = true;
+                        btnSignIn.Text = "Sign In";
+                    }
                 }
                 else
                 {
-                    await DisplayAlert("Oh, I'm sorry!", "Authorization error.", "ok");
+                    btnSignIn.IsEnabled = true;
+                    btnSignUp.IsEnabled = true;
+                    btnSignIn.Text = "Sign In";
+                    return;
                 }
 
+
+
             }
-
-            btnSignIn.IsEnabled = true;
-            btnSignUp.IsEnabled = true;
-
-
-
-
         }
 
+        async Task<bool> AuthMethod()
+        {
+            await Task.Delay(50);
+            classSHA256 classSHA256instance = new classSHA256();
+            string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
+
+            Argon argon = new Argon();
+            string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
+
+            classSignature classSign = new classSignature();
+
+
+            RSAUtil rSAUtil = new RSAUtil();
+            List<string> keys = rSAUtil.CreateKeys();
+
+
+            fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, keys[1]);
+
+            if (fetchedData != null)
+            {
+                string code = await DisplayPromptAsync("Come up with a security code", "Enter code:", keyboard: Keyboard.Email);
+                if (code==null||code=="")
+                {
+                    return false;
+                }
+
+                classSHA256 sHA256 = new classSHA256();
+                string hash_secureCode = sHA256.ComputeSha256Hash(code);
+                hash_secureCode = hash_secureCode.Remove(16);
+                Debug.WriteLine(hash_secureCode);
+                keyClass.AESkey = hash_secureCode;
+                classAES aES = new classAES(hash_secureCode);
+
+                var base64code = aES.Encrypt(hash_secureCode);
+
+                Debug.WriteLine(base64code);
+
+                Preferences.Set("secretCode", base64code);
+
+                string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
+                Debug.WriteLine("key encrypted: " + symmetricallyEncryptedKey);
+                WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, symmetricallyEncryptedKey);
+                Debug.WriteLine("My data WRITED");
+                return true;
+                
+            }
+            else
+            {
+                await DisplayAlert("Oh, I'm sorry!", "Authorization error.", "ok");
+                return false;
+            }
+        }
 
 
 
@@ -131,7 +192,7 @@ namespace Cryptorin.Views
 
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 
-            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64,_fetcheData.changes_index);
+            App.myDB.WriteMyData(_fetcheData.id, _fetcheData.public_name, _privateKey, _login, _password, _fetcheData.key_number, imageBase64, _fetcheData.changes_index);
         }
 
         private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)
@@ -144,11 +205,5 @@ namespace Cryptorin.Views
             Preferences.Set("serverAddress", result);
             ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
         }
-
-        //private void tbLogin_Completed(object sender, EventArgs e)
-        //{
-        //    var _passentry = tbPassword;
-        //    _passentry?.Focus();
-        //}
     }
 }

@@ -104,6 +104,8 @@ namespace Cryptorin.Data
 
         public ObservableCollection<classMessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
         {
+            classAES aES = new classAES(keyClass.AESkey);
+            
             int count = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).Count();
 
             if (count>0)
@@ -117,7 +119,8 @@ namespace Cryptorin.Data
                 {
                     classMessageTemplate template = new classMessageTemplate();
                     template.from_whom = item.from_whom.ToString();
-                    template.content = WebUtility.UrlDecode(item.content);
+                    var decryptedCipher = WebUtility.UrlDecode(aES.Decrypt(item.content));
+                    template.content = decryptedCipher.Trim();
                     template.datetime = item.datetime;
                     messages2return.Add(template);
                 }

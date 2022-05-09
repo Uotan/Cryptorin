@@ -25,7 +25,6 @@ namespace Cryptorin.Views
     {
         User user;
 
-        int user_id;
 
         string keyNumber = "";
 
@@ -45,6 +44,9 @@ namespace Cryptorin.Views
 
 
         MyData myData = App.myDB.ReadMyData();
+        classAES aES = new classAES(keyClass.AESkey);
+        string decryptedPrivateKey = null;
+
 
         classMessages classMess = new classMessages();
 
@@ -89,6 +91,7 @@ namespace Cryptorin.Views
 
         async void ShowUserDataAndCheck(int _id)
         {
+            decryptedPrivateKey = aES.Decrypt(myData.private_key);
             await Task.Run(() =>
             {
                 user = App.myDB.GetUser(_id);
@@ -249,7 +252,10 @@ namespace Cryptorin.Views
                         foreach (var item in _searchAnswer)
                         {
 
-                            string DEcryptedText = rSAUtil.Decrypt(myData.private_key, item.rsa_cipher);
+                            string DEcryptedText = rSAUtil.Decrypt(decryptedPrivateKey, item.rsa_cipher);
+
+                            string AESmessage = aES.Encrypt(DEcryptedText);
+
 
                             classMessageTemplate template = new classMessageTemplate();
                             template.from_whom = item.from_whom.ToString();
@@ -259,7 +265,8 @@ namespace Cryptorin.Views
                             Message mess = new Message();
                             mess.from_whom = item.from_whom;
                             mess.for_whom = item.for_whom;
-                            mess.content = DEcryptedText;
+                            //mess.content = DEcryptedText;
+                            mess.content = AESmessage;
                             mess.datetime = item.datetime;
 
                             App.myDB.AddMessage(mess);
@@ -280,51 +287,68 @@ namespace Cryptorin.Views
 
 
 
-        void entrContent_Completed(object sender, EventArgs e)
+        async void entrContent_Completed(object sender, EventArgs e)
         {
             if (entrContent.Text == "" || entrContent.Text == null)
             {
                 return;
             }
 
-            isReady = false;
-
             var urlEncodedMessage = WebUtility.UrlEncode(entrContent.Text);
+            var notEncodedText = entrContent.Text;
 
-            RSAUtil rSAUtil = new RSAUtil();
-
-            string cryptedText = rSAUtil.Encrypt(user.public_key, urlEncodedMessage);
-
-            classMessages classMess = new classMessages();
-
-            string result = classMess.SendMessage(myData.id, user.id, myData.login, myData.password, cryptedText);
-
-
-            if (result != "error")
-            {
-                Debug.WriteLine(myData.id + ": " + entrContent.Text + "[" + result + "]");
-
-
-                classMessageTemplate template = new classMessageTemplate();
-                template.from_whom = myData.id.ToString();
-                template.content = entrContent.Text;
-                template.datetime = result;
-
-
-
-                Message mess = new Message();
-                mess.from_whom = myData.id;
-                mess.for_whom = user.id;
-                mess.content = urlEncodedMessage;
-                mess.datetime = result;
-                App.myDB.AddMessageCompleted(mess);
-
-                MessagesCurrent.Add(template);
-
-                collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
-            }
             entrContent.Text = null;
-            isReady = true;
+
+            await Task.Run(() =>
+            {
+                
+
+                //isReady = false;
+
+                
+
+                RSAUtil rSAUtil = new RSAUtil();
+
+                string cryptedText = rSAUtil.Encrypt(user.public_key, urlEncodedMessage);
+
+                classMessages classMess = new classMessages();
+
+                string result = classMess.SendMessage(myData.id, user.id, myData.login, myData.password, cryptedText);
+
+
+                if (result != "error")
+                {
+                    //Debug.WriteLine(myData.id + ": " + entrContent.Text + "[" + result + "]");
+
+
+                    classMessageTemplate template = new classMessageTemplate();
+                    template.from_whom = myData.id.ToString();
+                    //template.content = entrContent.Text;
+                    template.content = notEncodedText;
+                    template.datetime = result;
+
+                    string AESmessage = aES.Encrypt(urlEncodedMessage);
+
+
+                    Message mess = new Message();
+                    mess.from_whom = myData.id;
+                    mess.for_whom = user.id;
+                    //mess.content = urlEncodedMessage;
+                    mess.content = AESmessage;
+                    mess.datetime = result;
+                    App.myDB.AddMessageCompleted(mess);
+
+                    MessagesCurrent.Add(template);
+
+                    collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                }
+                
+                //isReady = true;
+
+            } );
+
+            
+
         }
 
 

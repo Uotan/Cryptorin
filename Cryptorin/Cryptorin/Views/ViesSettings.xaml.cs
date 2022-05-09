@@ -211,7 +211,12 @@ namespace Cryptorin.Views
                 
                 string newKeyNumb = signature.UpdateKeys(myData.login, myData.password, keys[1]);
 
-                myData.private_key = keys[0];
+                classAES aES = new classAES(keyClass.AESkey);
+                string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
+
+
+                //myData.private_key = keys[0];
+                myData.private_key = symmetricallyEncryptedKey;
                 myData.key_number = newKeyNumb;
                 App.myDB.UpdateMyData(myData);
                 await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");

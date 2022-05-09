@@ -176,5 +176,17 @@ namespace UnitTestsCryptorin
             string decyptedMessage = rSAUtil.Decrypt(keys[0],cipher);
             Console.Write(decyptedMessage);
         }
-    }
+
+
+        [TestMethod]
+        public void TestEncyptKey()
+        {
+            RSAUtil rSAUtil = new RSAUtil();
+            List<string> keys = rSAUtil.CreateKeys();
+            classAES aES = new classAES(keyClass.AESkey);
+            string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
+            Console.Write(symmetricallyEncryptedKey);
+
+        }
+}
 }

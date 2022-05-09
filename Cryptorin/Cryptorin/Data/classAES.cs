@@ -42,27 +42,35 @@ namespace Cryptorin.Data
         /// <returns></returns>
         public string Encrypt(string _message)
         {
-            //зашифрованные данные в виде массива байтов
-            byte[] cryptedMessageByteArray;
-            using (MemoryStream fileStream = new MemoryStream())
+            try
             {
-                byte[] iv = aes.IV;
-                fileStream.Write(iv, 0, iv.Length);
-                using (CryptoStream cryptoStream = new CryptoStream(
-                    fileStream,
-                    aes.CreateEncryptor(),
-                    CryptoStreamMode.Write))
+                //зашифрованные данные в виде массива байтов
+                byte[] cryptedMessageByteArray;
+                using (MemoryStream fileStream = new MemoryStream())
                 {
-                    using (StreamWriter encryptWriter = new StreamWriter(cryptoStream))
+                    byte[] iv = aes.IV;
+                    fileStream.Write(iv, 0, iv.Length);
+                    using (CryptoStream cryptoStream = new CryptoStream(
+                        fileStream,
+                        aes.CreateEncryptor(),
+                        CryptoStreamMode.Write))
                     {
-                        encryptWriter.WriteLine(_message);
+                        using (StreamWriter encryptWriter = new StreamWriter(cryptoStream))
+                        {
+                            encryptWriter.WriteLine(_message);
+                        }
                     }
+                    cryptedMessageByteArray = fileStream.ToArray();
                 }
-                cryptedMessageByteArray = fileStream.ToArray();
+                //конвертируем полученный массив в удобный для чтения и ДАЛЬНЕЙШЕЙ передачи формат
+                string base64_cryptedData = Convert.ToBase64String(cryptedMessageByteArray);
+                return base64_cryptedData;
             }
-            //конвертируем полученный массив в удобный для чтения и ДАЛЬНЕЙШЕЙ передачи формат
-            string base64_cryptedData = Convert.ToBase64String(cryptedMessageByteArray);
-            return base64_cryptedData;
+            catch (Exception)
+            {
+                return null;
+            }
+            
         }
 
 
@@ -74,33 +82,41 @@ namespace Cryptorin.Data
         /// <returns></returns>
         public string Decrypt(string _base64cipher)
         {
-            byte[] base64EncodedBytes = Convert.FromBase64String(_base64cipher);
-            using (MemoryStream fileStream = new MemoryStream(base64EncodedBytes))
+            try
             {
-                byte[] iv = new byte[aes.IV.Length];
-                int numBytesToRead = aes.IV.Length;
-                int numBytesRead = 0;
-                while (numBytesToRead > 0)
+                byte[] base64EncodedBytes = Convert.FromBase64String(_base64cipher);
+                using (MemoryStream fileStream = new MemoryStream(base64EncodedBytes))
                 {
-                    int n = fileStream.Read(iv, numBytesRead, numBytesToRead);
-                    if (n == 0) break;
-
-                    numBytesRead += n;
-                    numBytesToRead -= n;
-                }
-
-                using (CryptoStream cryptoStream = new CryptoStream(
-                   fileStream,
-                   aes.CreateDecryptor(key, iv),
-                   CryptoStreamMode.Read))
-                {
-                    using (StreamReader decryptReader = new StreamReader(cryptoStream))
+                    byte[] iv = new byte[aes.IV.Length];
+                    int numBytesToRead = aes.IV.Length;
+                    int numBytesRead = 0;
+                    while (numBytesToRead > 0)
                     {
-                        string decryptedMessage = decryptReader.ReadToEnd();
-                        return decryptedMessage;
+                        int n = fileStream.Read(iv, numBytesRead, numBytesToRead);
+                        if (n == 0) break;
+
+                        numBytesRead += n;
+                        numBytesToRead -= n;
+                    }
+
+                    using (CryptoStream cryptoStream = new CryptoStream(
+                       fileStream,
+                       aes.CreateDecryptor(key, iv),
+                       CryptoStreamMode.Read))
+                    {
+                        using (StreamReader decryptReader = new StreamReader(cryptoStream))
+                        {
+                            string decryptedMessage = decryptReader.ReadToEnd();
+                            return decryptedMessage;
+                        }
                     }
                 }
             }
+            catch (Exception)
+            {
+                return null;
+            }
+            
 
         }
     }

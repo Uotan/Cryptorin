@@ -27,32 +27,7 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
             Appearing += ViewUsersList_Appearing; ;
-            //Disappearing += ViewUsersList_Disappearing; ;
-
-            //userListFromDB = App.myDB.GetUsers();
-            //foreach (var item in userListFromDB)
-            //{
-            //    UserTemplate userForList = new UserTemplate();
-            //    userForList.id = item.id;
-            //    //userForList.public_name = item.public_name;
-            //    userForList.public_name = WebUtility.UrlDecode(item.public_name);
-            //    userForList.hex_color = Color.FromHex(item.hex_color);
-            //    userForList.image_source = null;
-            //    try
-            //    {
-            //        if (item.image != null || item.image != "")
-            //        {
-            //            byte[] byteArray = Convert.FromBase64String(item.image);
-            //            ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-            //            userForList.image_source = image_Source;
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //    }
-            //    userList.Add(userForList);
-            //}
-            //userCollector.ItemsSource = userList;
+            
 
         }
 
@@ -60,33 +35,38 @@ namespace Cryptorin.Views
         {
             await Task.Run(() =>
             {
-                Debug.WriteLine("Appear");
-                userListFromDB.Clear();
-                userList.Clear();
-                userListFromDB = App.myDB.GetUsers();
-                foreach (var item in userListFromDB)
-                {
-                    UserTemplate userForList = new UserTemplate();
-                    userForList.id = item.id;
-                    //userForList.public_name = item.public_name;
-                    userForList.public_name = WebUtility.UrlDecode(item.public_name);
-                    userForList.hex_color = Color.FromHex(item.hex_color);
-                    userForList.image_source = null;
-                    try
+
+                    Debug.WriteLine("Appear");
+                    userListFromDB.Clear();
+                    userList.Clear();
+                    userListFromDB = App.myDB.GetUsers();
+                    foreach (var item in userListFromDB)
                     {
-                        if (item.image != null || item.image != "")
+                        UserTemplate userForList = new UserTemplate();
+                        userForList.id = item.id;
+                        //userForList.public_name = item.public_name;
+                        userForList.public_name = WebUtility.UrlDecode(item.public_name);
+                        userForList.hex_color = Color.FromHex(item.hex_color);
+                        userForList.image_source = null;
+                        try
                         {
-                            byte[] byteArray = Convert.FromBase64String(item.image);
-                            ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                            userForList.image_source = image_Source;
+                            if (item.image != null || item.image != "")
+                            {
+                                byte[] byteArray = Convert.FromBase64String(item.image);
+                                ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                                userForList.image_source = image_Source;
+                            }
                         }
+                        catch (Exception ex)
+                        {
+                        }
+                        userList.Add(userForList);
                     }
-                    catch (Exception ex)
-                    {
-                    }
-                    userList.Add(userForList);
-                }
-                userCollector.ItemsSource = userList;
+                    userCollector.ItemsSource = userList;
+                
+                    
+                
+                
             });
             
         }
@@ -96,7 +76,7 @@ namespace Cryptorin.Views
             string result = await DisplayPromptAsync("Find user", "Enter user ID:", keyboard: Keyboard.Numeric);
             try
             {
-                if (result==null||result=="")
+                if (result==null||result==""||keyClass.isUnlock==false)
                 {
                     return;
                 }
@@ -176,13 +156,16 @@ namespace Cryptorin.Views
             if (MyCollectionView.SelectedItem == null)
                 return;
 
+            if (keyClass.isUnlock)
+            {
+                UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
+                await Shell.Current.GoToAsync($"{nameof(ViewChat)}?{nameof(ViewChat.UserID)}={userItem.id}");
+                
+            }
 
-            UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
-            await Shell.Current.GoToAsync($"{nameof(ViewChat)}?{nameof(ViewChat.UserID)}={userItem.id}");
             ((CollectionView)sender).SelectedItem = null;
 
 
-            
         }
 
         private void searchField_TextChanged(object sender, TextChangedEventArgs e)

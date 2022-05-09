@@ -39,13 +39,15 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout Orientation="Vertical">
-                            <StackLayout Orientation="Horizontal">
-                                <Label Text="{Binding from_whom}" MinimumWidthRequest="50" FontAttributes="Bold" FontSize="Small"></Label>
-                                <Label Text=": " FontSize="Small"></Label>
-                                <Label Text="{Binding content}" FontSize="Small"></Label>
+                            <StackLayout Orientation="Horizontal" Margin="6,6,5,0" Padding="0">
+                                <Label Margin="0" Text="{Binding from_whom}" MinimumWidthRequest="60"  FontSize="18"></Label>
+                                <Label Margin="0" Text=":" FontSize="18"></Label>
+                                <Label Margin="0" Text="{Binding content}" FontSize="18"></Label>
                             </StackLayout>
+                            
+                            <Label Text="{Binding datetime}" Margin="40,0,0,0" TextColor="Gray"  FontSize="13"></Label>
 
-                            <Label Text="{Binding datetime}" TextColor="Gray"  FontSize="Small"></Label>
+
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

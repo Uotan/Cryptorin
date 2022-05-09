@@ -29,8 +29,7 @@ namespace Cryptorin.Common
         {
             InitializeComponent();
             Load();
-            //timerAlive = true;
-            //CheckChanges();
+
         }
 
         async void Load()
@@ -38,7 +37,6 @@ namespace Cryptorin.Common
             await Task.Run(() =>
             {
                 myData = App.myDB.ReadMyData();
-                //index = myData.changes_index;
                 //var byteArray = new WebClient().DownloadData("https://cryptorin.ru/images/" + myData.login + ".jpg");
                 try
                 {
@@ -55,24 +53,5 @@ namespace Cryptorin.Common
             });
 
         }
-
-        //async void CheckChanges()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        while (timerAlive)
-        //        {
-        //            myData = App.myDB.ReadMyData();
-        //            if (myData.changes_index != index)
-        //            {
-        //                Load();
-        //            }
-        //            index = myData.changes_index;
-        //            Task.Delay(5000);
-        //        }
-
-        //    });
-
-        //}
     }
 }

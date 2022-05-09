@@ -30,6 +30,8 @@ namespace Cryptorin
 
             CheckConnection();
 
+            EnterSecurityCode();
+
             //Device.StartTimer(new TimeSpan(0, 0, 5), () =>
             //{
             //    Device.BeginInvokeOnMainThread(() =>
@@ -42,7 +44,39 @@ namespace Cryptorin
         }
 
 
+        async void EnterSecurityCode()
+        {
+            string code = await DisplayPromptAsync("Enter the security code", "Enter code:", keyboard: Keyboard.Email);
 
+            if (code==null||code == "")
+            {
+                return;
+            }
+            classSHA256 sHA256 = new classSHA256();
+            string hash_secureCode = sHA256.ComputeSha256Hash(code);
+            hash_secureCode = hash_secureCode.Remove(16);
+
+            classAES aES = new classAES(hash_secureCode);
+
+            string secretCodeFromMemory = Preferences.Get("secretCode",null);
+
+            string decryptedSecreCode = aES.Decrypt(secretCodeFromMemory);
+
+            if (decryptedSecreCode!=null)
+            {
+                decryptedSecreCode = decryptedSecreCode.Trim();
+            }
+
+            if (decryptedSecreCode == hash_secureCode)
+            {
+                keyClass.AESkey = hash_secureCode;
+                keyClass.isUnlock = true;
+            }
+            else
+            {
+                await DisplayAlert("Oh, I'm sorry!", "Invalid security code", "ok");
+            }
+        }
 
         private async void mnItmQuit_Clicked(object sender, EventArgs e)
         {

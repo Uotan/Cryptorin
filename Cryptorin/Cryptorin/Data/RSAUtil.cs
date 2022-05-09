@@ -8,7 +8,7 @@ namespace Cryptorin.Data
 {
     // thank you Zhiqiang Li
     //https://github.com/stulzq/RSAUtil
-    //♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡
+    //♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥
     public class RSAUtil
     {
         /// <summary>
@@ -18,6 +18,7 @@ namespace Cryptorin.Data
         public List<string> CreateKeys()
         {
             var keyList = RsaKeyGenerator.Pkcs1Key(2048, false);
+            //var keyList = RsaKeyGenerator.Pkcs1Key(4096, false);
             return keyList;
         }
         public string Encrypt(string _publicKey,string _data)

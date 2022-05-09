@@ -56,12 +56,13 @@ namespace Cryptorin.Data
             byte[] password = Encoding.ASCII.GetBytes(_message);
             var argon2id = new Argon2id(password);
 
-            argon2id.DegreeOfParallelism = 10;
-            argon2id.MemorySize = 8192;
-            argon2id.Iterations = 20;
+            argon2id.DegreeOfParallelism = 2;
+            //argon2id.MemorySize = 8192;
+            argon2id.MemorySize = 2048;
+            argon2id.Iterations = 5;
             argon2id.Salt = salt;
 
-            var hash = argon2id.GetBytes(100);
+            var hash = argon2id.GetBytes(50);
 
             StringBuilder hex = new StringBuilder(hash.Length * 2);
             foreach (byte b in hash)
