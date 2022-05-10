@@ -13,6 +13,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Cryptorin.Data;
 using Cryptorin.Classes;
+using Cryptorin.Classes.SQLiteClasses;
 
 namespace Cryptorin
 {
@@ -29,6 +30,8 @@ namespace Cryptorin
             timerAlive = !timerAlive;
 
             CheckConnection();
+
+            CheckAnotherEntry();
 
             EnterSecurityCode();
 
@@ -50,8 +53,10 @@ namespace Cryptorin
 
             if (code==null||code == "")
             {
+                await DisplayAlert("Oh, I'm sorry!", "Invalid security code", "ok");
                 return;
             }
+            code = code.Trim();
             classSHA256 sHA256 = new classSHA256();
             string hash_secureCode = sHA256.ComputeSha256Hash(code);
             hash_secureCode = hash_secureCode.Remove(16);
@@ -108,6 +113,25 @@ namespace Cryptorin
                     await DisplayAlert("Error", "The connection to the server is not established", "Ok");
                 }
                 await Task.Delay(5000);
+            }
+        }
+
+        async void CheckAnotherEntry()
+        {
+            MyData mydata = new MyData();
+            mydata = App.myDB.ReadMyData();
+            while (timerAlive)
+            {
+                classSignature signature = new classSignature();
+                var result = signature.GetUserKeyNumber(mydata.id);
+                if (result!=mydata.key_number)
+                {
+                    mydata.key_number = result;
+                    App.myDB.UpdateMyData(mydata);
+                    await DisplayAlert("Attention", "Logged in from another device - change your password and update keys!", "Ok");
+
+                }
+                await Task.Delay(3000);
             }
         }
     }

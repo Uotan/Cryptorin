@@ -136,11 +136,12 @@ namespace Cryptorin.Views
             if (fetchedData != null)
             {
                 string code = await DisplayPromptAsync("Come up with a security code", "Enter code:", keyboard: Keyboard.Email);
+                
                 if (code==null||code=="")
                 {
                     return false;
                 }
-
+                code = code.Trim();
                 classSHA256 sHA256 = new classSHA256();
                 string hash_secureCode = sHA256.ComputeSha256Hash(code);
                 hash_secureCode = hash_secureCode.Remove(16);
@@ -148,15 +149,18 @@ namespace Cryptorin.Views
                 keyClass.AESkey = hash_secureCode;
                 classAES aES = new classAES(hash_secureCode);
 
-                var base64code = aES.Encrypt(hash_secureCode);
 
-                Debug.WriteLine(base64code);
+                var EncryptedSecurityCode = aES.Encrypt(hash_secureCode);
+                var EncryptedPassword = aES.Encrypt(hashPasswordHex);
 
-                Preferences.Set("secretCode", base64code);
+
+                Debug.WriteLine(EncryptedSecurityCode);
+
+                Preferences.Set("secretCode", EncryptedSecurityCode);
 
                 string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
                 Debug.WriteLine("key encrypted: " + symmetricallyEncryptedKey);
-                WriteLocalData(fetchedData, tbLogin.Text, hashPasswordHex, symmetricallyEncryptedKey);
+                WriteLocalData(fetchedData, tbLogin.Text, EncryptedPassword, symmetricallyEncryptedKey);
                 Debug.WriteLine("My data WRITED");
                 return true;
                 

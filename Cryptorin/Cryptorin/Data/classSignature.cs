@@ -117,8 +117,16 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePublicKey.php", "POST", param);
                 string stringResult = Encoding.Default.GetString(response);
-                stringResult = stringResult.Trim();
-                return stringResult;
+                if (stringResult != null || stringResult != "")
+                {
+                    stringResult = stringResult.Trim();
+                    return stringResult;
+                }
+                else
+                {
+                    return null;
+                }
+                
             }
             catch (Exception)
             {

@@ -18,19 +18,37 @@ namespace Cryptorin.Views
     public partial class ViesSettings : ContentPage
     {
         MyData myData;
-        FileResult file;
+        FileResult file = null;
+        string passwordHex;
 
         classSignature signature = new classSignature();
         RSAUtil rSAUtil = new RSAUtil();
+        classAES aES;
 
         public ViesSettings()
         {
             InitializeComponent();
+            Appearing += ViewUsersList_Appearing;
             setRadioBtnTheme();
             LoadMyData();
         }
 
+        private async void ViewUsersList_Appearing(object sender, EventArgs e)
+        {
+            await Task.Run(() =>
+            {
 
+                if (!keyClass.isUnlock)
+                {
+                    btnChangeImage.IsEnabled = false;
+                    btnChgPubName.IsEnabled = false;
+                    btnCngPassword.IsEnabled = false;
+                    btnUpdateKeys.IsEnabled = false;
+                }
+
+            });
+
+        }
 
 
 
@@ -40,6 +58,12 @@ namespace Cryptorin.Views
             {
                 myData = await App.myDB.ReadMyDataAsync();
                 entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
+                if (keyClass.isUnlock)
+                {
+                    aES = new classAES(keyClass.AESkey);
+                    passwordHex = aES.Decrypt(myData.password);
+                    passwordHex = passwordHex.Trim();
+                }
                 //if (myData.image != null)
                 //{
                 //    byte[] byteArray = Convert.FromBase64String(myData.image);
@@ -65,7 +89,7 @@ namespace Cryptorin.Views
             {
                 var urlEncodedPublicName = WebUtility.UrlEncode(entryChgPubName.Text);
                 classSignature signature = new classSignature();
-                string result = signature.UpdatePublicName(myData.login, myData.password, urlEncodedPublicName);
+                string result = signature.UpdatePublicName(myData.login, passwordHex, urlEncodedPublicName);
                 if (result== "Updated")
                 {
                     myData.public_name = urlEncodedPublicName;
@@ -105,7 +129,7 @@ namespace Cryptorin.Views
             Argon argon = new Argon();
             string oldPassHash = argon.Argon2id(entrPassOld.Text, hashSaltOld);
 
-            if (entrPassNew1.Text!=entrPassNew2.Text||entrPassNew1.Text==""||entrPassOld.Text==""|| oldPassHash != myData.password)
+            if (entrPassNew1.Text!=entrPassNew2.Text||entrPassNew1.Text==""||entrPassOld.Text==""|| oldPassHash != passwordHex)
             {
                 await DisplayAlert("Error", "Incorrectly entered data", "Ok");
                 
@@ -117,13 +141,19 @@ namespace Cryptorin.Views
                 string hashSaltNew = classSHA256instance.ComputeSha256Hash(myData.login + entrPassNew1.Text);
                 string newPassHash = argon.Argon2id(entrPassNew1.Text, hashSaltNew);
 
+                string passHexEncrypted = aES.Encrypt(newPassHash);
+                passwordHex = passHexEncrypted;
 
                 string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
                 if (result == "Updated")
                 {
-                    myData.password = newPassHash;
+                    myData.password = passwordHex;
                     App.myDB.UpdateMyData(myData);
                     await DisplayAlert("Report", result , "Ok");
+                }
+                else
+                {
+                    await DisplayAlert("Report", result, "Ok");
                 }
             }
             entrPassNew1.Text = null;
@@ -145,7 +175,7 @@ namespace Cryptorin.Views
                 byte[] imageArray = File.ReadAllBytes(file.FullPath);
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
                 classSignature classSignature = new classSignature();
-                string result = classSignature.UpdateImage(myData.login, myData.password,base64ImageRepresentation);
+                string result = classSignature.UpdateImage(myData.login, passwordHex, base64ImageRepresentation);
                 if (result== "Updated")
                 {
                     baseImage = classSignature.GetImage(myData.id);
@@ -159,8 +189,12 @@ namespace Cryptorin.Views
                     await DisplayAlert("Report", result + "\nRestart the application", "Ok");
                     imagePicker.Source = "iconImage.png";
                 }
-                
-                
+                else
+                {
+                    await DisplayAlert("Report", "Error", "Ok");
+                }
+
+                file = null;
             }
             else
             {
@@ -199,7 +233,7 @@ namespace Cryptorin.Views
 
         private async void btnUpdateKeys_Clicked(object sender, EventArgs e)
         {
-            bool answer = await DisplayAlert("Are you sure?", "This will delete all data!!!", "Yes", "No");
+            bool answer = await DisplayAlert("Are you sure?", "This will delete all data!", "Yes", "No");
             if (answer)
             {
 
@@ -209,7 +243,13 @@ namespace Cryptorin.Views
                 List<string> keys = rSAUtil.CreateKeys();
 
                 
-                string newKeyNumb = signature.UpdateKeys(myData.login, myData.password, keys[1]);
+                string newKeyNumb = signature.UpdateKeys(myData.login, passwordHex, keys[1]);
+
+                if (newKeyNumb==null)
+                {
+                    await DisplayAlert("Error", "The keys have not been updated.", "Ok");
+                    return;
+                }
 
                 classAES aES = new classAES(keyClass.AESkey);
                 string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);

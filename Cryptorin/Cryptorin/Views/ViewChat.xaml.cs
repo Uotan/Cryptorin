@@ -43,7 +43,9 @@ namespace Cryptorin.Views
         ObservableCollection<classMessageTemplate> MessagesCurrent = new ObservableCollection<classMessageTemplate>();
 
 
+        
         MyData myData = App.myDB.ReadMyData();
+        string passwordHex;
         classAES aES = new classAES(keyClass.AESkey);
         string decryptedPrivateKey = null;
 
@@ -55,7 +57,11 @@ namespace Cryptorin.Views
         public ViewChat()
         {
             InitializeComponent();
-
+            if (keyClass.isUnlock)
+            {
+                passwordHex = aES.Decrypt(myData.password);
+                passwordHex = passwordHex.Trim();
+            }
 
         }
 
@@ -75,10 +81,38 @@ namespace Cryptorin.Views
                 user.image = signature.GetImage(fetchUser.id);
                 user.changes_index = changeIndex;
                 App.myDB.UpdateUserData(user);
+
                 await this.DisplayToastAsync("Public data has been updated", 2000);
                 Debug.WriteLine("Updated User data");
+
+                
             }
 
+        }
+
+        async void DisplayUserInfo()
+        {
+            await Task.Run(() =>
+            {
+                frameTop.BackgroundColor = Color.FromHex(user.hex_color);
+                userName.Text = WebUtility.UrlDecode(user.public_name);
+
+                try
+                {
+
+                    if (user.image != null || user.image != "")
+                    {
+                        byte[] byteArray = Convert.FromBase64String(user.image);
+                        ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                        imageUser.Source = image_Source;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    imageUser.Source = null;
+                }
+
+            });
         }
 
         public int UserID
@@ -96,27 +130,7 @@ namespace Cryptorin.Views
             {
                 user = App.myDB.GetUser(_id);
 
-                
-
-                try
-                {
-
-                    if (user.image != null || user.image != "")
-                    {
-                        byte[] byteArray = Convert.FromBase64String(user.image);
-                        ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                        imageUser.Source = image_Source;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    imageUser.Source = null;
-                }
-
-                frameTop.BackgroundColor = Color.FromHex(user.hex_color);
-                userName.Text = WebUtility.UrlDecode(user.public_name);
-
-                
+                DisplayUserInfo();
 
                 var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
 
@@ -127,11 +141,7 @@ namespace Cryptorin.Views
                         MessagesCurrent.Add(item);
                     }
                 }
-
-
                 collectionMessages.ItemsSource = MessagesCurrent;
-
-
 
                 timerAlive = true;
 
@@ -145,7 +155,7 @@ namespace Cryptorin.Views
                 else
                 {
                     CheckChangeIndex();
-                    Task.Delay(200);
+                    //Task.Delay(200);
                     CheckKeyNumber();
                 }
 
@@ -171,7 +181,7 @@ namespace Cryptorin.Views
 
                 Debug.WriteLine("check key number method starts");
 
-                CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
+                CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, passwordHex);
                 CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
                 keyNumber = signature.GetUserKeyNumber(user.id);
@@ -247,7 +257,7 @@ namespace Cryptorin.Views
                     {
                         int fetchCount = CountMessOnDB - CountMessLocal;
 
-                        var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, myData.login, myData.password, fetchCount);
+                        var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, myData.login, passwordHex, fetchCount);
 
                         foreach (var item in _searchAnswer)
                         {
@@ -313,7 +323,7 @@ namespace Cryptorin.Views
 
                 classMessages classMess = new classMessages();
 
-                string result = classMess.SendMessage(myData.id, user.id, myData.login, myData.password, cryptedText);
+                string result = classMess.SendMessage(myData.id, user.id, myData.login, passwordHex, cryptedText);
 
 
                 if (result != "error")

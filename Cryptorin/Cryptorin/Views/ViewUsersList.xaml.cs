@@ -27,7 +27,7 @@ namespace Cryptorin.Views
         {
             InitializeComponent();
             Appearing += ViewUsersList_Appearing; ;
-            
+
 
         }
 
@@ -36,39 +36,40 @@ namespace Cryptorin.Views
             await Task.Run(() =>
             {
 
-                    Debug.WriteLine("Appear");
-                    userListFromDB.Clear();
-                    userList.Clear();
-                    userListFromDB = App.myDB.GetUsers();
-                    foreach (var item in userListFromDB)
+                Debug.WriteLine("Appear");
+                userListFromDB.Clear();
+                userList.Clear();
+                userListFromDB = App.myDB.GetUsers();
+                foreach (var item in userListFromDB)
+                {
+                    UserTemplate userForList = new UserTemplate();
+                    userForList.id = item.id;
+                    //userForList.public_name = item.public_name;
+                    userForList.public_name = WebUtility.UrlDecode(item.public_name);
+                    userForList.hex_color = Color.FromHex(item.hex_color);
+                    userForList.image_source = null;
+                    try
                     {
-                        UserTemplate userForList = new UserTemplate();
-                        userForList.id = item.id;
-                        //userForList.public_name = item.public_name;
-                        userForList.public_name = WebUtility.UrlDecode(item.public_name);
-                        userForList.hex_color = Color.FromHex(item.hex_color);
-                        userForList.image_source = null;
-                        try
+                        if (item.image != null || item.image != "")
                         {
-                            if (item.image != null || item.image != "")
-                            {
-                                byte[] byteArray = Convert.FromBase64String(item.image);
-                                ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                                userForList.image_source = image_Source;
-                            }
+                            byte[] byteArray = Convert.FromBase64String(item.image);
+                            ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                            userForList.image_source = image_Source;
                         }
-                        catch (Exception ex)
-                        {
-                        }
-                        userList.Add(userForList);
                     }
-                    userCollector.ItemsSource = userList;
-                
-                    
-                
-                
+                    catch (Exception ex)
+                    {
+
+                    }
+                    userList.Add(userForList);
+                }
+                userCollector.ItemsSource = userList;
+
+
+
+
             });
-            
+
         }
 
         private async void AddItemButton_Clicked(object sender, EventArgs e)
@@ -76,7 +77,7 @@ namespace Cryptorin.Views
             string result = await DisplayPromptAsync("Find user", "Enter user ID:", keyboard: Keyboard.Numeric);
             try
             {
-                if (result==null||result==""||keyClass.isUnlock==false)
+                if (result == null || result == "" || keyClass.isUnlock == false)
                 {
                     return;
                 }
@@ -84,13 +85,13 @@ namespace Cryptorin.Views
                 fetchedUser fetchedUser = classSignature.fetchUserData(Convert.ToInt32(result));
                 MyData myData = App.myDB.ReadMyData();
                 User user = App.myDB.GetUser(fetchedUser.id);
-                if (myData.id==fetchedUser.id)
+                if (myData.id == fetchedUser.id)
                 {
                     throw new Exception("Are you trying to add yourself -_-");
                 }
                 else if (user != null)
                 {
-                    throw new Exception("Such a user already exists\n\nThis is - "+ user.public_name);
+                    throw new Exception("Such a user already exists\n\nThis is - " + user.public_name);
                 }
                 else
                 {
@@ -102,7 +103,7 @@ namespace Cryptorin.Views
                     userTemplate.id = user2.id;
                     userTemplate.public_name = WebUtility.UrlDecode(user2.public_name);
                     userTemplate.hex_color = Color.FromHex(user2.hex_color);
-                    
+
                     try
                     {
                         if (user2.image != null || user2.image != "")
@@ -122,9 +123,9 @@ namespace Cryptorin.Views
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error",ex.Message,"Ok");
+                await DisplayAlert("Error", ex.Message, "Ok");
             }
-            
+
         }
 
 
@@ -140,7 +141,7 @@ namespace Cryptorin.Views
             string baseImage = classSignature.GetImage(_fetchedUser.id);
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
-            App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color,_fetchedUser.changes_index);
+            App.myDB.AddUser(_fetchedUser.id, _fetchedUser.public_name, _fetchedUser.public_key, _fetchedUser.key_number, baseImage, color, _fetchedUser.changes_index);
         }
 
 
@@ -160,7 +161,7 @@ namespace Cryptorin.Views
             {
                 UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
                 await Shell.Current.GoToAsync($"{nameof(ViewChat)}?{nameof(ViewChat.UserID)}={userItem.id}");
-                
+
             }
 
             ((CollectionView)sender).SelectedItem = null;
@@ -170,7 +171,7 @@ namespace Cryptorin.Views
 
         private void searchField_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (searchField.Text == null||searchField.Text == "")
+            if (searchField.Text == null || searchField.Text == "")
             {
                 userCollector.ItemsSource = userList;
             }
