@@ -75,7 +75,7 @@ namespace Cryptorin.Views
 
         private async void btnSignIn_Clicked(object sender, EventArgs e)
         {
-            if (tbLogin.Text == null || tbPassword.Text == null)
+            if (tbLogin.Text == null || tbPassword.Text == null|| tbLogin.Text==""|| tbPassword.Text == "")
             {
                 await DisplayAlert("Oh, I'm sorry!", "No login or password entered", "ok");
             }

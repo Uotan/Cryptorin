@@ -117,22 +117,16 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/updatePublicKey.php", "POST", param);
                 string stringResult = Encoding.Default.GetString(response);
-                if (stringResult != null || stringResult != "")
-                {
-                    stringResult = stringResult.Trim();
-                    return stringResult;
-                }
-                else
-                {
-                    return null;
-                }
-                
+
+                stringResult = stringResult.Trim();
+                return stringResult;
+
             }
             catch (Exception)
             {
                 //according to the logic of the work, the key number cannot be zero
                 //therefore, in case of an error, the function will return 0
-                return null;
+                return "error";
                 //return 0;
             }
         }

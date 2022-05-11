@@ -11,6 +11,7 @@ using Xamarin.Forms.Xaml;
 using Cryptorin.Classes;
 using Cryptorin.Data;
 using System.Net;
+using System.Diagnostics;
 
 namespace Cryptorin.Views
 {
@@ -142,12 +143,12 @@ namespace Cryptorin.Views
                 string newPassHash = argon.Argon2id(entrPassNew1.Text, hashSaltNew);
 
                 string passHexEncrypted = aES.Encrypt(newPassHash);
-                passwordHex = passHexEncrypted;
+                passwordHex = newPassHash.Trim();
 
                 string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
                 if (result == "Updated")
                 {
-                    myData.password = passwordHex;
+                    myData.password = passHexEncrypted;
                     App.myDB.UpdateMyData(myData);
                     await DisplayAlert("Report", result , "Ok");
                 }
@@ -242,24 +243,28 @@ namespace Cryptorin.Views
                 
                 List<string> keys = rSAUtil.CreateKeys();
 
-                
+                Debug.WriteLine(passwordHex);
                 string newKeyNumb = signature.UpdateKeys(myData.login, passwordHex, keys[1]);
-
-                if (newKeyNumb==null)
+                Debug.WriteLine(newKeyNumb);
+                if (newKeyNumb=="error")
                 {
-                    await DisplayAlert("Error", "The keys have not been updated.", "Ok");
+                    await DisplayAlert("Error", "The keys have NOT been updated.", "Ok");
                     return;
                 }
+                else
+                {
+                    classAES aES = new classAES(keyClass.AESkey);
+                    string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
 
-                classAES aES = new classAES(keyClass.AESkey);
-                string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
 
+                    //myData.private_key = keys[0];
+                    myData.private_key = symmetricallyEncryptedKey;
+                    myData.key_number = newKeyNumb;
+                    App.myDB.UpdateMyData(myData);
+                    await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
+                }
 
-                //myData.private_key = keys[0];
-                myData.private_key = symmetricallyEncryptedKey;
-                myData.key_number = newKeyNumb;
-                App.myDB.UpdateMyData(myData);
-                await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
+                
 
 
 
