@@ -35,6 +35,7 @@ namespace Cryptorin.Views
 
         bool isReady = true;
         bool isReady2 = true;
+        bool isReady3 = true;
 
         bool firstTime = true;
 
@@ -69,51 +70,89 @@ namespace Cryptorin.Views
 
         async void CheckChangeIndex()
         {
-
-            string changeIndex = signature.GetUserChangeIndex(user.id);
-
-            Debug.WriteLine("user change INDEX:" + changeIndex);
-
-            if (changeIndex != user.changes_index)
+            while (timerAlive)
             {
-                var fetchUser = signature.fetchUserData(user.id);
-                user.public_name = WebUtility.UrlDecode(fetchUser.public_name);
-                user.image = signature.GetImage(fetchUser.id);
-                user.changes_index = changeIndex;
-                App.myDB.UpdateUserData(user);
+                if (isReady3 == false)
+                {
+                    return;
+                }
+                string changeIndex = signature.GetUserChangeIndex(user.id);
 
-                await this.DisplayToastAsync("Public data has been updated", 2000);
-                Debug.WriteLine("Updated User data");
+                Debug.WriteLine("user change INDEX:" + changeIndex);
 
-                
+                if (changeIndex != user.changes_index)
+                {
+                    var fetchUser = signature.fetchUserData(user.id);
+                    user.public_name = WebUtility.UrlDecode(fetchUser.public_name);
+                    user.image = signature.GetImage(fetchUser.id);
+                    user.changes_index = changeIndex;
+                    App.myDB.UpdateUserData(user);
+
+                    await this.DisplayToastAsync("Public data has been updated", 2000);
+                    Debug.WriteLine("Updated User data");
+
+                    //DisplayUserInfo();
+
+                }
+
+                isReady3 = false;
+                await Task.Delay(3000);
+                isReady3 = true;
+
+
+
             }
 
+
         }
 
-        async void DisplayUserInfo()
+        void DisplayUserInfo()
         {
-            await Task.Run(() =>
+            User userTemp = App.myDB.GetUser(user.id);
+            frameTop.BackgroundColor = Color.FromHex(userTemp.hex_color);
+            userName.Text = WebUtility.UrlDecode(userTemp.public_name);
+
+            try
             {
-                frameTop.BackgroundColor = Color.FromHex(user.hex_color);
-                userName.Text = WebUtility.UrlDecode(user.public_name);
 
-                try
+                if (userTemp.image != null || userTemp.image != "")
                 {
-
-                    if (user.image != null || user.image != "")
-                    {
-                        byte[] byteArray = Convert.FromBase64String(user.image);
-                        ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-                        imageUser.Source = image_Source;
-                    }
+                    byte[] byteArray = Convert.FromBase64String(user.image);
+                    ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                    imageUser.Source = image_Source;
                 }
-                catch (Exception ex)
-                {
-                    imageUser.Source = null;
-                }
-
-            });
+            }
+            catch (Exception ex)
+            {
+                imageUser.Source = null;
+            }
         }
+
+
+        //async void DisplayUserInfo()
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        frameTop.BackgroundColor = Color.FromHex(user.hex_color);
+        //        userName.Text = WebUtility.UrlDecode(user.public_name);
+
+        //        try
+        //        {
+
+        //            if (user.image != null || user.image != "")
+        //            {
+        //                byte[] byteArray = Convert.FromBase64String(user.image);
+        //                ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+        //                imageUser.Source = image_Source;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            imageUser.Source = null;
+        //        }
+
+        //    });
+        //}
 
         public int UserID
         {
@@ -375,6 +414,11 @@ namespace Cryptorin.Views
             await this.DisplayToastAsync("Text copied", 2000);
 
             ((CollectionView)sender).SelectedItem = null;
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            DisplayUserInfo();
         }
     }
 }

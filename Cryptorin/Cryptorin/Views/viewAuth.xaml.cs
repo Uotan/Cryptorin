@@ -167,7 +167,7 @@ namespace Cryptorin.Views
             }
             else
             {
-                await DisplayAlert("Oh, I'm sorry!", "Authorization error.", "ok");
+                //await DisplayAlert("Oh, I'm sorry!", "Authorization error.", "ok");
                 return false;
             }
         }

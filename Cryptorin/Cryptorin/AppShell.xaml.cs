@@ -126,10 +126,10 @@ namespace Cryptorin
                 var result = signature.GetUserKeyNumber(mydata.id);
                 if (result!=mydata.key_number)
                 {
-                    mydata.key_number = result;
-                    App.myDB.UpdateMyData(mydata);
+                    //mydata.key_number = result;
+                    //App.myDB.UpdateMyData(mydata);
                     await DisplayAlert("Attention", "Logged in from another device - change your password and update keys!", "Ok");
-
+                    mydata = App.myDB.ReadMyData();
                 }
                 await Task.Delay(3000);
             }

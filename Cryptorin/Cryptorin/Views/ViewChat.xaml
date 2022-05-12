@@ -23,6 +23,9 @@
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
                    CornerRadius="100">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                    </Frame.GestureRecognizers>
                     <Image x:Name="imageUser" Aspect="Fill"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
