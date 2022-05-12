@@ -106,6 +106,18 @@ namespace Cryptorin.Views
 
         }
 
+        async void CheckAnotherEntry()
+        {
+            while (timerAlive)
+            {
+                if (otherEntryController.myKeyChanged)
+                {
+                    await Shell.Current.GoToAsync("..");
+                }
+                await Task.Delay(1000);
+            }
+        }
+
         void DisplayUserInfo()
         {
             User userTemp = App.myDB.GetUser(user.id);
@@ -193,6 +205,7 @@ namespace Cryptorin.Views
                 }
                 else
                 {
+                    CheckAnotherEntry();
                     CheckChangeIndex();
                     //Task.Delay(200);
                     CheckKeyNumber();
