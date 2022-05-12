@@ -7,13 +7,12 @@
     require_once "connect.php";
     
 
-    $stmt = $pdo->query("SELECT `key_number` FROM `Users` WHERE id = ".$id);
+    $stmt = $pdo->query("SELECT `public_key` FROM `Users` WHERE id = ".$id);
     $result = $stmt->fetch();
 
-    $keyNumber = $result["key_number"];
+    $key = $result["public_key"];
     
-    settype($keyNumber, 'integer');
-    echo $keyNumber;
+    echo $key;
 
 
     

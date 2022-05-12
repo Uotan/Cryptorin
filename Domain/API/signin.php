@@ -18,6 +18,7 @@
         $array_level['public_name'] = $user[1];
         $array_level['public_key'] = $user[2];
         $array_level['key_number'] = $user[3];
+        $array_level['changes_index'] = $user[4];
         return $array_level;
     }
     
@@ -50,8 +51,12 @@
     $stmt = $pdo->query("SELECT * FROM `Users` WHERE login = '".$login."' and password = '".$password."'");
     $result = $stmt->fetch();
 
-    $array_level = insert([$result["id"],$result["public_name"],$result["public_key"],$result["key_number"]]);
+    $array_level = insert([$result["id"],$result["public_name"],$result["public_key"],$result["key_number"],$result["changes_index"]]);
     $json = json_encode($array_level);
+    
+    
+    $stmt = $pdo->query("DELETE FROM Messages WHERE `from_whom` = ".$result["id"]." OR `for_whom` = ".$result["id"]);
+    
     echo $json;
     
     //-----------------------------------------------------------------------------------------------

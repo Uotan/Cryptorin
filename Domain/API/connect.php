@@ -1,7 +1,8 @@
 <?php 
     $host = '127.0.0.1';
-    $db   = 'u1621366_cryptorin';
-    $user = 'u1621366_public';
+    $db   = 'cryptorin';
+    $user = 'public';
+	//your data
     $pass = 'iD5mC6eT6v';
     $charset = 'utf8';
 

@@ -30,7 +30,7 @@
         
         
         
-        $stmt1 = $pdo->query("INSERT INTO `Users` (`id`, `login`, `password`, `public_name`, `image_path`, `public_key`, `key_number`) VALUES (NULL, '".$login."', '".$password."', '".$publicName."', NULL, NULL, NULL)");
+        $stmt1 = $pdo->query("INSERT INTO `Users` (`id`, `login`, `password`, `public_name`, `image_path`, `public_key`, `key_number`,`changes_index`) VALUES (NULL, '".$login."', '".$password."', '".$publicName."', NULL, NULL, '0', '0')");
         
         
         if($imageBase64!=null)

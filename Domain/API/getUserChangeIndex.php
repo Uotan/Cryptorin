@@ -7,13 +7,12 @@
     require_once "connect.php";
     
 
-    $stmt = $pdo->query("SELECT `key_number` FROM `Users` WHERE id = ".$id);
+    $stmt = $pdo->query("SELECT `changes_index` FROM `Users` WHERE id = ".$id);
     $result = $stmt->fetch();
 
-    $keyNumber = $result["key_number"];
+    $key = $result["changes_index"];
     
-    settype($keyNumber, 'integer');
-    echo $keyNumber;
+    echo $key;
 
 
     

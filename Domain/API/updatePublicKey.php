@@ -18,12 +18,21 @@
     
     
     //----------------------------------------------------------------------------------------------
+    
+    
     $stmt = $pdo->query("SELECT * FROM `Users` WHERE login = '".$login."' and password = '".$password."'");
     $resultCount = $stmt->fetch();
     
-    
+    if($resultCount==null)
+    {
+        echo "error";
+        die();
+    }
 
     $keyNumb = $resultCount["key_number"];
+    
+    
+    $stmt = $pdo->query("DELETE FROM Messages WHERE `from_whom` = ".$resultCount["id"]." OR `for_whom` = ".$resultCount["id"]);
     
     settype($keyNumb, 'integer');
     

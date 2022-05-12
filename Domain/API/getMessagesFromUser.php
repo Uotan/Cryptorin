@@ -27,7 +27,7 @@
     
     if($resultCount!=null){
         
-        $sqlCountQuery = "SELECT COUNT(*) FROM Messages WHERE from_whom = '".$fromID."' and for_whom = '".$toID."' OR from_whom = '".$toID."' and for_whom = '".$fromID."'";
+        $sqlCountQuery = "SELECT COUNT(*) FROM Messages WHERE from_whom = '".$fromID."' and for_whom = '".$toID."'";
         $STH_count  = $pdo->query($sqlCountQuery);
         $resultCount = $STH_count->fetch();
         $countOfMessagesOnDB = $resultCount["COUNT(*)"];
@@ -36,7 +36,7 @@
         $deltaMessages = $countOfMessagesOnDB - $countNeed;
     
         
-        $sqlquery = "SELECT * FROM `Messages` WHERE from_whom = '".$fromID."' and for_whom = '".$toID."' OR from_whom = '".$toID."' and for_whom = '".$fromID."' LIMIT ".$deltaMessages.", ".$countNeed;
+        $sqlquery = "SELECT * FROM `Messages` WHERE from_whom = '".$fromID."' and for_whom = '".$toID."' LIMIT ".$deltaMessages.", ".$countNeed;
         $STH  = $pdo->query($sqlquery);
         $result = $STH->fetchAll();
         $array_level = array();

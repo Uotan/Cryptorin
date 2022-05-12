@@ -14,13 +14,14 @@
             $array_level['public_name'] = $user[1];
             $array_level['public_key'] = $user[2];
             $array_level['key_number'] = $user[3];
+            $array_level['changes_index'] = $user[4];
             return $array_level;
         }
     
         $stmt = $pdo->query("SELECT * FROM `Users` WHERE id = ".$id);
         $resultCount = $stmt->fetch();
 
-        $array_level = insert([$resultCount["id"],$resultCount["public_name"],$resultCount["public_key"],$resultCount["key_number"]]);
+        $array_level = insert([$resultCount["id"],$resultCount["public_name"],$resultCount["public_key"],$resultCount["key_number"],$resultCount["changes_index"]]);
         $json = json_encode($array_level);
         echo $json;
     }
