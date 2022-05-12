@@ -351,8 +351,9 @@ namespace Cryptorin.Views
 
         async void entrContent_Completed(object sender, EventArgs e)
         {
-            if (entrContent.Text == "" || entrContent.Text == null)
+            if (entrContent.Text == "" || entrContent.Text == null||user.key_number=="0")
             {
+                entrContent.Text = null;
                 return;
             }
 
