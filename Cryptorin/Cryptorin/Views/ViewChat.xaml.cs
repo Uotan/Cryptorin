@@ -128,6 +128,23 @@ namespace Cryptorin.Views
             }
         }
 
+        async void CheckAnotherEntry()
+        {
+            while (timerAlive)
+            {
+
+                if (otherEntryController.myKeyChanged)
+                {
+                    Device.BeginInvokeOnMainThread(async () =>
+                    {
+                        otherEntryController.myKeyChanged = false;
+                        await Shell.Current.GoToAsync("..");
+
+                    });
+                }
+                await Task.Delay(400);
+            }
+        }
 
         //async void DisplayUserInfo()
         //{
@@ -193,6 +210,7 @@ namespace Cryptorin.Views
                 }
                 else
                 {
+                    CheckAnotherEntry();
                     CheckChangeIndex();
                     //Task.Delay(200);
                     CheckKeyNumber();
