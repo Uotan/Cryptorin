@@ -74,6 +74,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 </Frame>
+                <Entry x:Name="entrCurrentLogin" IsPassword="True" Placeholder="current login"></Entry>
                 <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="current password"></Entry>
                 <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="new password"></Entry>
                 <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="repeat new password"></Entry>
