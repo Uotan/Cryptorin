@@ -18,10 +18,10 @@
                 <Frame  Margin="0,10,0,5" Padding="0"
                    HeightRequest="150"
                    WidthRequest="150"
-                   
+                   CornerRadius="10"
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
-                        BackgroundColor="#adacaa">
+                        BackgroundColor="{DynamicResource colorEntryBackground}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     </Frame.GestureRecognizers>

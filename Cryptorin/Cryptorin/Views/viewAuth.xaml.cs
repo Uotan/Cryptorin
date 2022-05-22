@@ -119,10 +119,16 @@ namespace Cryptorin.Views
         {
             await Task.Delay(50);
             classSHA256 classSHA256instance = new classSHA256();
-            string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassword.Text);
+            string hashSaltPassword = classSHA256instance.ComputeSha256Hash(tbPassword.Text);
+            string hashSaltLogin = classSHA256instance.ComputeSha256Hash(tbLogin.Text);
 
             Argon argon = new Argon();
-            string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSalt);
+            string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSaltPassword);
+            string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
+
+            Debug.WriteLine(hashPasswordHex);
+            Debug.WriteLine(hashLoginHex);
+
 
             classSignature classSign = new classSignature();
 
@@ -131,7 +137,7 @@ namespace Cryptorin.Views
             List<string> keys = rSAUtil.CreateKeys();
 
 
-            fetchedUser fetchedData = classSign.SignIn(tbLogin.Text, hashPasswordHex, keys[1]);
+            fetchedUser fetchedData = classSign.SignIn(hashLoginHex, hashPasswordHex, keys[1]);
 
             if (fetchedData != null)
             {
@@ -152,6 +158,7 @@ namespace Cryptorin.Views
 
                 var EncryptedSecurityCode = aES.Encrypt(hash_secureCode);
                 var EncryptedPassword = aES.Encrypt(hashPasswordHex);
+                var EncryptedLogin = aES.Encrypt(hashLoginHex);
 
 
                 Debug.WriteLine(EncryptedSecurityCode);
@@ -160,7 +167,7 @@ namespace Cryptorin.Views
 
                 string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
                 Debug.WriteLine("key encrypted: " + symmetricallyEncryptedKey);
-                WriteLocalData(fetchedData, tbLogin.Text, EncryptedPassword, symmetricallyEncryptedKey);
+                WriteLocalData(fetchedData, EncryptedLogin, EncryptedPassword, symmetricallyEncryptedKey);
                 Debug.WriteLine("My data WRITED");
                 return true;
                 
@@ -208,6 +215,12 @@ namespace Cryptorin.Views
             }
             Preferences.Set("serverAddress", result);
             ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+        }
+
+        private async void toolItmCodeSource_Clicked(object sender, EventArgs e)
+        {
+            Uri uri = new Uri("https://github.com/Uotan/Cryptorin");
+            await Browser.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
         }
     }
 }

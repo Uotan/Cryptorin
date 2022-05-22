@@ -10,6 +10,10 @@
     settype($toID, 'integer');
     settype($countNeed, 'integer');
     
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
+    
     require_once "connect.php";
     
     function insert($user = [])

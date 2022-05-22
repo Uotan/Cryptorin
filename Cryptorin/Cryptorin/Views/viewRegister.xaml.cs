@@ -12,6 +12,7 @@ using Xamarin.Essentials;
 using System.IO;
 using System.Net;
 using Cryptorin.Classes;
+using System.Diagnostics;
 
 namespace Cryptorin.Views
 {
@@ -82,17 +83,24 @@ namespace Cryptorin.Views
                 {
                     var urlEncodedPublicName = WebUtility.UrlEncode(tbPublicName.Text);
 
+                    classSHA256 classSHA256instance = new classSHA256();
+                    string hashSaltPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
+                    string hashSaltLogin = classSHA256instance.ComputeSha256Hash(tbLogin.Text);
+
+                    Argon argon = new Argon();
+                    string hashPasswordHex = argon.Argon2id(tbPassw.Text, hashSaltPassword);
+                    string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
+
+                    Debug.WriteLine(hashPasswordHex);
+                    Debug.WriteLine(hashLoginHex);
+
                     classSignature signInstance = new classSignature();
-                    if (signInstance.CheckLoginExists(tbLogin.Text) == "ok")
+                    if (signInstance.CheckLoginExists(hashLoginHex) == "ok")
                     {
 
-                        classSHA256 classSHA256instance = new classSHA256();
-                        string hashSalt = classSHA256instance.ComputeSha256Hash(tbLogin.Text + tbPassw.Text);
+                        
 
-                        Argon argon = new Argon();
-                        string hashPasswordHex = argon.Argon2id(tbPassw.Text, hashSalt);
-
-                        string result = signInstance.SignUp(urlEncodedPublicName, tbLogin.Text, hashPasswordHex, base64ImageRepresentation);
+                        string result = signInstance.SignUp(urlEncodedPublicName, hashLoginHex, hashPasswordHex, base64ImageRepresentation);
                         if (result == "created")
                         {
                             await DisplayAlert("Done", "Registration is completed!", "Ok");

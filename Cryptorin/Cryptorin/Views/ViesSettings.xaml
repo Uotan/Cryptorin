@@ -74,7 +74,7 @@
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 </Frame>
-                <Entry x:Name="entrCurrentLogin" IsPassword="True" Placeholder="current login"></Entry>
+                <!--<Entry x:Name="entrCurrentLogin" IsPassword="True" Placeholder="current login"></Entry>-->
                 <Entry x:Name="entrPassOld" IsPassword="True" Placeholder="current password"></Entry>
                 <Entry x:Name="entrPassNew1" IsPassword="True" Placeholder="new password"></Entry>
                 <Entry x:Name="entrPassNew2" IsPassword="True" Placeholder="repeat new password"></Entry>
@@ -98,11 +98,11 @@
                    
                    HorizontalOptions="Center"
                    IsClippedToBounds="True"
-                        BackgroundColor="#adacaa">
+                        BackgroundColor="{DynamicResource colorEntryBackground}">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                     </Frame.GestureRecognizers>
-                    <Image x:Name="imagePicker" Aspect="Fill" Source="iconImage.png"
+                    <Image x:Name="imagePicker" Aspect="AspectFill" Source="iconImage.png"
                        HorizontalOptions="Center"
                        VerticalOptions="Center"/>
                 </Frame>
@@ -113,6 +113,27 @@
                 
                 
                 
+                <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
+
+
+                <Label Margin="0,0,0,20" FontSize="20">Change the security code</Label>
+                <Frame  Margin="0,10,0,20" Padding="0"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   
+                   HorizontalOptions="Center"
+                   IsClippedToBounds="True"
+                        BackgroundColor="Transparent">
+                    <Image Aspect="Fill" Source="securityCode.png"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                </Frame>
+                <Entry x:Name="entryCurrenCode" IsPassword="True" Placeholder="current security code"></Entry>
+                <Entry x:Name="entryNewCode" IsPassword="True" Placeholder="new security code"></Entry>
+                <Entry x:Name="entryNewCodeRepeat" IsPassword="True" Placeholder="repeat new security code"></Entry>
+                <Button x:Name="btnSecurityCode" Text="change" Clicked="btnSecurityCode_Clicked"></Button>
+
+
                 <BoxView Margin="0,30,0,30" HeightRequest="1" Color="{DynamicResource colorLabel}" IsVisible="True"/>
 
                 

@@ -187,6 +187,36 @@ namespace Cryptorin.Data
             db.Update(_data);
         }
 
+
+        public void ReEncryptAllData(string _oldPassword, string _newPassword)
+        {
+            classAES AES_old = new classAES(_oldPassword);
+            classAES AES_new = new classAES(_newPassword);
+
+            var AllMessages = db.Table<Message>().ToList();
+            MyData myData = ReadMyData();
+
+            string decryptedPrivateKey = AES_old.Decrypt(myData.private_key).Trim();
+            string decryptedPassword = AES_old.Decrypt(myData.password).Trim();
+            string decryptedLogin = AES_old.Decrypt(myData.login).Trim();
+
+            myData.login = AES_new.Encrypt(decryptedLogin);
+            myData.password = AES_new.Encrypt(decryptedPassword);
+            myData.private_key = AES_new.Encrypt(decryptedPrivateKey);
+            App.myDB.UpdateMyData(myData);
+
+            for (int i = 0; i < AllMessages.Count; i++)
+            {
+                var DecryptedText = WebUtility.UrlDecode(AES_old.Decrypt(AllMessages[i].content).Trim());
+                AllMessages[i].content = AES_new.Encrypt(DecryptedText);
+            }
+
+            foreach (var item in AllMessages)
+            {
+                db.Update(item);
+            }
+        }
+
         public void UpdateUserData(User _data)
         {
             db.Update(_data);

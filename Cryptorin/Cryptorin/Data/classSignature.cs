@@ -89,6 +89,7 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/signin.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
+                Debug.WriteLine(result);
                 fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
                 return userData;
             }

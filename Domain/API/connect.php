@@ -1,9 +1,8 @@
 <?php 
     $host = '127.0.0.1';
-    $db   = 'cryptorin';
-    $user = 'public';
-	//your data
-    $pass = 'iD5mC6eT6v';
+    $db   = 'your_data_base';
+    $user = 'your_user';
+    $pass = 'your_password';
     $charset = 'utf8';
 
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

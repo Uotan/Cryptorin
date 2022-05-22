@@ -47,6 +47,7 @@ namespace Cryptorin.Views
         
         MyData myData = App.myDB.ReadMyData();
         string passwordHex;
+        string loginHex;
         classAES aES = new classAES(keyClass.AESkey);
         string decryptedPrivateKey = null;
 
@@ -60,8 +61,9 @@ namespace Cryptorin.Views
             InitializeComponent();
             if (keyClass.isUnlock)
             {
-                passwordHex = aES.Decrypt(myData.password);
-                passwordHex = passwordHex.Trim();
+                passwordHex = aES.Decrypt(myData.password).Trim();
+                loginHex = aES.Decrypt(myData.login).Trim();
+                //passwordHex = passwordHex.Trim();
             }
 
         }
@@ -238,7 +240,7 @@ namespace Cryptorin.Views
 
                 Debug.WriteLine("check key number method starts");
 
-                CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, passwordHex);
+                CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, loginHex, passwordHex);
                 CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
                 keyNumber = signature.GetUserKeyNumber(user.id);
@@ -314,7 +316,7 @@ namespace Cryptorin.Views
                     {
                         int fetchCount = CountMessOnDB - CountMessLocal;
 
-                        var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, myData.login, passwordHex, fetchCount);
+                        var _searchAnswer = classMess.GetMessagesFromUser(user.id, myData.id, loginHex, passwordHex, fetchCount);
 
                         foreach (var item in _searchAnswer)
                         {
@@ -381,7 +383,7 @@ namespace Cryptorin.Views
 
                 classMessages classMess = new classMessages();
 
-                string result = classMess.SendMessage(myData.id, user.id, myData.login, passwordHex, cryptedText);
+                string result = classMess.SendMessage(myData.id, user.id, loginHex, passwordHex, cryptedText);
 
 
                 if (result != "error")

@@ -5,12 +5,12 @@
     $imageBase64 = $_POST['image'];
 
 
-    // if(strlen($login)>255||strlen($publicName))
-    // {
-    //     die();
-    // }
-
     $img_file_path = "";
+    
+    
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
     
     require_once "connect.php";
     

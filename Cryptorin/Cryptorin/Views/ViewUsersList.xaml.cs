@@ -26,7 +26,7 @@ namespace Cryptorin.Views
         public ViewUsersList()
         {
             InitializeComponent();
-            Appearing += ViewUsersList_Appearing; ;
+            Appearing += ViewUsersList_Appearing; 
 
 
         }

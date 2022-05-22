@@ -12,6 +12,10 @@
         die();
     }
     
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
+    
     
     //подключаем скрипт подключения к базе
     //в нем будет переменная   $pdo

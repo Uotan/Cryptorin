@@ -8,6 +8,11 @@
         die("Error");
     }
     
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
+    $newPassword = GetHash($newPassword);
+    
     require_once "connect.php";
     
     

@@ -21,6 +21,7 @@ namespace Cryptorin.Views
         MyData myData;
         FileResult file = null;
         string passwordHex;
+        string loginHex;
 
         classSignature signature = new classSignature();
         RSAUtil rSAUtil = new RSAUtil();
@@ -31,7 +32,7 @@ namespace Cryptorin.Views
             InitializeComponent();
             Appearing += ViewUsersList_Appearing;
             setRadioBtnTheme();
-            LoadMyData();
+            
         }
 
         private async void ViewUsersList_Appearing(object sender, EventArgs e)
@@ -46,6 +47,10 @@ namespace Cryptorin.Views
                     btnCngPassword.IsEnabled = false;
                     btnUpdateKeys.IsEnabled = false;
                 }
+                else
+                {
+                    LoadMyData();
+                }
 
             });
 
@@ -57,13 +62,13 @@ namespace Cryptorin.Views
         {
             try
             {
-                myData = await App.myDB.ReadMyDataAsync();
+                myData = App.myDB.ReadMyData();
                 entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
                 if (keyClass.isUnlock)
                 {
                     aES = new classAES(keyClass.AESkey);
-                    passwordHex = aES.Decrypt(myData.password);
-                    passwordHex = passwordHex.Trim();
+                    passwordHex = aES.Decrypt(myData.password).Trim();
+                    loginHex = aES.Decrypt(myData.login).Trim();
                 }
                 //if (myData.image != null)
                 //{
@@ -90,7 +95,7 @@ namespace Cryptorin.Views
             {
                 var urlEncodedPublicName = WebUtility.UrlEncode(entryChgPubName.Text);
                 classSignature signature = new classSignature();
-                string result = signature.UpdatePublicName(myData.login, passwordHex, urlEncodedPublicName);
+                string result = signature.UpdatePublicName(loginHex, passwordHex, urlEncodedPublicName);
                 if (result== "Updated")
                 {
                     myData.public_name = urlEncodedPublicName;
@@ -123,9 +128,8 @@ namespace Cryptorin.Views
 
         private async void btnCngPassword_Clicked(object sender, EventArgs e)
         {
-
             classSHA256 classSHA256instance = new classSHA256();
-            string hashSaltOld = classSHA256instance.ComputeSha256Hash(myData.login + entrPassOld.Text);
+            string hashSaltOld = classSHA256instance.ComputeSha256Hash(entrPassOld.Text);
 
             Argon argon = new Argon();
             string oldPassHash = argon.Argon2id(entrPassOld.Text, hashSaltOld);
@@ -139,17 +143,19 @@ namespace Cryptorin.Views
             {
                 classSignature classSign = new classSignature();
 
-                string hashSaltNew = classSHA256instance.ComputeSha256Hash(myData.login + entrPassNew1.Text);
+                string hashSaltNew = classSHA256instance.ComputeSha256Hash(entrPassNew1.Text);
                 string newPassHash = argon.Argon2id(entrPassNew1.Text, hashSaltNew);
 
-                string passHexEncrypted = aES.Encrypt(newPassHash);
-                passwordHex = newPassHash.Trim();
+                string NewPassHexEncrypted = aES.Encrypt(newPassHash).Trim();
+                //passwordHex = newPassHash.Trim();
 
-                string result = classSign.UpdatePassword(myData.login, oldPassHash, newPassHash);
+                string result = classSign.UpdatePassword(loginHex, oldPassHash, newPassHash);
                 if (result == "Updated")
                 {
-                    myData.password = passHexEncrypted;
+                    myData.password = NewPassHexEncrypted;
                     App.myDB.UpdateMyData(myData);
+                    //passwordHex = newPassHash;
+                    LoadMyData();
                     await DisplayAlert("Report", result , "Ok");
                 }
                 else
@@ -176,7 +182,7 @@ namespace Cryptorin.Views
                 byte[] imageArray = File.ReadAllBytes(file.FullPath);
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
                 classSignature classSignature = new classSignature();
-                string result = classSignature.UpdateImage(myData.login, passwordHex, base64ImageRepresentation);
+                string result = classSignature.UpdateImage(loginHex, passwordHex, base64ImageRepresentation);
                 if (result== "Updated")
                 {
                     baseImage = classSignature.GetImage(myData.id);
@@ -244,7 +250,7 @@ namespace Cryptorin.Views
                 List<string> keys = rSAUtil.CreateKeys();
 
                 Debug.WriteLine(passwordHex);
-                string newKeyNumb = signature.UpdateKeys(myData.login, passwordHex, keys[1]);
+                string newKeyNumb = signature.UpdateKeys(loginHex, passwordHex, keys[1]);
                 Debug.WriteLine(newKeyNumb);
                 if (newKeyNumb=="error")
                 {
@@ -313,6 +319,62 @@ namespace Cryptorin.Views
             Preferences.Set("theme", theme);
             ThemeManager themeManager = new ThemeManager();
             themeManager.SetLight();
+        }
+
+        private async void btnSecurityCode_Clicked(object sender, EventArgs e)
+        {
+            bool answer = await DisplayAlert("Are you sure?", "The data will be re-encrypted, it may take time", "Yes", "No");
+            if (!answer)
+            {
+                return;
+            }
+            if (entryCurrenCode.Text == null || entryNewCode.Text == null || entryNewCodeRepeat.Text == null||entryNewCode.Text!=entryNewCodeRepeat.Text)
+            {
+                await DisplayAlert("Error", "Data entered incorrectly", "Ok");
+                return;
+            }
+
+            classSHA256 sHA256 = new classSHA256();
+            string hash_secureCodeOld = sHA256.ComputeSha256Hash(entryCurrenCode.Text);
+            hash_secureCodeOld = hash_secureCodeOld.Remove(16);
+
+            classAES _aES = new classAES(hash_secureCodeOld);
+
+            string secretCodeFromMemory = Preferences.Get("secretCode", null);
+
+            string decryptedSecreCode = _aES.Decrypt(secretCodeFromMemory);
+
+            if (decryptedSecreCode != null)
+            {
+                decryptedSecreCode = decryptedSecreCode.Trim();
+            }
+
+            if (decryptedSecreCode != hash_secureCodeOld)
+            {
+                await DisplayAlert("Error", "Data entered incorrectly", "Ok");
+                return;
+            }
+
+            //проверили, что корректно ввели старый код
+
+
+            string hash_secureCodeNew = sHA256.ComputeSha256Hash(entryNewCode.Text);
+            hash_secureCodeNew = hash_secureCodeNew.Remove(16);
+
+            keyClass.AESkey = hash_secureCodeNew;
+            aES.ChangeAESkey(hash_secureCodeNew);
+
+
+            var EncryptedSecurityCode = aES.Encrypt(hash_secureCodeNew);
+            Preferences.Set("secretCode", EncryptedSecurityCode);
+
+            App.myDB.ReEncryptAllData(hash_secureCodeOld,hash_secureCodeNew);
+
+            LoadMyData();
+            await DisplayAlert("Success", "The data was re-encrypted", "Ok");
+            entryCurrenCode.Text = null;
+            entryNewCode.Text = null;
+            entryNewCodeRepeat.Text = null;
         }
     }
 }

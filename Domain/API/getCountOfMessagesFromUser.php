@@ -5,8 +5,13 @@
     $fromID = addslashes($_POST['fromID']);
     $toID = addslashes($_POST['toID']);
     
+    
     settype($fromID, 'integer');
     settype($toID, 'integer');
+    
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
     
     require_once "connect.php";
     

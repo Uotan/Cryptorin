@@ -9,7 +9,10 @@
         die();
     }
     
-    
+    require_once "getHash.php";
+    $login = GetHash($login);
+    $password = GetHash($password);
+
     require_once "connect.php";
     
     function insert($user = [])
@@ -55,7 +58,7 @@
     $json = json_encode($array_level);
     
     
-    $stmt = $pdo->query("DELETE FROM Messages WHERE `from_whom` = ".$result["id"]." OR `for_whom` = ".$result["id"]);
+    //$stmt = $pdo->query("DELETE FROM Messages WHERE `from_whom` = ".$result["id"]." OR `for_whom` = ".$result["id"]);
     
     echo $json;
     

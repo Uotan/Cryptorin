@@ -5,7 +5,8 @@
              Style="{DynamicResource cntPageColor}">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="toolItmChangeDomain" Clicked="toolItmChangeDomain_Clicked" IconImageSource="server.png" Order="Default" Priority="0" Text="Change the domain"></ToolbarItem>
+        <ToolbarItem x:Name="toolItmChangeDomain" Clicked="toolItmChangeDomain_Clicked" IconImageSource="server.png" Order="Secondary" Priority="0" Text="Change the domain"></ToolbarItem>
+        <ToolbarItem x:Name="toolItmCodeSource" Clicked="toolItmCodeSource_Clicked" IconImageSource="iconGitSource.png" Order="Secondary" Priority="1" Text="Code Source"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ScrollView>
         <StackLayout>

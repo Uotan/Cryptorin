@@ -12,9 +12,9 @@ namespace Cryptorin.Data
         byte[] key;
         Aes aes;
         /// <summary>
-        /// Get key: 128bit(16 characters), 192bit(24 characters), 256bit(32 characters)
+        /// Create AES instance
         /// </summary>
-        /// <param name="_pass"></param>
+        /// <param name="_pass">Get key: 128bit(16 characters), 192bit(24 characters), 256bit(32 characters)</param>
         public classAES(string _pass)
         {
             pass = _pass;
@@ -31,6 +31,27 @@ namespace Cryptorin.Data
                 default: break;
             }
 
+            aes.Key = key;
+        }
+
+
+        /// <summary>
+        /// Change the password for the created AES instance
+        /// </summary>
+        /// <param name="_newPassword">Get key: 128bit(16 characters), 192bit(24 characters), 256bit(32 characters)</param>
+        public void ChangeAESkey(string _newPassword)
+        {
+            pass = _newPassword;
+            key = Encoding.ASCII.GetBytes(pass);
+            aes = Aes.Create();
+
+            switch (_newPassword.Length)
+            {
+                case 16: aes.KeySize = 128; break;
+                case 24: aes.KeySize = 192; break;
+                case 32: aes.KeySize = 256; break;
+                default: break;
+            }
             aes.Key = key;
         }
 
