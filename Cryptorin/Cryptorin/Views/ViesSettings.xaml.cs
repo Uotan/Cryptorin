@@ -42,10 +42,12 @@ namespace Cryptorin.Views
 
                 if (!keyClass.isUnlock)
                 {
+                    setRadioBtnTheme();
                     btnChangeImage.IsEnabled = false;
                     btnChgPubName.IsEnabled = false;
                     btnCngPassword.IsEnabled = false;
                     btnUpdateKeys.IsEnabled = false;
+                    btnSecurityCode.IsEnabled = false;
                 }
                 else
                 {
@@ -249,9 +251,8 @@ namespace Cryptorin.Views
                 
                 List<string> keys = rSAUtil.CreateKeys();
 
-                Debug.WriteLine(passwordHex);
                 string newKeyNumb = signature.UpdateKeys(loginHex, passwordHex, keys[1]);
-                Debug.WriteLine(newKeyNumb);
+
                 if (newKeyNumb=="error")
                 {
                     await DisplayAlert("Error", "The keys have NOT been updated.", "Ok");
@@ -365,8 +366,8 @@ namespace Cryptorin.Views
             aES.ChangeAESkey(hash_secureCodeNew);
 
 
-            var EncryptedSecurityCode = aES.Encrypt(hash_secureCodeNew);
-            Preferences.Set("secretCode", EncryptedSecurityCode);
+            var EncryptedNewSecurityCode = aES.Encrypt(hash_secureCodeNew);
+            Preferences.Set("secretCode", EncryptedNewSecurityCode);
 
             App.myDB.ReEncryptAllData(hash_secureCodeOld,hash_secureCodeNew);
 

@@ -11,6 +11,14 @@ namespace Cryptorin.Data
 {
     public class classMessages
     {
+        /// <summary>
+        /// get the number of messages with the user
+        /// </summary>
+        /// <param name="_from"></param>
+        /// <param name="_to"></param>
+        /// <param name="_login"></param>
+        /// <param name="_password"></param>
+        /// <returns>return INT value</returns>
         public int GetCountOfMessagesWithUser(int _from,int _to, string _login, string _password)
         {
             WebClient client = new WebClient();
@@ -31,6 +39,16 @@ namespace Cryptorin.Data
             }
         }
 
+
+        /// <summary>
+        /// Send encrypted message to user
+        /// </summary>
+        /// <param name="_from"></param>
+        /// <param name="_to"></param>
+        /// <param name="_login"></param>
+        /// <param name="_password"></param>
+        /// <param name="_content"></param>
+        /// <returns>Returns the date in the format Y-m-d h:i:s or "error"</returns>
         public string SendMessage(int _from, int _to, string _login, string _password, string _content)
         {
             WebClient client = new WebClient();
@@ -54,6 +72,16 @@ namespace Cryptorin.Data
         }
 
 
+
+        /// <summary>
+        /// Get a list of encrypted messages from the user
+        /// </summary>
+        /// <param name="_from"></param>
+        /// <param name="_to"></param>
+        /// <param name="_login"></param>
+        /// <param name="_password"></param>
+        /// <param name="_count"></param>
+        /// <returns></returns>
         public List<fetchedMessage> GetMessagesFromUser(int _from, int _to, string _login, string _password, int _count)
         {
             WebClient client = new WebClient();

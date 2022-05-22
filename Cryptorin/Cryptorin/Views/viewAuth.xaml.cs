@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using Cryptorin.Data;
 using Cryptorin.Classes;
-using PasswordGenerator;
+//using PasswordGenerator;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -126,10 +126,6 @@ namespace Cryptorin.Views
             string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSaltPassword);
             string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
 
-            Debug.WriteLine(hashPasswordHex);
-            Debug.WriteLine(hashLoginHex);
-
-
             classSignature classSign = new classSignature();
 
 
@@ -151,7 +147,6 @@ namespace Cryptorin.Views
                 classSHA256 sHA256 = new classSHA256();
                 string hash_secureCode = sHA256.ComputeSha256Hash(code);
                 hash_secureCode = hash_secureCode.Remove(16);
-                Debug.WriteLine(hash_secureCode);
                 keyClass.AESkey = hash_secureCode;
                 classAES aES = new classAES(hash_secureCode);
 
@@ -159,22 +154,15 @@ namespace Cryptorin.Views
                 var EncryptedSecurityCode = aES.Encrypt(hash_secureCode);
                 var EncryptedPassword = aES.Encrypt(hashPasswordHex);
                 var EncryptedLogin = aES.Encrypt(hashLoginHex);
-
-
-                Debug.WriteLine(EncryptedSecurityCode);
-
                 Preferences.Set("secretCode", EncryptedSecurityCode);
 
                 string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
-                Debug.WriteLine("key encrypted: " + symmetricallyEncryptedKey);
                 WriteLocalData(fetchedData, EncryptedLogin, EncryptedPassword, symmetricallyEncryptedKey);
-                Debug.WriteLine("My data WRITED");
                 return true;
                 
             }
             else
             {
-                //await DisplayAlert("Oh, I'm sorry!", "Authorization error.", "ok");
                 return false;
             }
         }

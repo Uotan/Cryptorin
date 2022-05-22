@@ -5,8 +5,16 @@ using System.Net;
 
 namespace Cryptorin.Data
 {
+    /// <summary>
+    /// class for checking the connection with the server
+    /// </summary>
     public class checkConnection
     {
+        /// <summary>
+        /// Check connection with server
+        /// </summary>
+        /// <param name="strServer">Server address</param>
+        /// <returns></returns>
         public bool ConnectionAvailable(string strServer)
         {
             try
@@ -16,20 +24,20 @@ namespace Cryptorin.Data
                 HttpWebResponse rspFP = (HttpWebResponse)reqFP.GetResponse();
                 if (HttpStatusCode.OK == rspFP.StatusCode)
                 {
-                    // HTTP = 200 - Интернет безусловно есть! 
+                    // HTTP = 200 - there is internet
                     rspFP.Close();
                     return true;
                 }
                 else
                 {
-                    // сервер вернул отрицательный ответ, возможно что инета нет
+                    // there is no internet or the server is unavailable
                     rspFP.Close();
                     return false;
                 }
             }
             catch (WebException)
             {
-                // Ошибка, значит интернета у нас нет. Плачем :'(
+                // there is no internet
                 return false;
             }
         }

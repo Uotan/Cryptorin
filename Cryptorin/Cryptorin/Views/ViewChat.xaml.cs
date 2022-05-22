@@ -63,7 +63,6 @@ namespace Cryptorin.Views
             {
                 passwordHex = aES.Decrypt(myData.password).Trim();
                 loginHex = aES.Decrypt(myData.login).Trim();
-                //passwordHex = passwordHex.Trim();
             }
 
         }

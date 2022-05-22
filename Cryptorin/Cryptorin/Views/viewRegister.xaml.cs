@@ -69,13 +69,6 @@ namespace Cryptorin.Views
                 base64ImageRepresentation = Convert.ToBase64String(imageArray);
             }
 
-            //string regexpass = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$";
-            //if (Regex.IsMatch(tbPassw.Text, regexpass)&& Regex.IsMatch(tbRepPassw.Text, regexpass)&&tbPassw.Text==tbRepPassw.Text)
-            //{
-            //    await DisplayAlert("Done", "Registration is completed!", "Ok");
-            //    await Navigation.PopAsync();
-            //}
-
             try
             {
                 
@@ -91,8 +84,6 @@ namespace Cryptorin.Views
                     string hashPasswordHex = argon.Argon2id(tbPassw.Text, hashSaltPassword);
                     string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
 
-                    Debug.WriteLine(hashPasswordHex);
-                    Debug.WriteLine(hashLoginHex);
 
                     classSignature signInstance = new classSignature();
                     if (signInstance.CheckLoginExists(hashLoginHex) == "ok")

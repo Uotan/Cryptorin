@@ -5,8 +5,17 @@ using System.Text;
 
 namespace Cryptorin.Data
 {
+    /// <summary>
+    /// A class for working with hash functions Argon
+    /// </summary>
     public class Argon
     {
+        /// <summary>
+        /// Hashing with Argon2d
+        /// </summary>
+        /// <param name="_message">Your string</param>
+        /// <param name="_salt">Salt</param>
+        /// <returns>Hash</returns>
         public string Argon2d(string _message, string _salt)
         {
             byte[] salt = Encoding.ASCII.GetBytes(_salt);
@@ -29,6 +38,12 @@ namespace Cryptorin.Data
         }
 
 
+        /// <summary>
+        /// Hashing with Argon2i
+        /// </summary>
+        /// <param name="_message">Your string</param>
+        /// <param name="_salt">Salt</param>
+        /// <returns></returns>
         public string Argon2i(string _message, string _salt)
         {
             byte[] salt = Encoding.ASCII.GetBytes(_salt);
@@ -50,6 +65,13 @@ namespace Cryptorin.Data
             return hex.ToString();
         }
 
+
+        /// <summary>
+        /// Hashing with Argon2id
+        /// </summary>
+        /// <param name="_message">Your string</param>
+        /// <param name="_salt">Salt</param>
+        /// <returns></returns>
         public string Argon2id(string _message,string _salt)
         {
             byte[] salt = Encoding.ASCII.GetBytes(_salt);
