@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost
--- Время создания: Май 12 2022 г., 11:08
+-- Время создания: Май 23 2022 г., 06:21
 -- Версия сервера: 5.7.27-30
 -- Версия PHP: 7.1.33
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- База данных: `cryptorin`
+-- База данных: `your_data_base`
 --
 
 -- --------------------------------------------------------
@@ -34,10 +34,6 @@ CREATE TABLE `Messages` (
   `rsa_cipher` text NOT NULL,
   `datetime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Дамп данных таблицы `Messages`
---
 
 -- --------------------------------------------------------
 
@@ -55,10 +51,6 @@ CREATE TABLE `Users` (
   `key_number` int(10) DEFAULT '0',
   `changes_index` int(10) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Дамп данных таблицы `Users`
---
 
 --
 -- Индексы сохранённых таблиц
@@ -86,13 +78,13 @@ ALTER TABLE `Users`
 -- AUTO_INCREMENT для таблицы `Messages`
 --
 ALTER TABLE `Messages`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=489;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `Users`
 --
 ALTER TABLE `Users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц

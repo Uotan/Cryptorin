@@ -10,8 +10,8 @@ namespace Cryptorin.Classes
 
         public static bool isUnlock = false;
 
-        public static string RSAprivateKeyNonEncrypted = null;
+        //public static string RSAprivateKeyNonEncrypted = null;
 
-        public static string RSAprivateKeyEncrypted = null;
+        //public static string RSAprivateKeyEncrypted = null;
     }
 }

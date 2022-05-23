@@ -111,8 +111,6 @@ namespace Cryptorin.Data
             if (count>0)
             {
                 List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
-                //List<Message> messages = db.Table<Message>().Where(x => x.for_whom == _userIDfirst && x.from_whom == _userIDsecond).ToList();
-
                 ObservableCollection<classMessageTemplate> messages2return = new ObservableCollection<classMessageTemplate>();
 
                 foreach (var item in messages)

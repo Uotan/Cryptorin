@@ -21,12 +21,26 @@ namespace Cryptorin.Data
             //var keyList = RsaKeyGenerator.Pkcs1Key(4096, false);
             return keyList;
         }
+
+        /// <summary>
+        /// Encrypt message
+        /// </summary>
+        /// <param name="_publicKey">Public key</param>
+        /// <param name="_data">Your message</param>
+        /// <returns></returns>
         public string Encrypt(string _publicKey,string _data)
         {
             RsaPkcs1Util bigDataRsa = new RsaPkcs1Util(Encoding.UTF8, _publicKey, null, 2048);
             var str = bigDataRsa.EncryptBigData(_data, RSAEncryptionPadding.Pkcs1);
             return str;
         }
+
+        /// <summary>
+        /// Decrypt message
+        /// </summary>
+        /// <param name="_privateKey">Private key</param>
+        /// <param name="_data">Encrypted message</param>
+        /// <returns></returns>
         public string Decrypt(string _privateKey, string _data)
         {
             RsaPkcs1Util bigDataRsa2 = new RsaPkcs1Util(Encoding.UTF8, null, _privateKey, 2048);

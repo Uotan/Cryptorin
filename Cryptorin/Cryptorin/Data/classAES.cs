@@ -60,7 +60,7 @@ namespace Cryptorin.Data
         /// Encrypt message
         /// </summary>
         /// <param name="_message">Message to encrypt</param>
-        /// <returns></returns>
+        /// <returns>Encrypted message</returns>
         public string Encrypt(string _message)
         {
             try
@@ -99,8 +99,8 @@ namespace Cryptorin.Data
         /// <summary>
         /// Decrypt message
         /// </summary>
-        /// <param name="_base64cipher">base64 message to decrypt</param>
-        /// <returns></returns>
+        /// <param name="_base64cipher">encrypted message (base64)</param>
+        /// <returns>Decrypted message</returns>
         public string Decrypt(string _base64cipher)
         {
             try

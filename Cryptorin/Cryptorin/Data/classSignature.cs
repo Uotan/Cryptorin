@@ -132,7 +132,11 @@ namespace Cryptorin.Data
             }
         }
 
-
+        /// <summary>
+        /// Get the user's image in Base64 format
+        /// </summary>
+        /// <param name="_id">user ID</param>
+        /// <returns>Base64 (image)</returns>
         public string GetImage(int _id)
         {
             WebClient client = new WebClient();
@@ -151,6 +155,12 @@ namespace Cryptorin.Data
             }
         }
 
+
+        /// <summary>
+        /// Get the index of the user's public key
+        /// </summary>
+        /// <param name="_id">ID пользователя</param>
+        /// <returns>INT value</returns>
         public string GetUserKeyNumber(int _id)
         {
             WebClient client = new WebClient();
@@ -169,6 +179,12 @@ namespace Cryptorin.Data
             }
         }
 
+
+        /// <summary>
+        /// Get the user's public key
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns>Base64 public key</returns>
         public string GetUserPublicKey(int _id)
         {
             WebClient client = new WebClient();
@@ -188,6 +204,12 @@ namespace Cryptorin.Data
 
 
 
+
+        /// <summary>
+        /// Get public user data
+        /// </summary>
+        /// <param name="_id">User ID</param>
+        /// <returns>Returns all available public user data</returns>
         public fetchedUser fetchUserData(int _id)
         {
             WebClient client = new WebClient();
@@ -206,6 +228,15 @@ namespace Cryptorin.Data
             }
         }
 
+
+
+        /// <summary>
+        /// Update your profile picture
+        /// </summary>
+        /// <param name="_login">Your login</param>
+        /// <param name="_password">Your password</param>
+        /// <param name="_imageBase64">Your new image (base64)</param>
+        /// <returns>returns "Updated" or "error"</returns>
         public string UpdateImage(string _login, string _password, string _imageBase64)
         {
             WebClient client = new WebClient();
@@ -226,6 +257,13 @@ namespace Cryptorin.Data
             }
         }
 
+        /// <summary>
+        /// Password update method
+        /// </summary>
+        /// <param name="_login"></param>
+        /// <param name="_password"></param>
+        /// <param name="_newPassword"></param>
+        /// <returns>returns "Updated" or "error"</returns>
         public string UpdatePassword(string _login, string _password, string _newPassword)
         {
             WebClient client = new WebClient();
@@ -246,7 +284,13 @@ namespace Cryptorin.Data
             }
         }
 
-
+        /// <summary>
+        /// Update Public username
+        /// </summary>
+        /// <param name="_login"></param>
+        /// <param name="_password"></param>
+        /// <param name="_newPublicName"></param>
+        /// <returns>returns "Updated" or "error"</returns>
         public string UpdatePublicName(string _login, string _password, string _newPublicName)
         {
             WebClient client = new WebClient();
@@ -268,6 +312,11 @@ namespace Cryptorin.Data
         }
 
 
+        /// <summary>
+        /// Get the index of user profile changes
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns>INT value</returns>
         public string GetUserChangeIndex(int _id)
         {
             WebClient client = new WebClient();

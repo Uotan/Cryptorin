@@ -8,6 +8,9 @@ using System.Xml.Serialization;
 
 namespace Cryptorin.Data
 {
+    /// <summary>
+    /// My, poorly working RSA provider
+    /// </summary>
     public class classRSA
     {
         byte[] publicKeyBytes;

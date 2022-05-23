@@ -31,8 +31,10 @@ namespace Cryptorin.Classes
         Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
 
 
-        
 
+        /// <summary>
+        /// Set a global dark theme
+        /// </summary>
         public void SetDark()
         {
             App.Current.Resources["colorLabel"] = colorLabelDark;
@@ -43,6 +45,10 @@ namespace Cryptorin.Classes
             App.Current.Resources["colorEntryPlaceholder"] = colorEntryPlaceHolderColorDark;
             App.Current.Resources["colorMainAccent"] = colorcolorMainAccentDark;
         }
+
+        /// <summary>
+        /// Set a global light theme
+        /// </summary>
         public void SetLight()
         {
             App.Current.Resources["colorLabel"] = colorlabelLight;
