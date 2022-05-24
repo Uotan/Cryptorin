@@ -13,7 +13,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="80"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
             </Grid.RowDefinitions>
 
             <StackLayout BackgroundColor="{DynamicResource colorMainAccent}" Orientation="Horizontal" Grid.Row="0">
@@ -64,10 +64,10 @@
                     BackgroundColor="Transparent"
                     CornerRadius="7"
                     Margin="0,0,0,5"   >
-                    <Editor x:Name="entrContent" WidthRequest="320" ></Editor>
+                    <Editor x:Name="entrContent" WidthRequest="340" ></Editor>
                 </Frame>
                 
-                <ImageButton x:Name="btnSendMessage" Clicked="btnSendMessage_Clicked" Source="send.png" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent"/>
+                <ImageButton x:Name="btnSendMessage" Clicked="btnSendMessage_Clicked" Margin="0,0,0,60" Source="send.png" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent"/>
             </StackLayout>
             
         </Grid>

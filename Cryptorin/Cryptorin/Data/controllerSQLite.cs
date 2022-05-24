@@ -139,7 +139,7 @@ namespace Cryptorin.Data
             return count;
         }
 
-        public int GetCountOfMessagesWithUserLocal(int _userID)
+        public int GetCountOfMessagesFromUserLocal(int _userID)
         {
             int count = db.Table<Message>().Where(x => x.from_whom == _userID).Count();
             return count;

@@ -28,7 +28,8 @@ namespace Cryptorin.Classes
         Color colorEntryPlaceHolderColorLight = Color.FromArgb(255, 158, 142, 142);
 
         Color colorcolorMainAccentDark = Color.FromArgb(255, 88, 102, 122);
-        Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
+        //Color colorcolorMainAccentLight = Color.FromArgb(255, 167, 197, 199);
+        Color colorcolorMainAccentLight = Color.FromArgb(255, 124, 148, 166);
 
 
 

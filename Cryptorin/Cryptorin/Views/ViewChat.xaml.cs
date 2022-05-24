@@ -30,6 +30,7 @@ namespace Cryptorin.Views
 
         int CountMessOnDB;
         int CountMessLocal;
+        int CounOfALLtMessLocal;
 
         bool timerAlive = false;
 
@@ -240,7 +241,8 @@ namespace Cryptorin.Views
                 Debug.WriteLine("check key number method starts");
 
                 CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, loginHex, passwordHex);
-                CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
+                CountMessLocal = App.myDB.GetCountOfMessagesFromUserLocal(user.id);
+                CounOfALLtMessLocal = App.myDB.GetCountOfMessagesLocal(user.id,myData.id);
 
                 keyNumber = signature.GetUserKeyNumber(user.id);
                 if (keyNumber != user.key_number)
@@ -293,21 +295,24 @@ namespace Cryptorin.Views
 
         async private void FetchMessages()
         {
+            if (firstTime)
+            {
+                if (CounOfALLtMessLocal > 0)
+                {
+                    //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                    collectionMessages.ScrollTo(CounOfALLtMessLocal - 1);
+
+                }
+
+                firstTime = false;
+            }
+
             await Task.Run(() =>
             {
                 if (isReady != false)
                 {
                     isReady = false;
-                    if (firstTime)
-                    {
-                        if (CountMessLocal > 0)
-                        {
-                            collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
-
-                        }
-
-                        firstTime = false;
-                    }
+                    
                     //CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
                     //CountMessLocal = App.myDB.GetCountOfMessagesWithUserLocal(user.id);
 
@@ -375,14 +380,14 @@ namespace Cryptorin.Views
 
         private async void btnSendMessage_Clicked(object sender, EventArgs e)
         {
-            if (entrContent.Text == "" || entrContent.Text == null || user.key_number == "0")
+            if (entrContent.Text == "" || entrContent.Text == null || user.key_number == "0"||entrContent.Text.Trim()=="")
             {
                 entrContent.Text = null;
                 return;
             }
 
-            var urlEncodedMessage = WebUtility.UrlEncode(entrContent.Text);
-            var notEncodedText = entrContent.Text;
+            var urlEncodedMessage = WebUtility.UrlEncode(entrContent.Text.Trim());
+            var notEncodedText = entrContent.Text.Trim();
 
             entrContent.Text = null;
 
@@ -427,8 +432,14 @@ namespace Cryptorin.Views
 
                     MessagesCurrent.Add(template);
 
-                    collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+
                 }
+                else
+                {
+                    return;
+                }
+
+                collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
 
                 //isReady = true;
 
