@@ -13,7 +13,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="70"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
             </Grid.RowDefinitions>
 
             <StackLayout BackgroundColor="{DynamicResource colorMainAccent}" Orientation="Horizontal" Grid.Row="0">
@@ -57,7 +57,19 @@
 
             </CollectionView>
             
-            <Entry x:Name="entrContent" Grid.Row="2" HorizontalTextAlignment="Start" Completed="entrContent_Completed"></Entry>
+            <!--<Entry x:Name="entrContent" Grid.Row="2" HorizontalTextAlignment="Start" Completed="entrContent_Completed"></Entry>-->
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="3,0,0,0">
+                <Frame IsClippedToBounds="true"
+                    Padding="0"
+                    BackgroundColor="Transparent"
+                    CornerRadius="7"
+                    Margin="0,0,0,5"   >
+                    <Editor x:Name="entrContent" WidthRequest="320" ></Editor>
+                </Frame>
+                
+                <ImageButton x:Name="btnSendMessage" Clicked="btnSendMessage_Clicked" Source="send.png" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent"/>
+            </StackLayout>
+            
         </Grid>
 
     </ContentPage.Content>

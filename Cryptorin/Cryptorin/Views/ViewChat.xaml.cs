@@ -353,11 +353,29 @@ namespace Cryptorin.Views
             });
         }
 
-
-
-        async void entrContent_Completed(object sender, EventArgs e)
+        private async void collectionMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (entrContent.Text == "" || entrContent.Text == null||user.key_number=="0")
+            //copy text of selected message
+            var MyCollectionView = sender as CollectionView;
+            if (MyCollectionView.SelectedItem == null)
+                return;
+
+            classMessageTemplate messageItem = (classMessageTemplate)e.CurrentSelection.FirstOrDefault();
+            Debug.WriteLine(messageItem.content);
+            await Clipboard.SetTextAsync(messageItem.content);
+            await this.DisplayToastAsync("Text copied", 2000);
+
+            ((CollectionView)sender).SelectedItem = null;
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+            DisplayUserInfo();
+        }
+
+        private async void btnSendMessage_Clicked(object sender, EventArgs e)
+        {
+            if (entrContent.Text == "" || entrContent.Text == null || user.key_number == "0")
             {
                 entrContent.Text = null;
                 return;
@@ -370,11 +388,11 @@ namespace Cryptorin.Views
 
             await Task.Run(() =>
             {
-                
+
 
                 //isReady = false;
 
-                
+
 
                 RSAUtil rSAUtil = new RSAUtil();
 
@@ -411,34 +429,10 @@ namespace Cryptorin.Views
 
                     collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
                 }
-                
+
                 //isReady = true;
 
-            } );
-
-            
-
-        }
-
-
-        private async void collectionMessages_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //copy text of selected message
-            var MyCollectionView = sender as CollectionView;
-            if (MyCollectionView.SelectedItem == null)
-                return;
-
-            classMessageTemplate messageItem = (classMessageTemplate)e.CurrentSelection.FirstOrDefault();
-            Debug.WriteLine(messageItem.content);
-            await Clipboard.SetTextAsync(messageItem.content);
-            await this.DisplayToastAsync("Text copied", 2000);
-
-            ((CollectionView)sender).SelectedItem = null;
-        }
-
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            DisplayUserInfo();
+            });
         }
     }
 }
