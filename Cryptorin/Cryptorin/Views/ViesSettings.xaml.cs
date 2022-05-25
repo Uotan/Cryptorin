@@ -245,21 +245,19 @@ namespace Cryptorin.Views
             bool answer = await DisplayAlert("Are you sure?", "This will delete all data!", "Yes", "No");
             if (answer)
             {
-
-                App.myDB.DeleteAllMessages();
-
-                
                 List<string> keys = rSAUtil.CreateKeys();
 
                 string newKeyNumb = signature.UpdateKeys(loginHex, passwordHex, keys[1]);
 
-                if (newKeyNumb=="error")
+                if (newKeyNumb=="error"||newKeyNumb==null)
                 {
                     await DisplayAlert("Error", "The keys have NOT been updated.", "Ok");
                     return;
                 }
                 else
                 {
+                    App.myDB.DeleteAllMessages();
+
                     classAES aES = new classAES(keyClass.AESkey);
                     string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
 
@@ -270,11 +268,6 @@ namespace Cryptorin.Views
                     App.myDB.UpdateMyData(myData);
                     await DisplayAlert("Result", "The keys have been updated. All messages deleted.", "Ok");
                 }
-
-                
-
-
-
             }
         }
 

@@ -9,7 +9,9 @@
     settype($fromID, 'integer');
     settype($toID, 'integer');
     
+    
     require_once "getHash.php";
+    require_once "getTime.php";
     $login = GetHash($login);
     $password = GetHash($password);
     
@@ -22,15 +24,12 @@
     $resultId = $resultCount["id"];
     
     if($resultCount!=null&&$resultId==$fromID){
-        $stmt = $pdo->query("INSERT INTO `Messages` (`id`, `from_whom`, `for_whom`, `rsa_cipher`, `datetime`) VALUES (NULL, '".$fromID."', '".$toID."', '".$content."', CURRENT_TIMESTAMP)");
-        $date = date('Y-m-d h:i:s', time());
+        
+        $date = GetTime();
+        $stmt = $pdo->query("INSERT INTO `Messages` (`id`, `from_whom`, `for_whom`, `rsa_cipher`, `datetime`) VALUES (NULL, '".$fromID."', '".$toID."', '".$content."', '".$date."')");
         echo $date;
     }
     else{
         echo "error";
     }
-
-    
-    
-    
 ?>

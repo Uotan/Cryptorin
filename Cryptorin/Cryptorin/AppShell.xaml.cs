@@ -112,7 +112,7 @@ namespace Cryptorin
                 {
                     await DisplayAlert("Error", "The connection to the server is not established", "Ok");
                 }
-                await Task.Delay(5000);
+                await Task.Delay(10000);
             }
         }
 
@@ -124,11 +124,15 @@ namespace Cryptorin
             {
                 classSignature signature = new classSignature();
                 var result = signature.GetUserKeyNumber(mydata.id);
+                if (result==null)
+                {
+                    return;
+                }
                 if (result!=mydata.key_number)
                 {
                     otherEntryController.myKeyChanged = true;
                     await Task.Delay(1000);
-                    App.myDB.DeleteAllMessages();
+                    //App.myDB.DeleteAllMessages();
                     //mydata.key_number = result;
                     //App.myDB.UpdateMyData(mydata);
                     //mydata.key_number = result;

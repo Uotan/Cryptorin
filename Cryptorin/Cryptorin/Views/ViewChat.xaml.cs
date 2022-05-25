@@ -70,6 +70,63 @@ namespace Cryptorin.Views
 
 
 
+        
+
+        public int UserID
+        {
+            set
+            {
+                ShowUserDataAndCheck(value);
+            }
+        }
+
+        async void ShowUserDataAndCheck(int _id)
+        {
+            decryptedPrivateKey = aES.Decrypt(myData.private_key);
+            await Task.Run(() =>
+            {
+                user = App.myDB.GetUser(_id);
+
+                DisplayUserInfo();
+
+                var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
+
+                if (fetchedMessagedData != null)
+                {
+                    foreach (var item in fetchedMessagedData)
+                    {
+                        MessagesCurrent.Add(item);
+                    }
+                }
+                collectionMessages.ItemsSource = MessagesCurrent;
+
+                timerAlive = true;
+
+                checkConnection checker = new checkConnection();
+                bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+                if (!result)
+                {
+                    //entrContent.IsEnabled = false;
+                    DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                }
+                else
+                {
+                    //CheckAnotherEntry();
+                    CheckChangeIndex();
+                    //Task.Delay(200);
+                    CheckKeyNumber();
+                }
+
+                
+
+
+
+
+                
+            });
+
+        }
+
         async void CheckChangeIndex()
         {
             while (timerAlive)
@@ -79,6 +136,10 @@ namespace Cryptorin.Views
                     return;
                 }
                 string changeIndex = signature.GetUserChangeIndex(user.id);
+                if (changeIndex == null)
+                {
+                    return;
+                }
 
                 Debug.WriteLine("user change INDEX:" + changeIndex);
 
@@ -148,86 +209,6 @@ namespace Cryptorin.Views
             }
         }
 
-        //async void DisplayUserInfo()
-        //{
-        //    await Task.Run(() =>
-        //    {
-        //        frameTop.BackgroundColor = Color.FromHex(user.hex_color);
-        //        userName.Text = WebUtility.UrlDecode(user.public_name);
-
-        //        try
-        //        {
-
-        //            if (user.image != null || user.image != "")
-        //            {
-        //                byte[] byteArray = Convert.FromBase64String(user.image);
-        //                ImageSource image_Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
-        //                imageUser.Source = image_Source;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            imageUser.Source = null;
-        //        }
-
-        //    });
-        //}
-
-        public int UserID
-        {
-            set
-            {
-                ShowUserDataAndCheck(value);
-            }
-        }
-
-        async void ShowUserDataAndCheck(int _id)
-        {
-            decryptedPrivateKey = aES.Decrypt(myData.private_key);
-            await Task.Run(() =>
-            {
-                user = App.myDB.GetUser(_id);
-
-                DisplayUserInfo();
-
-                var fetchedMessagedData = App.myDB.GetMessages(user.id, myData.id);
-
-                if (fetchedMessagedData != null)
-                {
-                    foreach (var item in fetchedMessagedData)
-                    {
-                        MessagesCurrent.Add(item);
-                    }
-                }
-                collectionMessages.ItemsSource = MessagesCurrent;
-
-                timerAlive = true;
-
-                checkConnection checker = new checkConnection();
-                bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
-                if (!result)
-                {
-                    entrContent.IsEnabled = false;
-                    DisplayAlert("Error", "The connection to the server is not established", "Ok");
-                }
-                else
-                {
-                    CheckAnotherEntry();
-                    CheckChangeIndex();
-                    //Task.Delay(200);
-                    CheckKeyNumber();
-                }
-
-                
-
-
-
-
-                
-            });
-
-        }
-
         async void CheckKeyNumber()
         {
             while (timerAlive)
@@ -245,6 +226,10 @@ namespace Cryptorin.Views
                 CounOfALLtMessLocal = App.myDB.GetCountOfMessagesLocal(user.id,myData.id);
 
                 keyNumber = signature.GetUserKeyNumber(user.id);
+                if (keyNumber==null)
+                {
+                    return;
+                }
                 if (keyNumber != user.key_number)
                 {
                     var fetchUser = signature.fetchUserData(user.id);
@@ -408,7 +393,13 @@ namespace Cryptorin.Views
                 string result = classMess.SendMessage(myData.id, user.id, loginHex, passwordHex, cryptedText);
 
 
-                if (result != "error")
+                if (result == "error"||result==null)
+                {
+                    return;
+
+
+                }
+                else
                 {
                     //Debug.WriteLine(myData.id + ": " + entrContent.Text + "[" + result + "]");
 
@@ -431,12 +422,6 @@ namespace Cryptorin.Views
                     App.myDB.AddMessageCompleted(mess);
 
                     MessagesCurrent.Add(template);
-
-
-                }
-                else
-                {
-                    return;
                 }
 
                 collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
