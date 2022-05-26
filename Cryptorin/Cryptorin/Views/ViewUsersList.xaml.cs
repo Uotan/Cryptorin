@@ -57,7 +57,7 @@ namespace Cryptorin.Views
                             userForList.image_source = image_Source;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
 
                     }
@@ -113,7 +113,7 @@ namespace Cryptorin.Views
                             userTemplate.image_source = image_Source;
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         userTemplate.image_source = null;
                     }

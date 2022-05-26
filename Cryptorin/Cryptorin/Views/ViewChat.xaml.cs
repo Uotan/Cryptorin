@@ -185,7 +185,7 @@ namespace Cryptorin.Views
                     imageUser.Source = image_Source;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 imageUser.Source = null;
             }

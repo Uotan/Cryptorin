@@ -44,7 +44,7 @@ namespace Cryptorin.Common
                     Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
                     myPhoto.Source = Source;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }

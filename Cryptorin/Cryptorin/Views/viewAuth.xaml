@@ -11,7 +11,8 @@
     <ScrollView>
         <StackLayout>
             <Frame HeightRequest="125" Style="{StaticResource styleFrame}" Padding="5,0,5,30" CornerRadius="0">
-                <Image Source="CryptorinLogo.png"></Image>
+                <Image x:Name="serverLogo" ></Image>
+                <!--<Image x:Name="serverLogo" Source="CryptorinLogo.png"></Image>-->
             </Frame>
 
             <StackLayout Padding="15,70,15,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">

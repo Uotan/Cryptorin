@@ -14,6 +14,7 @@ using Cryptorin.Classes.SQLiteClasses;
 using System.Diagnostics;
 using Xamarin.Essentials;
 using System.Drawing;
+using System.IO;
 
 namespace Cryptorin.Views
 {
@@ -21,12 +22,15 @@ namespace Cryptorin.Views
     public partial class ViewAuth : ContentPage
     {
 
-
+        public ImageSource Source;
 
         public ViewAuth()
         {
             InitializeComponent();
+            
             checkConnection2server();
+
+
 
 
             //tbLogin.Completed += (s, e) =>
@@ -48,6 +52,23 @@ namespace Cryptorin.Views
             if (!result)
             {
                 await DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                return;
+            }
+            
+            try
+            {
+                
+                var byteArray = new WebClient().DownloadData(ServerAddress.srvrAddress+"/logo.png");
+                if (byteArray==null)
+                {
+                    return;
+                }
+                Source = ImageSource.FromStream(() => new MemoryStream(byteArray));
+                serverLogo.Source = Source;
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
 
@@ -196,7 +217,7 @@ namespace Cryptorin.Views
 
         private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("Change domain", "Enter new domain (default: https://cryptorin.ru):", keyboard: Keyboard.Email);
+            string result = await DisplayPromptAsync("Change domain", "Enter new domain (default: "+ServerAddress.srvrAddress+"):", keyboard: Keyboard.Email);
             if (result == null || result == "")
             {
                 return;
