@@ -58,16 +58,18 @@
             </CollectionView>
             
             <!--<Entry x:Name="entrContent" Grid.Row="2" HorizontalTextAlignment="Start" Completed="entrContent_Completed"></Entry>-->
-            <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="3,0,0,0">
+            <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="3,0,0,5">
                 <Frame IsClippedToBounds="true"
                     Padding="0"
                     BackgroundColor="Transparent"
                     CornerRadius="7"
-                    Margin="0,0,0,5"   >
-                    <Editor x:Name="entrContent" WidthRequest="340" ></Editor>
+                    Margin="0"   
+                       HorizontalOptions="FillAndExpand"
+                       VerticalOptions="FillAndExpand">
+                    <Editor x:Name="entrContent" ></Editor>
                 </Frame>
                 
-                <ImageButton x:Name="btnSendMessage" Clicked="btnSendMessage_Clicked" Margin="0,0,0,60" Source="send.png" HorizontalOptions="Center" WidthRequest="40" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent"/>
+                <ImageButton x:Name="btnSendMessage" Clicked="btnSendMessage_Clicked" Margin="0,0,0,60" Source="send.png" WidthRequest="40" BackgroundColor="Transparent"/>
             </StackLayout>
             
         </Grid>
