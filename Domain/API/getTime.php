@@ -4,7 +4,7 @@
     function GetTime()
     {
         date_default_timezone_set("Asia/Krasnoyarsk");
-        $date = date('Y-m-d h:i:s', time());
+        $date = date('Y-m-d H:i:s', time());
         return $date;
     }
 ?>

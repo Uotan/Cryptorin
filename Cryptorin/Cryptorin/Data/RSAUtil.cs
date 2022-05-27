@@ -19,6 +19,7 @@ namespace Cryptorin.Data
         {
             var keyList = RsaKeyGenerator.Pkcs1Key(2048, false);
             //var keyList = RsaKeyGenerator.Pkcs1Key(4096, false);
+            //4096 is too heavy for a smartphone, yet
             return keyList;
         }
 
