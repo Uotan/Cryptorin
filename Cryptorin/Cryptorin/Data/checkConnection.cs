@@ -35,7 +35,7 @@ namespace Cryptorin.Data
                     return false;
                 }
             }
-            catch (WebException)
+            catch (Exception)
             {
                 // there is no internet
                 return false;

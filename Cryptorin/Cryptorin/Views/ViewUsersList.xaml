@@ -7,7 +7,7 @@
     <AbsoluteLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent">
         <StackLayout>
             <SearchBar x:Name="searchField" TextChanged="searchField_TextChanged" TextColor="{DynamicResource colorLabel}" CancelButtonColor="{DynamicResource colorLabel}" FontSize="20" PlaceholderColor="{DynamicResource colorEntryPlaceholder}" ></SearchBar>
-            <ScrollView Margin="10,0,0,0">
+            <ScrollView Margin="15,15,0,0">
                 <CollectionView Margin="0" x:Name="userCollector"
                     SelectionMode="Single" SelectionChanged="userCollector_SelectionChanged">
                     <CollectionView.ItemsLayout>

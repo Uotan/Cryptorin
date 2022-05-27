@@ -113,7 +113,7 @@ namespace Cryptorin
 
         protected override void OnSleep()
         {
-            //Application.Current.Quit();
+
         }
 
         protected override void OnResume()

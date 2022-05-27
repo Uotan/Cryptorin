@@ -30,14 +30,6 @@ namespace Cryptorin.Views
             
             checkConnection2server();
 
-
-
-
-            //tbLogin.Completed += (s, e) =>
-            //{
-            //    tbPassword.Focus();
-            //};
-
         }
 
 
@@ -49,6 +41,7 @@ namespace Cryptorin.Views
         {
             checkConnection checker = new checkConnection();
             bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
+            Debug.WriteLine(result);
             if (!result)
             {
                 await DisplayAlert("Error", "The connection to the server is not established", "Ok");
@@ -81,12 +74,7 @@ namespace Cryptorin.Views
             bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
             if (!connectionResult)
             {
-                //btnSignIn.IsEnabled = true;
-                //btnSignUp.IsEnabled = true;
-                //btnSignIn.Text = "Sign In";
-
                 await DisplayAlert("Error", "The connection to the server is not established", "Ok");
-                
             }
 
             return connectionResult;
@@ -217,13 +205,14 @@ namespace Cryptorin.Views
 
         private async void toolItmChangeDomain_Clicked(object sender, EventArgs e)
         {
-            string result = await DisplayPromptAsync("Change domain", "Enter new domain (default: "+ServerAddress.srvrAddress+"):", keyboard: Keyboard.Email);
+            string result = await DisplayPromptAsync("Change domain", "Enter new domain (current: "+ServerAddress.srvrAddress+"):", keyboard: Keyboard.Email);
             if (result == null || result == "")
             {
                 return;
             }
             Preferences.Set("serverAddress", result);
             ServerAddress.srvrAddress = Preferences.Get("serverAddress", null);
+            checkConnection2server();
         }
 
         private async void toolItmCodeSource_Clicked(object sender, EventArgs e)
