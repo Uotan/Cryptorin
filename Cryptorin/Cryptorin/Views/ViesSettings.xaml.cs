@@ -330,7 +330,8 @@ namespace Cryptorin.Views
 
             classSHA256 sHA256 = new classSHA256();
             string hash_secureCodeOld = sHA256.ComputeSha256Hash(entryCurrenCode.Text);
-            hash_secureCodeOld = hash_secureCodeOld.Remove(16);
+            //hash_secureCodeOld = hash_secureCodeOld.Remove(16);
+            hash_secureCodeOld = hash_secureCodeOld.Remove(32);
 
             classAES _aES = new classAES(hash_secureCodeOld);
 
@@ -353,7 +354,8 @@ namespace Cryptorin.Views
 
 
             string hash_secureCodeNew = sHA256.ComputeSha256Hash(entryNewCode.Text);
-            hash_secureCodeNew = hash_secureCodeNew.Remove(16);
+            //hash_secureCodeNew = hash_secureCodeNew.Remove(16);
+            hash_secureCodeNew = hash_secureCodeNew.Remove(32);
 
             keyClass.AESkey = hash_secureCodeNew;
             aES.ChangeAESkey(hash_secureCodeNew);
