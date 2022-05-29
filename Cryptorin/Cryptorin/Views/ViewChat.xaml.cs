@@ -35,8 +35,6 @@ namespace Cryptorin.Views
         bool timerAlive = false;
 
         bool isReady = true;
-        bool isReady2 = true;
-        bool isReady3 = true;
 
         bool firstTime = true;
 
@@ -60,12 +58,14 @@ namespace Cryptorin.Views
         public ViewChat()
         {
             InitializeComponent();
+            
             if (keyClass.isUnlock)
             {
                 passwordHex = aES.Decrypt(myData.password).Trim();
                 loginHex = aES.Decrypt(myData.login).Trim();
             }
 
+            Debug.WriteLine("INITIALIZED");
         }
 
 
@@ -82,9 +82,10 @@ namespace Cryptorin.Views
 
         async void ShowUserDataAndCheck(int _id)
         {
-            decryptedPrivateKey = aES.Decrypt(myData.private_key);
             await Task.Run(() =>
             {
+                decryptedPrivateKey = aES.Decrypt(myData.private_key);
+
                 user = App.myDB.GetUser(_id);
 
                 DisplayUserInfo();
@@ -100,14 +101,21 @@ namespace Cryptorin.Views
                 }
                 collectionMessages.ItemsSource = MessagesCurrent;
 
+                Scroll2EndAsync();
+
                 timerAlive = true;
 
                 checkConnection checker = new checkConnection();
                 bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
                 if (!result)
                 {
-                    //entrContent.IsEnabled = false;
+                    //Scroll2EndAsync();
+                    entrContent.IsEnabled = false;
+                    btnSendMessage.IsEnabled = false;
+
                     DisplayAlert("Error", "The connection to the server is not established", "Ok");
+                    
+
                 }
                 else
                 {
@@ -125,16 +133,14 @@ namespace Cryptorin.Views
                 
             });
 
+            Debug.WriteLine("ShowUserDataAndCheck END");
+
         }
 
         async void CheckChangeIndex()
         {
             while (timerAlive)
             {
-                if (isReady3 == false)
-                {
-                    return;
-                }
                 string changeIndex = signature.GetUserChangeIndex(user.id);
                 if (changeIndex == null)
                 {
@@ -157,10 +163,7 @@ namespace Cryptorin.Views
                     //DisplayUserInfo();
 
                 }
-
-                isReady3 = false;
                 await Task.Delay(3000);
-                isReady3 = true;
 
 
 
@@ -191,33 +194,40 @@ namespace Cryptorin.Views
             }
         }
 
-        async void CheckAnotherEntry()
+        //async void CheckAnotherEntry()
+        //{
+        //    while (timerAlive)
+        //    {
+
+        //        if (otherEntryController.myKeyChanged)
+        //        {
+        //            Device.BeginInvokeOnMainThread(async () =>
+        //            {
+        //                otherEntryController.myKeyChanged = false;
+        //                await Shell.Current.GoToAsync("..");
+
+        //            });
+        //        }
+        //        await Task.Delay(400);
+        //    }
+        //}
+        async void Scroll2EndAsync()
         {
-            while (timerAlive)
+            if (MessagesCurrent.Count>0)
             {
-
-                if (otherEntryController.myKeyChanged)
-                {
-                    Device.BeginInvokeOnMainThread(async () =>
-                    {
-                        otherEntryController.myKeyChanged = false;
-                        await Shell.Current.GoToAsync("..");
-
-                    });
-                }
-                await Task.Delay(400);
+                await Task.Delay(100);
+                collectionMessages.ScrollTo(MessagesCurrent.Count - 1, -1, ScrollToPosition.End, true);
             }
+            
+
+
         }
+
 
         async void CheckKeyNumber()
         {
             while (timerAlive)
             {
-                if (isReady2 == false)
-                {
-                    return;
-                }
-                isReady2 = false;
 
                 Debug.WriteLine("check key number method starts");
 
@@ -250,8 +260,6 @@ namespace Cryptorin.Views
                     FetchMessages();
                 }
                 await Task.Delay(2000);
-
-                isReady2 = true;
                 Debug.WriteLine("check key number method END");
 
 
@@ -280,22 +288,24 @@ namespace Cryptorin.Views
 
         async private void FetchMessages()
         {
-            if (firstTime)
-            {
-                if (CounOfALLtMessLocal > 0)
-                {
-                    //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
-                    collectionMessages.ScrollTo(CounOfALLtMessLocal - 1);
-
-                }
-
-                firstTime = false;
-            }
-
             await Task.Run(() =>
             {
+                //if (firstTime)
+                //{
+                //    if (CounOfALLtMessLocal > 0)
+                //    {
+                //        //collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
+                //        //collectionMessages.ScrollTo(CounOfALLtMessLocal - 1);
+                //        collectionMessages.ScrollTo(MessagesCurrent.Count - 1, -1, ScrollToPosition.End, true);
+                //        //collectionMessages.ScrollTo(CounOfALLtMessLocal - 1, animate: false);
+
+                //    }
+
+                //    firstTime = false;
+                //}
                 if (isReady != false)
                 {
+                    Debug.WriteLine("Messages START");
                     isReady = false;
                     
                     //CountMessOnDB = classMess.GetCountOfMessagesWithUser(user.id, myData.id, myData.login, myData.password);
@@ -337,6 +347,7 @@ namespace Cryptorin.Views
 
                         collectionMessages.ScrollTo(App.myDB.GetCountOfMessagesLocal(myData.id, user.id) - 1);
                     }
+                    Debug.WriteLine("Messages END");
                     isReady = true;
                 }
 

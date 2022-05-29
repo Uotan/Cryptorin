@@ -14,6 +14,7 @@ using Xamarin.Forms.Xaml;
 using Cryptorin.Data;
 using Cryptorin.Classes;
 using Cryptorin.Classes.SQLiteClasses;
+using System.Diagnostics;
 
 namespace Cryptorin
 {
@@ -35,6 +36,8 @@ namespace Cryptorin
 
             EnterSecurityCode();
 
+
+            Debug.WriteLine("App Shell Init END");
             //Device.StartTimer(new TimeSpan(0, 0, 5), () =>
             //{
             //    Device.BeginInvokeOnMainThread(() =>
@@ -104,6 +107,7 @@ namespace Cryptorin
 
         async void CheckConnection()
         {
+
             while (timerAlive)
             {
                 checkConnection checker = new checkConnection();
