@@ -85,13 +85,15 @@ namespace Cryptorin
             }
             else
             {
+                keyClass.AESkey = null;
+                keyClass.isUnlock = false;
                 await DisplayAlert("Oh, I'm sorry!", "Invalid security code", "ok");
             }
         }
 
         private async void mnItmQuit_Clicked(object sender, EventArgs e)
         {
-            bool answer = await DisplayAlert("Are you sure?", "This will destroy all data locally and in the database!", "Yes", "No");
+            bool answer = await DisplayAlert("Are you sure?", "This will destroy all data locally", "Yes", "No");
             if (answer)
             {
                 //delete all data methods
