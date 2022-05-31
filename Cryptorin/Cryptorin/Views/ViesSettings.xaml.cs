@@ -328,10 +328,14 @@ namespace Cryptorin.Views
                 return;
             }
 
+            Argon argon = new Argon();
+
+            string codeArgonOld = argon.Argon2id(entryCurrenCode.Text, entryCurrenCode.Text.Length.ToString() + "#iN6H2V#");
+
             classSHA256 sHA256 = new classSHA256();
-            string hash_secureCodeOld = sHA256.ComputeSha256Hash(entryCurrenCode.Text);
-            //hash_secureCodeOld = hash_secureCodeOld.Remove(16);
-            hash_secureCodeOld = hash_secureCodeOld.Remove(32);
+            string hash_secureCodeOld = sHA256.ComputeSha256Hash(codeArgonOld);
+            hash_secureCodeOld = hash_secureCodeOld.Remove(16);
+            //hash_secureCodeOld = hash_secureCodeOld.Remove(32);
 
             classAES _aES = new classAES(hash_secureCodeOld);
 
@@ -352,10 +356,12 @@ namespace Cryptorin.Views
 
             //проверили, что корректно ввели старый код
 
+            
+            string codeArgonNew = argon.Argon2id(entryNewCode.Text, entryNewCode.Text.Length.ToString() + "#iN6H2V#");
 
-            string hash_secureCodeNew = sHA256.ComputeSha256Hash(entryNewCode.Text);
-            //hash_secureCodeNew = hash_secureCodeNew.Remove(16);
-            hash_secureCodeNew = hash_secureCodeNew.Remove(32);
+            string hash_secureCodeNew = sHA256.ComputeSha256Hash(codeArgonNew);
+            hash_secureCodeNew = hash_secureCodeNew.Remove(16);
+            //hash_secureCodeNew = hash_secureCodeNew.Remove(32);
 
             keyClass.AESkey = hash_secureCodeNew;
             aES.ChangeAESkey(hash_secureCodeNew);

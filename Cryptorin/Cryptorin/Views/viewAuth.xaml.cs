@@ -153,10 +153,11 @@ namespace Cryptorin.Views
                     return false;
                 }
                 code = code.Trim();
+                string codeArgon = argon.Argon2id(code,code.Length.ToString()+ "#iN6H2V#");
                 classSHA256 sHA256 = new classSHA256();
-                string hash_secureCode = sHA256.ComputeSha256Hash(code);
-                //hash_secureCode = hash_secureCode.Remove(16);
-                hash_secureCode = hash_secureCode.Remove(32);
+                string hash_secureCode = sHA256.ComputeSha256Hash(codeArgon);
+                hash_secureCode = hash_secureCode.Remove(16);
+                //hash_secureCode = hash_secureCode.Remove(32);
                 keyClass.AESkey = hash_secureCode;
                 classAES aES = new classAES(hash_secureCode);
 
