@@ -8,21 +8,29 @@
         <ToolbarItem x:Name="toolItmChangeDomain" Clicked="toolItmChangeDomain_Clicked" IconImageSource="server.png" Order="Secondary" Priority="0" Text="Change the domain"></ToolbarItem>
         <ToolbarItem x:Name="toolItmCodeSource" Clicked="toolItmCodeSource_Clicked" IconImageSource="iconGitSource.png" Order="Secondary" Priority="1" Text="Code Source"></ToolbarItem>
     </ContentPage.ToolbarItems>
-    <ScrollView>
-        <StackLayout>
-            <Frame HeightRequest="125" Style="{StaticResource styleFrame}" Padding="5,0,5,30" CornerRadius="0">
-                <Image x:Name="serverLogo" ></Image>
-                <!--<Image x:Name="serverLogo" Source="CryptorinLogo.png"></Image>-->
-            </Frame>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="135"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
-            <StackLayout Padding="15,70,15,20" Orientation="Vertical" Spacing="10" VerticalOptions="Center">
-                <Entry x:Name="tbLogin" Margin="0,0,0,20" HorizontalTextAlignment="Center" IsPassword="True" Placeholder="Enter login" />
-                <Entry x:Name="tbPassword" HorizontalTextAlignment="Center" Placeholder="Enter password" IsPassword="True"/>
-                <Button x:Name="btnSignIn" Margin="0,50,0,0" Text="Sign In" Clicked="btnSignIn_Clicked"/>
-                <Label Text="or" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
-                <Button x:Name="btnSignUp" Text="Sign Up" Clicked="btnSignUp_Clicked"/>
+        <Frame Grid.Row="0" Style="{StaticResource styleFrame}" Padding="0" CornerRadius="0">
+            <Image x:Name="serverLogo" Margin="0,0,0,20" ></Image>
+        </Frame>
+
+        <ScrollView Grid.Row="1" VerticalOptions="Center">
+            <StackLayout>
+                <StackLayout Padding="15,0,15,0" Orientation="Vertical" Spacing="10" >
+                    <Entry x:Name="tbLogin" Margin="0,0,0,20" HorizontalTextAlignment="Center" IsPassword="True" Placeholder="Enter login" />
+                    <Entry x:Name="tbPassword" HorizontalTextAlignment="Center" Placeholder="Enter password" IsPassword="True"/>
+                    <Button x:Name="btnSignIn" Margin="0,50,0,0" Text="Sign In" Clicked="btnSignIn_Clicked"/>
+                    <Label Text="or" FontSize="Medium" HorizontalTextAlignment="Center"></Label>
+                    <Button x:Name="btnSignUp" Text="Sign Up" Clicked="btnSignUp_Clicked"/>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
-    </ScrollView>
+        </ScrollView>
+
+    </Grid>
+    
     
 </ContentPage>
