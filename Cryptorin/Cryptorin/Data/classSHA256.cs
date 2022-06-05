@@ -6,7 +6,7 @@ using System.Text;
 namespace Cryptorin.Data
 {
 
-    public class classSHA256
+    public class ClassSHA256
     {
         /// <summary>
         /// get hash - SHA256

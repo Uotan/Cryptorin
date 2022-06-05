@@ -62,12 +62,12 @@ namespace Cryptorin
             code = code.Trim();
             Argon argon = new Argon();
             string codeArgon = argon.Argon2id(code, code.Length.ToString() + "#iN6H2V#");
-            classSHA256 sHA256 = new classSHA256();
+            ClassSHA256 sHA256 = new ClassSHA256();
             string hash_secureCode = sHA256.ComputeSha256Hash(codeArgon);
             hash_secureCode = hash_secureCode.Remove(16);
             //hash_secureCode = hash_secureCode.Remove(32);
 
-            classAES aES = new classAES(hash_secureCode);
+            ClassAES aES = new ClassAES(hash_secureCode);
 
             string secretCodeFromMemory = Preferences.Get("secretCode",null);
 
@@ -80,13 +80,13 @@ namespace Cryptorin
 
             if (decryptedSecreCode == hash_secureCode)
             {
-                keyClass.AESkey = hash_secureCode;
-                keyClass.isUnlock = true;
+                KeyClass.AESkey = hash_secureCode;
+                KeyClass.isUnlock = true;
             }
             else
             {
-                keyClass.AESkey = null;
-                keyClass.isUnlock = false;
+                KeyClass.AESkey = null;
+                KeyClass.isUnlock = false;
                 await DisplayAlert("Oh, I'm sorry!", "Invalid security code", "ok");
             }
         }
@@ -115,7 +115,7 @@ namespace Cryptorin
 
             while (timerAlive)
             {
-                checkConnection checker = new checkConnection();
+                CheckConnection checker = new CheckConnection();
                 bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
                 if (!result)
                 {
@@ -131,7 +131,7 @@ namespace Cryptorin
             mydata = App.myDB.ReadMyData();
             while (timerAlive)
             {
-                classSignature signature = new classSignature();
+                ClassSignature signature = new ClassSignature();
                 var result = signature.GetUserKeyNumber(mydata.id);
                 if (result==null)
                 {
@@ -139,7 +139,7 @@ namespace Cryptorin
                 }
                 if (result!=mydata.key_number)
                 {
-                    otherEntryController.myKeyChanged = true;
+                    OtherEntryController.myKeyChanged = true;
                     await Task.Delay(1000);
                     //App.myDB.DeleteAllMessages();
                     //mydata.key_number = result;
@@ -150,7 +150,7 @@ namespace Cryptorin
                     mydata = App.myDB.ReadMyData();
                 }
                 await Task.Delay(3000);
-                otherEntryController.myKeyChanged = false;
+                OtherEntryController.myKeyChanged = false;
             }
         }
     }

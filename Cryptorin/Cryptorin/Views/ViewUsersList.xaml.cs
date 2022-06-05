@@ -77,12 +77,12 @@ namespace Cryptorin.Views
             string result = await DisplayPromptAsync("Find user", "Enter user ID:", keyboard: Keyboard.Numeric);
             try
             {
-                if (result == null || result == "" || keyClass.isUnlock == false)
+                if (result == null || result == "" || KeyClass.isUnlock == false)
                 {
                     return;
                 }
-                classSignature classSignature = new classSignature();
-                fetchedUser fetchedUser = classSignature.fetchUserData(Convert.ToInt32(result));
+                ClassSignature classSignature = new ClassSignature();
+                FetchedUser fetchedUser = classSignature.fetchUserData(Convert.ToInt32(result));
                 MyData myData = App.myDB.ReadMyData();
                 User user = App.myDB.GetUser(fetchedUser.id);
                 if (myData.id == fetchedUser.id)
@@ -135,9 +135,9 @@ namespace Cryptorin.Views
 
 
 
-        private void AddUser2DataBase(fetchedUser _fetchedUser)
+        private void AddUser2DataBase(FetchedUser _fetchedUser)
         {
-            classSignature classSignature = new classSignature();
+            ClassSignature classSignature = new ClassSignature();
             string baseImage = classSignature.GetImage(_fetchedUser.id);
             var random = new Random();
             var color = String.Format("#{0:X6}", random.Next(0x1000000));
@@ -157,7 +157,7 @@ namespace Cryptorin.Views
             if (MyCollectionView.SelectedItem == null)
                 return;
 
-            if (keyClass.isUnlock)
+            if (KeyClass.isUnlock)
             {
                 UserTemplate userItem = (UserTemplate)e.CurrentSelection.FirstOrDefault();
                 await Shell.Current.GoToAsync($"{nameof(ViewChat)}?{nameof(ViewChat.UserID)}={userItem.id}");

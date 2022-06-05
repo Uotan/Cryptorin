@@ -10,11 +10,11 @@ using System.Net;
 
 namespace Cryptorin.Data
 {
-    public class controllerSQLite
+    public class ControllerSQLite
     {
         readonly SQLiteAsyncConnection dbAsync;
         readonly SQLiteConnection db;
-        public controllerSQLite(string _connectionString)
+        public ControllerSQLite(string _connectionString)
         {
             dbAsync = new SQLiteAsyncConnection(_connectionString);
             db = new SQLiteConnection(_connectionString);
@@ -102,20 +102,20 @@ namespace Cryptorin.Data
             db.Insert(_message);
         }
 
-        public ObservableCollection<classMessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
+        public ObservableCollection<ClassMessageTemplate> GetMessages(int _userIDfirst, int _userIDsecond)
         {
-            classAES aES = new classAES(keyClass.AESkey);
+            ClassAES aES = new ClassAES(KeyClass.AESkey);
             
             int count = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).Count();
 
             if (count>0)
             {
                 List<Message> messages = db.Table<Message>().Where(x => (x.for_whom == _userIDfirst && x.from_whom == _userIDsecond) || (x.for_whom == _userIDsecond && x.from_whom == _userIDfirst)).ToList();
-                ObservableCollection<classMessageTemplate> messages2return = new ObservableCollection<classMessageTemplate>();
+                ObservableCollection<ClassMessageTemplate> messages2return = new ObservableCollection<ClassMessageTemplate>();
 
                 foreach (var item in messages)
                 {
-                    classMessageTemplate template = new classMessageTemplate();
+                    ClassMessageTemplate template = new ClassMessageTemplate();
                     template.from_whom = item.from_whom.ToString();
                     var decryptedCipher = WebUtility.UrlDecode(aES.Decrypt(item.content));
                     template.content = decryptedCipher.Trim();
@@ -188,8 +188,8 @@ namespace Cryptorin.Data
 
         public void ReEncryptAllData(string _oldPassword, string _newPassword)
         {
-            classAES AES_old = new classAES(_oldPassword);
-            classAES AES_new = new classAES(_newPassword);
+            ClassAES AES_old = new ClassAES(_oldPassword);
+            ClassAES AES_new = new ClassAES(_newPassword);
 
             var AllMessages = db.Table<Message>().ToList();
             MyData myData = ReadMyData();

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cryptorin.Classes
 {
-    public class otherEntryController
+    public class OtherEntryController
     {
         public static bool myKeyChanged = false;
     }

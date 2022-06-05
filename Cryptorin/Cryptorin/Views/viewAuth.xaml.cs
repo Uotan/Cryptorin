@@ -39,7 +39,7 @@ namespace Cryptorin.Views
 
         async void checkConnection2server()
         {
-            checkConnection checker = new checkConnection();
+            CheckConnection checker = new CheckConnection();
             bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
             Debug.WriteLine(result);
             if (!result)
@@ -70,7 +70,7 @@ namespace Cryptorin.Views
         async Task<bool> checkConnet()
         {
             await Task.Delay(50);
-            checkConnection checker = new checkConnection();
+            CheckConnection checker = new CheckConnection();
             bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
             if (!connectionResult)
             {
@@ -127,7 +127,7 @@ namespace Cryptorin.Views
         async Task<bool> AuthMethod()
         {
             await Task.Delay(50);
-            classSHA256 classSHA256instance = new classSHA256();
+            ClassSHA256 classSHA256instance = new ClassSHA256();
             string hashSaltPassword = classSHA256instance.ComputeSha256Hash(tbPassword.Text);
             string hashSaltLogin = classSHA256instance.ComputeSha256Hash(tbLogin.Text);
 
@@ -135,14 +135,14 @@ namespace Cryptorin.Views
             string hashPasswordHex = argon.Argon2id(tbPassword.Text, hashSaltPassword);
             string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
 
-            classSignature classSign = new classSignature();
+            ClassSignature classSign = new ClassSignature();
 
 
             RSAUtil rSAUtil = new RSAUtil();
             List<string> keys = rSAUtil.CreateKeys();
 
 
-            fetchedUser fetchedData = classSign.SignIn(hashLoginHex, hashPasswordHex, keys[1]);
+            FetchedUser fetchedData = classSign.SignIn(hashLoginHex, hashPasswordHex, keys[1]);
 
             if (fetchedData != null)
             {
@@ -154,12 +154,12 @@ namespace Cryptorin.Views
                 }
                 code = code.Trim();
                 string codeArgon = argon.Argon2id(code,code.Length.ToString()+ "#iN6H2V#");
-                classSHA256 sHA256 = new classSHA256();
+                ClassSHA256 sHA256 = new ClassSHA256();
                 string hash_secureCode = sHA256.ComputeSha256Hash(codeArgon);
                 hash_secureCode = hash_secureCode.Remove(16);
                 //hash_secureCode = hash_secureCode.Remove(32);
-                keyClass.AESkey = hash_secureCode;
-                classAES aES = new classAES(hash_secureCode);
+                KeyClass.AESkey = hash_secureCode;
+                ClassAES aES = new ClassAES(hash_secureCode);
 
 
                 var EncryptedSecurityCode = aES.Encrypt(hash_secureCode);
@@ -194,11 +194,11 @@ namespace Cryptorin.Views
 
 
 
-        void WriteLocalData(fetchedUser _fetcheData, string _login, string _password, string _privateKey)
+        void WriteLocalData(FetchedUser _fetcheData, string _login, string _password, string _privateKey)
         {
             App.myDB.DeleteAllData();
 
-            classSignature signInstance = new classSignature();
+            ClassSignature signInstance = new ClassSignature();
 
             string imageBase64 = signInstance.GetImage(_fetcheData.id);
 

@@ -9,7 +9,7 @@ using Cryptorin.Classes;
 
 namespace Cryptorin.Data
 {
-    public class classMessages
+    public class ClassMessages
     {
         /// <summary>
         /// get the number of messages with the user
@@ -82,7 +82,7 @@ namespace Cryptorin.Data
         /// <param name="_password"></param>
         /// <param name="_count"></param>
         /// <returns></returns>
-        public List<fetchedMessage> GetMessagesFromUser(int _from, int _to, string _login, string _password, int _count)
+        public List<FetchedMessage> GetMessagesFromUser(int _from, int _to, string _login, string _password, int _count)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -95,7 +95,7 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/getMessagesFromUser.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
-                List<fetchedMessage> Data = JsonConvert.DeserializeObject<List<fetchedMessage>>(result);
+                List<FetchedMessage> Data = JsonConvert.DeserializeObject<List<FetchedMessage>>(result);
                 return Data;
             }
             catch (Exception)

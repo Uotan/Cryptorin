@@ -23,9 +23,9 @@ namespace Cryptorin.Views
         string passwordHex;
         string loginHex;
 
-        classSignature signature = new classSignature();
+        ClassSignature signature = new ClassSignature();
         RSAUtil rSAUtil = new RSAUtil();
-        classAES aES;
+        ClassAES aES;
 
         public ViesSettings()
         {
@@ -40,7 +40,7 @@ namespace Cryptorin.Views
             await Task.Run(() =>
             {
 
-                if (!keyClass.isUnlock)
+                if (!KeyClass.isUnlock)
                 {
                     setRadioBtnTheme();
                     btnChangeImage.IsEnabled = false;
@@ -66,9 +66,9 @@ namespace Cryptorin.Views
             {
                 myData = App.myDB.ReadMyData();
                 entryChgPubName.Placeholder = WebUtility.UrlDecode(myData.public_name);
-                if (keyClass.isUnlock)
+                if (KeyClass.isUnlock)
                 {
-                    aES = new classAES(keyClass.AESkey);
+                    aES = new ClassAES(KeyClass.AESkey);
                     passwordHex = aES.Decrypt(myData.password).Trim();
                     loginHex = aES.Decrypt(myData.login).Trim();
                 }
@@ -96,7 +96,7 @@ namespace Cryptorin.Views
             if (entryChgPubName.Text!=null)
             {
                 var urlEncodedPublicName = WebUtility.UrlEncode(entryChgPubName.Text);
-                classSignature signature = new classSignature();
+                ClassSignature signature = new ClassSignature();
                 string result = signature.UpdatePublicName(loginHex, passwordHex, urlEncodedPublicName);
                 if (result== "Updated")
                 {
@@ -130,7 +130,7 @@ namespace Cryptorin.Views
 
         private async void btnCngPassword_Clicked(object sender, EventArgs e)
         {
-            classSHA256 classSHA256instance = new classSHA256();
+            ClassSHA256 classSHA256instance = new ClassSHA256();
             string hashSaltOld = classSHA256instance.ComputeSha256Hash(entrPassOld.Text);
 
             Argon argon = new Argon();
@@ -143,7 +143,7 @@ namespace Cryptorin.Views
             }
             else
             {
-                classSignature classSign = new classSignature();
+                ClassSignature classSign = new ClassSignature();
 
                 string hashSaltNew = classSHA256instance.ComputeSha256Hash(entrPassNew1.Text);
                 string newPassHash = argon.Argon2id(entrPassNew1.Text, hashSaltNew);
@@ -183,7 +183,7 @@ namespace Cryptorin.Views
             {
                 byte[] imageArray = File.ReadAllBytes(file.FullPath);
                 string base64ImageRepresentation = Convert.ToBase64String(imageArray);
-                classSignature classSignature = new classSignature();
+                ClassSignature classSignature = new ClassSignature();
                 string result = classSignature.UpdateImage(loginHex, passwordHex, base64ImageRepresentation);
                 if (result== "Updated")
                 {
@@ -258,7 +258,7 @@ namespace Cryptorin.Views
                 {
                     App.myDB.DeleteAllMessages();
 
-                    classAES aES = new classAES(keyClass.AESkey);
+                    ClassAES aES = new ClassAES(KeyClass.AESkey);
                     string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
 
 
@@ -332,12 +332,12 @@ namespace Cryptorin.Views
 
             string codeArgonOld = argon.Argon2id(entryCurrenCode.Text, entryCurrenCode.Text.Length.ToString() + "#iN6H2V#");
 
-            classSHA256 sHA256 = new classSHA256();
+            ClassSHA256 sHA256 = new ClassSHA256();
             string hash_secureCodeOld = sHA256.ComputeSha256Hash(codeArgonOld);
             hash_secureCodeOld = hash_secureCodeOld.Remove(16);
             //hash_secureCodeOld = hash_secureCodeOld.Remove(32);
 
-            classAES _aES = new classAES(hash_secureCodeOld);
+            ClassAES _aES = new ClassAES(hash_secureCodeOld);
 
             string secretCodeFromMemory = Preferences.Get("secretCode", null);
 
@@ -363,7 +363,7 @@ namespace Cryptorin.Views
             hash_secureCodeNew = hash_secureCodeNew.Remove(16);
             //hash_secureCodeNew = hash_secureCodeNew.Remove(32);
 
-            keyClass.AESkey = hash_secureCodeNew;
+            KeyClass.AESkey = hash_secureCodeNew;
             aES.ChangeAESkey(hash_secureCodeNew);
 
 

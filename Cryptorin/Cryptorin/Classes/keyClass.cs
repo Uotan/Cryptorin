@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cryptorin.Classes
 {
-    public class keyClass
+    public class KeyClass
     {
         public static string AESkey = "";
 

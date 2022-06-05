@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace Cryptorin.Data
 {
-    public class classSignature
+    public class ClassSignature
     {
         /// <summary>
         /// Checking for the existence of a login
@@ -78,7 +78,7 @@ namespace Cryptorin.Data
         /// <param name="_login"></param>
         /// <param name="_pass"></param>
         /// <returns></returns>
-        public fetchedUser SignIn(string _login, string _pass, string _publicKey)
+        public FetchedUser SignIn(string _login, string _pass, string _publicKey)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -90,7 +90,7 @@ namespace Cryptorin.Data
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/signin.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
                 Debug.WriteLine(result);
-                fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
+                FetchedUser userData = JsonConvert.DeserializeObject<FetchedUser>(result);
                 return userData;
             }
             catch (Exception)
@@ -210,7 +210,7 @@ namespace Cryptorin.Data
         /// </summary>
         /// <param name="_id">User ID</param>
         /// <returns>Returns all available public user data</returns>
-        public fetchedUser fetchUserData(int _id)
+        public FetchedUser fetchUserData(int _id)
         {
             WebClient client = new WebClient();
             NameValueCollection param = new NameValueCollection();
@@ -219,7 +219,7 @@ namespace Cryptorin.Data
             {
                 var response = client.UploadValues(ServerAddress.srvrAddress + "/API/findUser.php", "POST", param);
                 string result = Encoding.Default.GetString(response);
-                fetchedUser userData = JsonConvert.DeserializeObject<fetchedUser>(result);
+                FetchedUser userData = JsonConvert.DeserializeObject<FetchedUser>(result);
                 return userData;
             }
             catch (Exception)

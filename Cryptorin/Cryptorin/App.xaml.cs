@@ -12,14 +12,14 @@ namespace Cryptorin
 {
     public partial class App : Application
     {
-        static controllerSQLite myDataBase;
-        public static controllerSQLite myDB
+        static ControllerSQLite myDataBase;
+        public static ControllerSQLite myDB
         {
             get
             {
                 if (myDataBase == null)
                 {
-                    myDataBase = new controllerSQLite(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "myData.db"));
+                    myDataBase = new ControllerSQLite(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "myData.db"));
                     //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "NotesDatabase.db"));
                 }
                 return myDataBase;

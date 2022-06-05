@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Cryptorin.Data
 {
-    public class classAES
+    public class ClassAES
     {
         string pass;
         byte[] key;
@@ -15,7 +15,7 @@ namespace Cryptorin.Data
         /// Create AES instance
         /// </summary>
         /// <param name="_pass">Get key: 128bit(16 characters), 192bit(24 characters), 256bit(32 characters)</param>
-        public classAES(string _pass)
+        public ClassAES(string _pass)
         {
             pass = _pass;
 

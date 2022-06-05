@@ -36,30 +36,30 @@ namespace Cryptorin.Views
 
         bool isReady = true;
 
-        bool firstTime = true;
+        //bool firstTime = true;
 
         RSAUtil rSAUtil = new RSAUtil();
 
-        ObservableCollection<classMessageTemplate> MessagesCurrent = new ObservableCollection<classMessageTemplate>();
+        ObservableCollection<ClassMessageTemplate> MessagesCurrent = new ObservableCollection<ClassMessageTemplate>();
 
 
         
         MyData myData = App.myDB.ReadMyData();
         string passwordHex;
         string loginHex;
-        classAES aES = new classAES(keyClass.AESkey);
+        ClassAES aES = new ClassAES(KeyClass.AESkey);
         string decryptedPrivateKey = null;
 
 
-        classMessages classMess = new classMessages();
+        ClassMessages classMess = new ClassMessages();
 
-        classSignature signature = new classSignature();
+        ClassSignature signature = new ClassSignature();
 
         public ViewChat()
         {
             InitializeComponent();
             
-            if (keyClass.isUnlock)
+            if (KeyClass.isUnlock)
             {
                 passwordHex = aES.Decrypt(myData.password).Trim();
                 loginHex = aES.Decrypt(myData.login).Trim();
@@ -105,7 +105,7 @@ namespace Cryptorin.Views
 
                 timerAlive = true;
 
-                checkConnection checker = new checkConnection();
+                CheckConnection checker = new CheckConnection();
                 bool result = checker.ConnectionAvailable(ServerAddress.srvrAddress);
                 if (!result)
                 {
@@ -325,7 +325,7 @@ namespace Cryptorin.Views
                             string AESmessage = aES.Encrypt(DEcryptedText);
 
 
-                            classMessageTemplate template = new classMessageTemplate();
+                            ClassMessageTemplate template = new ClassMessageTemplate();
                             template.from_whom = item.from_whom.ToString();
                             template.content = WebUtility.UrlDecode(DEcryptedText);
                             template.datetime = item.datetime;
@@ -361,7 +361,7 @@ namespace Cryptorin.Views
             if (MyCollectionView.SelectedItem == null)
                 return;
 
-            classMessageTemplate messageItem = (classMessageTemplate)e.CurrentSelection.FirstOrDefault();
+            ClassMessageTemplate messageItem = (ClassMessageTemplate)e.CurrentSelection.FirstOrDefault();
             Debug.WriteLine(messageItem.content);
             await Clipboard.SetTextAsync(messageItem.content);
             await this.DisplayToastAsync("Text copied", 2000);
@@ -399,7 +399,7 @@ namespace Cryptorin.Views
 
                 string cryptedText = rSAUtil.Encrypt(user.public_key, urlEncodedMessage);
 
-                classMessages classMess = new classMessages();
+                ClassMessages classMess = new ClassMessages();
 
                 string result = classMess.SendMessage(myData.id, user.id, loginHex, passwordHex, cryptedText);
 
@@ -415,7 +415,7 @@ namespace Cryptorin.Views
                     //Debug.WriteLine(myData.id + ": " + entrContent.Text + "[" + result + "]");
 
 
-                    classMessageTemplate template = new classMessageTemplate();
+                    ClassMessageTemplate template = new ClassMessageTemplate();
                     template.from_whom = myData.id.ToString();
                     //template.content = entrContent.Text;
                     template.content = notEncodedText;

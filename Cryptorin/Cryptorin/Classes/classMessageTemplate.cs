@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cryptorin.Classes
 {
-    public class classMessageTemplate
+    public class ClassMessageTemplate
     {
         public string from_whom { get; set; }
         public string content { get; set; }

@@ -9,9 +9,7 @@ namespace Cryptorin.Classes.SQLiteClasses
     {
         [PrimaryKey, AutoIncrement]
         public int IDlocal { get; set; }
-        [Indexed]
         public int from_whom { get; set; }
-        [Indexed]
         public int for_whom { get; set; }
         public string content { get; set; }
         public string datetime { get; set; }

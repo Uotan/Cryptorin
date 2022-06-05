@@ -21,7 +21,7 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestAESmethod()
         {
-            classAES aes = new classAES("4elpsGky8'}|;I[*11111111");
+            ClassAES aes = new ClassAES("4elpsGky8'}|;I[*11111111");
             string crypt = aes.Encrypt("hello");
             string decrypt = aes.Decrypt(crypt);
             decrypt = decrypt.Trim();
@@ -37,7 +37,7 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestRSAmethod()
         {
-            classRSA rsa = new classRSA();
+            ClassRSA rsa = new ClassRSA();
             string _privateBase = rsa.GetPrivateBase64();
             string _puplicBase = rsa.GetPublicBase64();
             string MyString = "В качестве предметной области, был выбран простой чат 1234";
@@ -61,7 +61,7 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestSHA256()
         {
-            classSHA256 rsa = new classSHA256();
+            ClassSHA256 rsa = new ClassSHA256();
             string assert = "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824";
             string hash = rsa.ComputeSha256Hash("hello");
             Assert.AreEqual(assert, hash);
@@ -71,7 +71,7 @@ namespace UnitTestsCryptorin
         public void TestGetCountMessage()
         {
 
-            classMessages signature = new classMessages();
+            ClassMessages signature = new ClassMessages();
             int result = signature.GetCountOfMessagesWithUser(41, 38, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b");
 
             Console.WriteLine("Count:" + result);
@@ -93,9 +93,9 @@ namespace UnitTestsCryptorin
         [TestMethod]
         public void TestGetMessages()
         {
-            classMessages signature = new classMessages();
+            ClassMessages signature = new ClassMessages();
 
-            List<fetchedMessage> result = signature.GetMessagesFromUser(38, 41, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", 1);
+            List<FetchedMessage> result = signature.GetMessagesFromUser(38, 41, "qqq", "1ac673df357fbdaae0fa9c0ff7c1d52ab5a6ca24867dfcdbd5d7ceac2bbefc27b725289a304e3005819cb61ce8514372ed249a59885831c5774095264843b84d02c30233af0c4b258f2d78c70aeb124e511274297575624d70888b9f31bbe3625ff17c3b", 1);
             foreach (var item in result)
             {
                 Console.WriteLine(item.from_whom + " - " + item.for_whom + ": " + item.rsa_cipher);
@@ -200,7 +200,7 @@ namespace UnitTestsCryptorin
         {
             RSAUtil rSAUtil = new RSAUtil();
             List<string> keys = rSAUtil.CreateKeys();
-            classAES aES = new classAES(keyClass.AESkey);
+            ClassAES aES = new ClassAES(KeyClass.AESkey);
             string symmetricallyEncryptedKey = aES.Encrypt(keys[0]);
             Console.Write(symmetricallyEncryptedKey);
 

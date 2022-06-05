@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Cryptorin.Classes
 {
-    public class fetchedUser
+    public class FetchedUser
     {
         public int id;
         public string public_name;

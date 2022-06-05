@@ -8,7 +8,7 @@ namespace Cryptorin.Data
     /// <summary>
     /// class for checking the connection with the server
     /// </summary>
-    public class checkConnection
+    public class CheckConnection
     {
         /// <summary>
         /// Check connection with server

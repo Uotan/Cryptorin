@@ -11,7 +11,7 @@ namespace Cryptorin.Data
     /// <summary>
     /// My, poorly working RSA provider
     /// </summary>
-    public class classRSA
+    public class ClassRSA
     {
         byte[] publicKeyBytes;
         byte[] privateKeyBytes;
@@ -19,7 +19,7 @@ namespace Cryptorin.Data
         RSAParameters _privatekeyParametrs;
         RSAParameters _publickeyParametrs;
 
-        public classRSA()
+        public ClassRSA()
         {
             csp = new RSACryptoServiceProvider();
             RSAexportKeys();

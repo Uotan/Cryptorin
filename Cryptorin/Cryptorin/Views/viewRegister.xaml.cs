@@ -55,7 +55,7 @@ namespace Cryptorin.Views
 
         private async void btnSignUp_Clicked(object sender, EventArgs e)
         {
-            checkConnection checker = new checkConnection();
+            CheckConnection checker = new CheckConnection();
             bool connectionResult = checker.ConnectionAvailable(ServerAddress.srvrAddress);
             if (!connectionResult)
             {
@@ -76,7 +76,7 @@ namespace Cryptorin.Views
                 {
                     var urlEncodedPublicName = WebUtility.UrlEncode(tbPublicName.Text);
 
-                    classSHA256 classSHA256instance = new classSHA256();
+                    ClassSHA256 classSHA256instance = new ClassSHA256();
                     string hashSaltPassword = classSHA256instance.ComputeSha256Hash(tbPassw.Text);
                     string hashSaltLogin = classSHA256instance.ComputeSha256Hash(tbLogin.Text);
 
@@ -85,7 +85,7 @@ namespace Cryptorin.Views
                     string hashLoginHex = argon.Argon2id(tbLogin.Text, hashSaltLogin);
 
 
-                    classSignature signInstance = new classSignature();
+                    ClassSignature signInstance = new ClassSignature();
                     if (signInstance.CheckLoginExists(hashLoginHex) == "ok")
                     {
 
